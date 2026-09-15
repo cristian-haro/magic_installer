@@ -12,6 +12,10 @@
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
 </p>
 
+<p align="center">
+  <img src="assets/screenshots/magic_installer_selection.png" alt="Magic Installer Selection View" width="850" />
+</p>
+
 ---
 
 ## Language / Idioma
@@ -26,6 +30,22 @@
 **Magic Installer** es una herramienta ligera y de codigo abierto para Windows inspirada en *Ninite*. Permite seleccionar multiples programas populares mediante una interfaz grafica nativa moderna (WPF) con casillas de verificacion e instalarlos todos en lote de forma **100% silenciosa, automatica y desatendida** utilizando el gestor oficial de paquetes **Microsoft Winget**.
 
 Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descargando la version mas reciente oficial** de cada programa directamente desde los servidores de los desarrolladores.
+
+### Capturas de Pantalla
+
+#### 1. Seleccion de Aplicaciones y Buscador en Tiempo Real
+Permite filtrar rapidamente cualquier programa, marcar casillas y detectar aplicaciones ya instaladas en el sistema.
+
+<p align="center">
+  <img src="assets/screenshots/magic_installer_selection.png" alt="Vista de Seleccion" width="850" />
+</p>
+
+#### 2. Monitoreo del Progreso de Instalacion en Vivo
+Muestra una barra de progreso animada y el estado individual de instalacion de cada programa seleccionado.
+
+<p align="center">
+  <img src="assets/screenshots/magic_installer_progress.png" alt="Vista de Progreso" width="850" />
+</p>
 
 ### Caracteristicas Clave
 * **Interfaz Grafica Nativa (WPF / XAML):** Ventana visual moderna con casillas de verificacion (`CheckBoxes`) organizadas por categorias.
@@ -42,12 +62,16 @@ magic_installer/
 │
 ├── Magic_Installer.bat       <-- Lanzador principal para el usuario (1 clic)
 │
+├── assets/                   <-- Recursos graficos y capturas de pantalla
+│   └── screenshots/
+│
 ├── src/                      <-- Codigo fuente
 │   └── Magic_Installer.ps1
 │
 ├── build/                    <-- Scripts de compilacion a ejecutable (.exe)
 │   ├── build.ps1
-│   └── build.bat
+│   ├── build.bat
+│   └── capture.ps1
 │
 ├── .github/                  <-- CI/CD Workflows para Releases
 │   └── workflows/
@@ -98,6 +122,22 @@ Esto utilizara el compilador C# nativo de Windows (`csc.exe`) con manifiesto de 
 
 Zero toolbars, zero bloatware, and **always fetching the latest official release** directly from the vendors' servers.
 
+### Screenshots
+
+#### 1. Application Selection & Real-Time Search
+Quickly filter programs, toggle category cards, and view pre-installed software tags.
+
+<p align="center">
+  <img src="assets/screenshots/magic_installer_selection.png" alt="Selection View" width="850" />
+</p>
+
+#### 2. Live Progress Tracker
+Follow real-time installation stages with an animated progress bar and detailed badges.
+
+<p align="center">
+  <img src="assets/screenshots/magic_installer_progress.png" alt="Progress View" width="850" />
+</p>
+
 ### Key Features
 * **Modern Native UI (WPF / XAML):** Clean desktop interface featuring direct checkboxes grouped into clear categories.
 * **Real-Time Search & Filter:** Instantly filter any application or category as you type in the search bar.
@@ -113,12 +153,16 @@ magic_installer/
 │
 ├── Magic_Installer.bat       <-- Main launcher for end users (1 click)
 │
+├── assets/                   <-- Screenshots and visual assets
+│   └── screenshots/
+│
 ├── src/                      <-- Source code
 │   └── Magic_Installer.ps1
 │
 ├── build/                    <-- Build scripts to generate standalone .exe
 │   ├── build.ps1
-│   └── build.bat
+│   ├── build.bat
+│   └── capture.ps1
 │
 ├── .github/                  <-- GitHub Actions CI/CD workflows
 │   └── workflows/
