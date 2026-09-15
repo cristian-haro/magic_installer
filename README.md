@@ -29,11 +29,12 @@ Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descar
 
 ### Caracteristicas Clave
 * **Interfaz Grafica Nativa (WPF / XAML):** Ventana visual moderna con casillas de verificacion (`CheckBoxes`) organizadas por categorias.
-* **Ejecucion Silenciosa y Oculta:** Sin ventanas de consola de fondo (`-WindowStyle Hidden`).
+* **Buscador en Tiempo Real:** Filtra instantaneamente cualquier aplicacion o categoria escribiendo en la barra superior.
+* **Deteccion Inteligente de Programas Instalados:** Escanea el sistema y resalta con una etiqueta `[Instalado]` los programas ya presentes en tu equipo.
+* **Ejecucion Standalone y Silenciosa:** Se puede ejecutar mediante el lanzador `.bat` o compilar a un unico ejecutable nativo `.exe` sin ventanas de consola visibles (`-WindowStyle Hidden`).
 * **Instalacion Desatendida:** Automatiza la aceptacion de licencias y acuerdos mediante `winget`.
 * **Siempre Actualizado:** Sincroniza fuentes antes de cada ejecucion para garantizar la ultima version estable.
 * **Monitoreo en Tiempo Real:** Vista de progreso con barra animada y estados en vivo (*En espera*, *Instalando*, *Completado*).
-* **Facilmente Extensible:** Catalogo estructurado y modular de aplicaciones.
 
 ### Catalogo de Aplicaciones Incluidas
 
@@ -51,13 +52,20 @@ Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descar
 ### Requisitos y Uso Rapido
 1. **Requisitos:** Windows 10 (version 1809 o superior) o Windows 11 con **App Installer / Winget** habilitado (incluido por defecto en Windows).
 2. **Uso:**
-   * Clona este repositorio o descarga el codigo:
+   * Descarga la ultima version desde la seccion de **Releases** o clona el repositorio:
      ```bash
      git clone https://github.com/cristian-haro/magic_installer.git
      ```
-   * Haz doble clic sobre [`Magic_Installer.bat`](Magic_Installer.bat).
-   * Marca las casillas de los programas deseados.
+   * Ejecuta [`Magic_Installer.bat`](Magic_Installer.bat) o `Magic_Installer.exe`.
+   * Selecciona los programas deseados (o usa el buscador para encontrarlos rapidamente).
    * Haz clic en **"Instalar Seleccionadas"** y observa el progreso en vivo.
+
+### Compilacion a Ejecutable (.exe)
+Puedes generar un ejecutable independiente de 1 solo archivo ejecutando:
+```bash
+.\build.bat
+```
+Esto utilizara el compilador C# nativo de Windows (`csc.exe`) para empaquetar la aplicacion con manifiesto de administrador integrado.
 
 ---
 
@@ -70,11 +78,12 @@ Zero toolbars, zero bloatware, and **always fetching the latest official release
 
 ### Key Features
 * **Modern Native UI (WPF / XAML):** Clean desktop interface featuring direct checkboxes grouped into clear categories.
-* **Hidden Console Execution:** No distracting command prompt or PowerShell background windows (`-WindowStyle Hidden`).
+* **Real-Time Search & Filter:** Instantly filter any application or category as you type in the search bar.
+* **Smart Installed Detection:** Automatically scans Windows and highlights previously installed programs with an `[Instalado]` badge.
+* **Standalone & Hidden Execution:** Run directly through the `.bat` launcher or build into a single `.exe` executable without visible console windows (`-WindowStyle Hidden`).
 * **Unattended Batch Installs:** Auto-accepts package agreements and licenses via `winget`.
 * **Always Up-to-Date:** Synchronizes repository sources before every run to guarantee the newest available version.
 * **Live Progress Tracking:** Integrated progress view with an animated progress bar and real-time status badges (*Queued*, *Installing*, *Completed*).
-* **Easily Extensible:** Structured and modular application catalog.
 
 ### Included Software Catalog
 
@@ -92,13 +101,20 @@ Zero toolbars, zero bloatware, and **always fetching the latest official release
 ### Requirements & Quick Start
 1. **Requirements:** Windows 10 (1809+) or Windows 11 with **App Installer / Winget** (pre-installed by default).
 2. **How to run:**
-   * Clone this repository or download the source:
+   * Download the latest release from the **Releases** section or clone the repository:
      ```bash
      git clone https://github.com/cristian-haro/magic_installer.git
      ```
-   * Double-click [`Magic_Installer.bat`](Magic_Installer.bat).
-   * Check the boxes for the applications you want.
+   * Run [`Magic_Installer.bat`](Magic_Installer.bat) or `Magic_Installer.exe`.
+   * Check the boxes for the applications you want (or use the search bar to locate them).
    * Click **"Instalar Seleccionadas"** and enjoy the automated installation.
+
+### Building Standalone Executable (.exe)
+You can compile a single standalone `.exe` file at any time by running:
+```bash
+.\build.bat
+```
+This uses Windows' native C# compiler (`csc.exe`) with an embedded UAC administrator manifest.
 
 ---
 

@@ -1,0 +1,46 @@
+name: Release Magic Installer
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Executable
+        shell: powershell
+        run: |
+          .\build.ps1
+
+      - name: Package Release ZIP
+        shell: powershell
+        run: |
+          $version = "${{ github.ref_name }}"
+          if (-not $version -or $version -eq "") { $version = "v1.0.0" }
+          $zipName = "Magic_Installer_$version.zip"
+          Compress-Archive -Path "Magic_Installer.exe", "Magic_Installer.ps1", "Magic_Installer.bat", "README.md", "LICENSE" -DestinationPath $zipName
+          Write-Host "Package created: $zipName"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: Magic Installer ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            Magic_Installer.exe
+            Magic_Installer_*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

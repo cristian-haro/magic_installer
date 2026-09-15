@@ -18,103 +18,128 @@ Add-Type -AssemblyName WindowsBase
 # 2. Catalogo de aplicaciones disponibles
 $Apps = @(
     # --- NAVEGADORES ---
-    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Google Chrome"; Id = "Google.Chrome"; Descripcion = "Navegador web de Google" }
-    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Mozilla Firefox"; Id = "Mozilla.Firefox"; Descripcion = "Navegador de codigo abierto" }
-    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Brave Browser"; Id = "Brave.Brave"; Descripcion = "Navegador enfocado en privacidad" }
-    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Opera GX"; Id = "Opera.OperaGX"; Descripcion = "Navegador optimizado para gaming" }
-    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Microsoft Edge"; Id = "Microsoft.Edge"; Descripcion = "Navegador nativo de Microsoft" }
-    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Vivaldi"; Id = "VivaldiTechnologies.Vivaldi"; Descripcion = "Navegador altamente personalizable" }
-    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Tor Browser"; Id = "TorProject.TorBrowser"; Descripcion = "Navegador para anonimato en red Tor" }
+    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Google Chrome"; Id = "Google.Chrome"; Descripcion = "Navegador web de Google"; Keywords = "chrome,google,browser" }
+    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Mozilla Firefox"; Id = "Mozilla.Firefox"; Descripcion = "Navegador de codigo abierto"; Keywords = "firefox,mozilla,browser" }
+    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Brave Browser"; Id = "Brave.Brave"; Descripcion = "Navegador enfocado en privacidad"; Keywords = "brave,browser,privacy" }
+    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Opera GX"; Id = "Opera.OperaGX"; Descripcion = "Navegador optimizado para gaming"; Keywords = "opera,gx,gaming,browser" }
+    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Microsoft Edge"; Id = "Microsoft.Edge"; Descripcion = "Navegador nativo de Microsoft"; Keywords = "edge,microsoft,browser" }
+    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Vivaldi"; Id = "VivaldiTechnologies.Vivaldi"; Descripcion = "Navegador altamente personalizable"; Keywords = "vivaldi,browser" }
+    [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Tor Browser"; Id = "TorProject.TorBrowser"; Descripcion = "Navegador para anonimato en red Tor"; Keywords = "tor,onion,privacy,browser" }
 
     # --- COMUNICACION Y MENSAJERIA ---
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Mozilla Thunderbird"; Id = "Mozilla.Thunderbird"; Descripcion = "Cliente de correo y calendario libre" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Asana"; Id = "Asana.Asana"; Descripcion = "Gestion de tareas y proyectos de equipo" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Discord"; Id = "Discord.Discord"; Descripcion = "Chat de voz y texto para comunidades" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Telegram Desktop"; Id = "Telegram.TelegramDesktop"; Descripcion = "Mensajeria rapida y segura" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "WhatsApp"; Id = "WhatsApp.WhatsApp"; Descripcion = "Cliente oficial de WhatsApp" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Zoom"; Id = "Zoom.Zoom"; Descripcion = "Reuniones y videollamadas" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Microsoft Teams"; Id = "Microsoft.Teams"; Descripcion = "Comunicacion corporativa" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Slack"; Id = "SlackTechnologies.Slack"; Descripcion = "Mensajeria para equipos de trabajo" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Mozilla Thunderbird"; Id = "Mozilla.Thunderbird"; Descripcion = "Cliente de correo y calendario libre"; Keywords = "thunderbird,mail,email,correo" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Asana"; Id = "Asana.Asana"; Descripcion = "Gestion de tareas y proyectos de equipo"; Keywords = "asana,tasks,projects,equipo" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Discord"; Id = "Discord.Discord"; Descripcion = "Chat de voz y texto para comunidades"; Keywords = "discord,chat,voz,comunidad" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Telegram Desktop"; Id = "Telegram.TelegramDesktop"; Descripcion = "Mensajeria rapida y segura"; Keywords = "telegram,chat,mensajeria" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "WhatsApp"; Id = "WhatsApp.WhatsApp"; Descripcion = "Cliente oficial de WhatsApp"; Keywords = "whatsapp,chat,mensajes" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Zoom"; Id = "Zoom.Zoom"; Descripcion = "Reuniones y videollamadas"; Keywords = "zoom,videollamada,reuniones" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Microsoft Teams"; Id = "Microsoft.Teams"; Descripcion = "Comunicacion corporativa"; Keywords = "teams,microsoft,videollamada" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Slack"; Id = "SlackTechnologies.Slack"; Descripcion = "Mensajeria para equipos de trabajo"; Keywords = "slack,chat,trabajo" }
 
     # --- MULTIMEDIA Y DISENO ---
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Figma"; Id = "Figma.Figma"; Descripcion = "Herramienta colaborativa de diseno de interfaces" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "VLC Media Player"; Id = "VideoLAN.VLC"; Descripcion = "Reproductor universal de medios" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Spotify"; Id = "Spotify.Spotify"; Descripcion = "Musica y podcasts en streaming" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "OBS Studio"; Id = "OBSProject.OBSStudio"; Descripcion = "Grabacion y transmision de video" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Audacity"; Id = "Audacity.Audacity"; Descripcion = "Editor y grabador de audio" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "HandBrake"; Id = "HandBrake.HandBrake"; Descripcion = "Conversor de formatos de video" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "GIMP"; Id = "GIMP.GIMP"; Descripcion = "Editor de fotos e imagenes" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Paint.NET"; Id = "dotPDN.PaintDotNet"; Descripcion = "Editor grafico ligero" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Blender"; Id = "BlenderFoundation.Blender"; Descripcion = "Modelado y animacion 3D" }
-    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "K-Lite Codec Pack Mega"; Id = "CodecGuide.K-LiteCodecPack.Mega"; Descripcion = "Coleccion de codecs multimedia" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Figma"; Id = "Figma.Figma"; Descripcion = "Herramienta colaborativa de diseno de interfaces"; Keywords = "figma,design,ui,ux,diseno" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "VLC Media Player"; Id = "VideoLAN.VLC"; Descripcion = "Reproductor universal de medios"; Keywords = "vlc,video,audio,player" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Spotify"; Id = "Spotify.Spotify"; Descripcion = "Musica y podcasts en streaming"; Keywords = "spotify,musica,audio,streaming" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "OBS Studio"; Id = "OBSProject.OBSStudio"; Descripcion = "Grabacion y transmision de video"; Keywords = "obs,stream,grabacion,video" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Audacity"; Id = "Audacity.Audacity"; Descripcion = "Editor y grabador de audio"; Keywords = "audacity,audio,editor,sonido" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "HandBrake"; Id = "HandBrake.HandBrake"; Descripcion = "Conversor de formatos de video"; Keywords = "handbrake,video,conversor,mp4" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "GIMP"; Id = "GIMP.GIMP"; Descripcion = "Editor de fotos e imagenes"; Keywords = "gimp,imagen,foto,photoshop" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Paint.NET"; Id = "dotPDN.PaintDotNet"; Descripcion = "Editor grafico ligero"; Keywords = "paint,paint.net,imagen,dibujo" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Blender"; Id = "BlenderFoundation.Blender"; Descripcion = "Modelado y animacion 3D"; Keywords = "blender,3d,animacion,render" }
+    [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "K-Lite Codec Pack Mega"; Id = "CodecGuide.K-LiteCodecPack.Mega"; Descripcion = "Coleccion de codecs multimedia"; Keywords = "klite,codec,video,audio" }
 
     # --- ALMACENAMIENTO EN LA NUBE ---
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Google Drive"; Id = "Google.GoogleDrive"; Descripcion = "Sincronizacion de Google Drive para escritorio" }
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Microsoft OneDrive"; Id = "Microsoft.OneDrive"; Descripcion = "Nube integrada de Microsoft" }
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Dropbox"; Id = "Dropbox.Dropbox"; Descripcion = "Almacenamiento y sincronizacion en la nube" }
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "SugarSync"; Id = "IPVanish.SugarSync"; Descripcion = "Copia de seguridad y sincronizacion en la nube" }
+    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Google Drive"; Id = "Google.GoogleDrive"; Descripcion = "Sincronizacion de Google Drive para escritorio"; Keywords = "google drive,cloud,nube,storage" }
+    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Microsoft OneDrive"; Id = "Microsoft.OneDrive"; Descripcion = "Nube integrada de Microsoft"; Keywords = "onedrive,microsoft,nube,cloud" }
+    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Dropbox"; Id = "Dropbox.Dropbox"; Descripcion = "Almacenamiento y sincronizacion en la nube"; Keywords = "dropbox,cloud,nube,archivos" }
+    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "SugarSync"; Id = "IPVanish.SugarSync"; Descripcion = "Copia de seguridad y sincronizacion en la nube"; Keywords = "sugarsync,backup,cloud,nube" }
 
     # --- UTILIDADES DEL SISTEMA ---
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "7-Zip"; Id = "7zip.7zip"; Descripcion = "Compresor y extractor de archivos" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "WinRAR"; Id = "RARLab.WinRAR"; Descripcion = "Gestion de archivos RAR y ZIP" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Transmission"; Id = "Transmission.Transmission"; Descripcion = "Cliente Torrent rapido y ligero" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "qBittorrent"; Id = "qBittorrent.qBittorrent"; Descripcion = "Cliente Torrent libre y sin publicidad" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "TeamViewer"; Id = "TeamViewer.TeamViewer"; Descripcion = "Control remoto y asistencia a distancia" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "AnyDesk"; Id = "AnyDeskSoftwareGmbH.AnyDesk"; Descripcion = "Soporte y control remoto ultra fluido" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Glary Utilities"; Id = "Glarysoft.GlaryUtilities"; Descripcion = "Suite de limpieza y mantenimiento de sistema" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CCleaner"; Id = "Piriform.CCleaner"; Descripcion = "Optimizador y limpiador de espacio" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "AutoHotkey"; Id = "AutoHotkey.AutoHotkey"; Descripcion = "Automatizacion y atajos de teclado personalizados" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Microsoft PowerToys"; Id = "Microsoft.PowerToys"; Descripcion = "Herramientas avanzadas para Windows" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Everything"; Id = "voidtools.Everything"; Descripcion = "Buscador ultrarrapido de archivos" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "TreeSize Free"; Id = "JAMSoftware.TreeSize.Free"; Descripcion = "Analizador de espacio en disco" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CrystalDiskInfo"; Id = "CrystalDewWorld.CrystalDiskInfo"; Descripcion = "Salud SMART de discos SSD/HDD" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CPU-Z"; Id = "CPUID.CPU-Z"; Descripcion = "Datos de procesador y placa" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "GPU-Z"; Id = "TechPowerUp.GPU-Z"; Descripcion = "Datos tecnicos de tarjeta grafica" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Rufus"; Id = "Rufus.Rufus"; Descripcion = "Creacion de USBs de arranque" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "7-Zip"; Id = "7zip.7zip"; Descripcion = "Compresor y extractor de archivos"; Keywords = "7zip,zip,rar,compresor" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "WinRAR"; Id = "RARLab.WinRAR"; Descripcion = "Gestion de archivos RAR y ZIP"; Keywords = "winrar,rar,zip,compresor" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Transmission"; Id = "Transmission.Transmission"; Descripcion = "Cliente Torrent rapido y ligero"; Keywords = "transmission,torrent,p2p,descargas" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "qBittorrent"; Id = "qBittorrent.qBittorrent"; Descripcion = "Cliente Torrent libre y sin publicidad"; Keywords = "qbittorrent,torrent,p2p,descargas" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "TeamViewer"; Id = "TeamViewer.TeamViewer"; Descripcion = "Control remoto y asistencia a distancia"; Keywords = "teamviewer,remoto,soporte" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "AnyDesk"; Id = "AnyDeskSoftwareGmbH.AnyDesk"; Descripcion = "Soporte y control remoto ultra fluido"; Keywords = "anydesk,remoto,soporte" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Glary Utilities"; Id = "Glarysoft.GlaryUtilities"; Descripcion = "Suite de limpieza y mantenimiento de sistema"; Keywords = "glary,limpieza,mantenimiento,optimizacion" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CCleaner"; Id = "Piriform.CCleaner"; Descripcion = "Optimizador y limpiador de espacio"; Keywords = "ccleaner,limpieza,temporales" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "AutoHotkey"; Id = "AutoHotkey.AutoHotkey"; Descripcion = "Automatizacion y atajos de teclado personalizados"; Keywords = "autohotkey,ahk,macros,teclado" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Microsoft PowerToys"; Id = "Microsoft.PowerToys"; Descripcion = "Herramientas avanzadas para Windows"; Keywords = "powertoys,microsoft,utilidades" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Everything"; Id = "voidtools.Everything"; Descripcion = "Buscador ultrarrapido de archivos"; Keywords = "everything,search,buscar,archivos" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "TreeSize Free"; Id = "JAMSoftware.TreeSize.Free"; Descripcion = "Analizador de espacio en disco"; Keywords = "treesize,disco,espacio,almacenamiento" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CrystalDiskInfo"; Id = "CrystalDewWorld.CrystalDiskInfo"; Descripcion = "Salud SMART de discos SSD/HDD"; Keywords = "crystaldiskinfo,smart,disco,ssd,hdd" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CPU-Z"; Id = "CPUID.CPU-Z"; Descripcion = "Datos de procesador y placa"; Keywords = "cpuz,cpu,hardware,procesador" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "GPU-Z"; Id = "TechPowerUp.GPU-Z"; Descripcion = "Datos tecnicos de tarjeta grafica"; Keywords = "gpuz,gpu,grafica,nvidia,amd" }
+    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Rufus"; Id = "Rufus.Rufus"; Descripcion = "Creacion de USBs de arranque"; Keywords = "rufus,usb,boot,iso" }
 
     # --- OFIMATICA Y NOTAS ---
-    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Adobe Acrobat Reader"; Id = "Adobe.Acrobat.Reader.64-bit"; Descripcion = "Visor de documentos PDF" }
-    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "LibreOffice"; Id = "TheDocumentFoundation.LibreOffice"; Descripcion = "Suite ofimatica de codigo abierto" }
-    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Obsidian"; Id = "Obsidian.Obsidian"; Descripcion = "Base de conocimiento y notas en Markdown" }
-    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Notion"; Id = "Notion.Notion"; Descripcion = "Organizador de proyectos y notas" }
+    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Adobe Acrobat Reader"; Id = "Adobe.Acrobat.Reader.64-bit"; Descripcion = "Visor de documentos PDF"; Keywords = "adobe,acrobat,reader,pdf" }
+    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "LibreOffice"; Id = "TheDocumentFoundation.LibreOffice"; Descripcion = "Suite ofimatica de codigo abierto"; Keywords = "libreoffice,office,word,excel,docs" }
+    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Obsidian"; Id = "Obsidian.Obsidian"; Descripcion = "Base de conocimiento y notas en Markdown"; Keywords = "obsidian,notes,markdown,notas" }
+    [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Notion"; Id = "Notion.Notion"; Descripcion = "Organizador de proyectos y notas"; Keywords = "notion,notas,proyectos,docs" }
 
     # --- DESARROLLO Y PROGRAMACION ---
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode"; Descripcion = "Editor de codigo profesional" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Cursor"; Id = "Anysphere.Cursor"; Descripcion = "Editor de codigo impulsado por IA" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Claude"; Id = "Anthropic.Claude"; Descripcion = "Cliente oficial de escritorio para Claude" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Antigravity"; Id = "Google.Antigravity"; Descripcion = "Plataforma y entorno de desarrollo IA" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Codex CLI"; Id = "OpenAI.Codex"; Descripcion = "Herramienta de desarrollo de OpenAI" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Git"; Id = "Git.Git"; Descripcion = "Control de versiones Git" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Python 3"; Id = "Python.Python.3.12"; Descripcion = "Lenguaje de programacion Python" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Android Studio"; Id = "Google.AndroidStudio"; Descripcion = "IDE oficial para desarrollo Android" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Eclipse IDE"; Id = "EclipseFoundation.Eclipse.Java"; Descripcion = "IDE para desarrollo Java y proyectos empresariales" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Docker Desktop"; Id = "Docker.DockerDesktop"; Descripcion = "Plataforma de contenedores Docker" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "WinSCP / FTP"; Id = "WinSCP.WinSCP"; Descripcion = "Cliente FTP, SFTP y SCP para transferir archivos" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "GitHub Desktop"; Id = "GitHub.GitHubDesktop"; Descripcion = "Cliente visual de GitHub" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Notepad++"; Id = "Notepad++.Notepad++"; Descripcion = "Editor de texto avanzado con sintaxis" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Node.js (LTS)"; Id = "OpenJS.NodeJS.LTS"; Descripcion = "Entorno de ejecucion JavaScript" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Postman"; Id = "Postman.Postman"; Descripcion = "Prueba y diseno de APIs" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Windows Terminal"; Id = "Microsoft.WindowsTerminal"; Descripcion = "Terminal moderna para Windows" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "DBeaver Community"; Id = "dbeaver.dbeaver"; Descripcion = "Gestor universal de bases de datos" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode"; Descripcion = "Editor de codigo profesional"; Keywords = "vscode,visual studio code,editor,codigo" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Cursor"; Id = "Anysphere.Cursor"; Descripcion = "Editor de codigo impulsado por IA"; Keywords = "cursor,ai,codigo,editor" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Claude"; Id = "Anthropic.Claude"; Descripcion = "Cliente oficial de escritorio para Claude"; Keywords = "claude,anthropic,ai,ia" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Antigravity"; Id = "Google.Antigravity"; Descripcion = "Plataforma y entorno de desarrollo IA"; Keywords = "antigravity,google,ai,ia" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Codex CLI"; Id = "OpenAI.Codex"; Descripcion = "Herramienta de desarrollo de OpenAI"; Keywords = "codex,openai,chatgpt,cli" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Git"; Id = "Git.Git"; Descripcion = "Control de versiones Git"; Keywords = "git,vcs,github,version" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Python 3"; Id = "Python.Python.3.12"; Descripcion = "Lenguaje de programacion Python"; Keywords = "python,py,desarrollo,lenguaje" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Android Studio"; Id = "Google.AndroidStudio"; Descripcion = "IDE oficial para desarrollo Android"; Keywords = "android,studio,google,ide,apps" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Eclipse IDE"; Id = "EclipseFoundation.Eclipse.Java"; Descripcion = "IDE para desarrollo Java y proyectos empresariales"; Keywords = "eclipse,java,ide,enterprise" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Docker Desktop"; Id = "Docker.DockerDesktop"; Descripcion = "Plataforma de contenedores Docker"; Keywords = "docker,containers,contenedores" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "WinSCP / FTP"; Id = "WinSCP.WinSCP"; Descripcion = "Cliente FTP, SFTP y SCP para transferir archivos"; Keywords = "winscp,ftp,sftp,scp,archivos" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "GitHub Desktop"; Id = "GitHub.GitHubDesktop"; Descripcion = "Cliente visual de GitHub"; Keywords = "github,git,desktop,repos" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Notepad++"; Id = "Notepad++.Notepad++"; Descripcion = "Editor de texto avanzado con sintaxis"; Keywords = "notepad,editor,texto,codigo" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Node.js (LTS)"; Id = "OpenJS.NodeJS.LTS"; Descripcion = "Entorno de ejecucion JavaScript"; Keywords = "node,nodejs,javascript,npm" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Postman"; Id = "Postman.Postman"; Descripcion = "Prueba y diseno de APIs"; Keywords = "postman,api,rest,http" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Windows Terminal"; Id = "Microsoft.WindowsTerminal"; Descripcion = "Terminal moderna para Windows"; Keywords = "terminal,windows terminal,console,powershell" }
+    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "DBeaver Community"; Id = "dbeaver.dbeaver"; Descripcion = "Gestor universal de bases de datos"; Keywords = "dbeaver,sql,database,db" }
 
     # --- GAMING ---
-    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "Steam"; Id = "Valve.Steam"; Descripcion = "Tienda de videojuegos Steam" }
-    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "Epic Games Launcher"; Id = "EpicGames.EpicGamesLauncher"; Descripcion = "Lanzador de Epic Games" }
-    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "GOG Galaxy"; Id = "GOG.Galaxy"; Descripcion = "Juegos sin DRM de GOG" }
-    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "EA App"; Id = "ElectronicArts.EADesktop"; Descripcion = "Lanzador oficial de EA" }
+    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "Steam"; Id = "Valve.Steam"; Descripcion = "Tienda de videojuegos Steam"; Keywords = "steam,valve,games,juegos" }
+    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "Epic Games Launcher"; Id = "EpicGames.EpicGamesLauncher"; Descripcion = "Lanzador de Epic Games"; Keywords = "epic,games,fortnite,juegos" }
+    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "GOG Galaxy"; Id = "GOG.Galaxy"; Descripcion = "Juegos sin DRM de GOG"; Keywords = "gog,galaxy,cdprojekt,juegos" }
+    [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "EA App"; Id = "ElectronicArts.EADesktop"; Descripcion = "Lanzador oficial de EA"; Keywords = "ea,origin,electronic arts,juegos" }
 
     # --- SEGURIDAD ---
-    [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "Bitwarden"; Id = "Bitwarden.Bitwarden"; Descripcion = "Gestor de contrasenas en la nube" }
-    [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "KeePassXC"; Id = "KeePassXCTeam.KeePassXC"; Descripcion = "Gestor de contrasenas local seguro" }
-    [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "Malwarebytes"; Id = "Malwarebytes.Malwarebytes"; Descripcion = "Proteccion contra malware y virus" }
+    [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "Bitwarden"; Id = "Bitwarden.Bitwarden"; Descripcion = "Gestor de contrasenas en la nube"; Keywords = "bitwarden,password,seguridad,contrasenas" }
+    [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "KeePassXC"; Id = "KeePassXCTeam.KeePassXC"; Descripcion = "Gestor de contrasenas local seguro"; Keywords = "keepass,keepassxc,password,seguridad" }
+    [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "Malwarebytes"; Id = "Malwarebytes.Malwarebytes"; Descripcion = "Proteccion contra malware y virus"; Keywords = "malwarebytes,antivirus,malware,seguridad" }
 )
 
-# 3. Diseno de la Ventana WPF
+# 3. Deteccion rapida de programas ya instalados en el sistema
+$InstalledProgramsRegistry = @()
+try {
+    $regPaths = @(
+        "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*",
+        "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*",
+        "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
+    )
+    $InstalledProgramsRegistry = Get-ItemProperty $regPaths -ErrorAction SilentlyContinue | 
+        Where-Object { $_.DisplayName } | 
+        ForEach-Object { $_.DisplayName.ToLower() }
+} catch { }
+
+function Test-IsInstalled ($appName, $appId) {
+    if (-not $InstalledProgramsRegistry) { return $false }
+    $cleanName = $appName.ToLower().Split(" ")[0] # Primera palabra clave
+    
+    foreach ($inst in $InstalledProgramsRegistry) {
+        if ($inst.Contains($appName.ToLower()) -or ($cleanName.Length -gt 3 -and $inst.Contains($cleanName))) {
+            return $true
+        }
+    }
+    return $false
+}
+
+# 4. Diseno de la Ventana WPF
 $xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Magic Installer - Batch App Installer" 
-        Height="780" Width="1040" 
+        Height="800" Width="1060" 
         WindowStartupLocation="CenterScreen" 
         Background="#F8FAFC" 
         FontFamily="Segoe UI">
@@ -129,7 +154,7 @@ $xaml = @"
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- Cabecera Seleccion -->
+            <!-- Cabecera Seleccion con Buscador -->
             <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -139,10 +164,18 @@ $xaml = @"
                     
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Magic Installer" FontSize="20" FontWeight="Bold" Foreground="White" />
-                        <TextBlock Text="Marca las aplicaciones que deseas instalar y pulsa 'Instalar Seleccionadas'." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,0" />
+                        <TextBlock Text="Selecciona las aplicaciones que deseas instalar de forma desatendida." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,0" />
                     </StackPanel>
                     
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Campo de Busqueda en tiempo real -->
+                        <Border Background="#1E293B" CornerRadius="6" Padding="8,4" Margin="0,0,12,0" BorderBrush="#334155" BorderThickness="1">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Buscar: " Foreground="#94A3B8" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="12" />
+                                <TextBox Name="TxtSearch" Width="170" Background="Transparent" Foreground="White" BorderThickness="0" FontSize="12" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+
                         <Button Name="BtnDeselectAll" Content="Deseleccionar Todo" Padding="12,7" Margin="0,0,8,0" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" Cursor="Hand" />
                         <Button Name="BtnSelectAll" Content="Seleccionar Todo" Padding="12,7" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" Cursor="Hand" />
                     </StackPanel>
@@ -151,7 +184,7 @@ $xaml = @"
 
             <!-- Contenedor de categorias con casillas -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="485" />
+                <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="495" />
             </ScrollViewer>
 
             <!-- Barra inferior -->
@@ -224,6 +257,7 @@ $viewSelection          = $window.FindName("ViewSelection")
 $viewProgress           = $window.FindName("ViewProgress")
 $categoriesContainer    = $window.FindName("CategoriesContainer")
 $txtCounter             = $window.FindName("TxtCounter")
+$txtSearch              = $window.FindName("TxtSearch")
 $btnSelectAll           = $window.FindName("BtnSelectAll")
 $btnDeselectAll         = $window.FindName("BtnDeselectAll")
 $btnInstalar            = $window.FindName("BtnInstalar")
@@ -237,6 +271,7 @@ $txtCurrentStatus       = $window.FindName("TxtCurrentStatus")
 $btnFinalizar           = $window.FindName("BtnFinalizar")
 
 $allCheckBoxes = [System.Collections.Generic.List[System.Windows.Controls.CheckBox]]::new()
+$allCards = [System.Collections.Generic.List[PSCustomObject]]::new()
 
 # Funcion para actualizar contador
 $UpdateCounter = {
@@ -275,6 +310,8 @@ foreach ($group in $groupedApps) {
     $sep.Background = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#F1F5F9")
     $stack.Children.Add($sep) | Out-Null
 
+    $cardCheckboxes = [System.Collections.Generic.List[System.Windows.Controls.CheckBox]]::new()
+
     foreach ($app in $group.Group) {
         $cb = [System.Windows.Controls.CheckBox]::new()
         $cb.Margin = [System.Windows.Thickness]::new(2, 3, 2, 3)
@@ -291,6 +328,19 @@ foreach ($group in $groupedApps) {
         $nameText.Margin = [System.Windows.Thickness]::new(4, 0, 6, 0)
         $cbPanel.Children.Add($nameText) | Out-Null
 
+        # Deteccion de si ya esta instalado
+        $isInstalled = Test-IsInstalled -appName $app.Nombre -appId $app.Id
+        if ($isInstalled) {
+            $badgeText = [System.Windows.Controls.TextBlock]::new()
+            $badgeText.Text = "[Instalado]"
+            $badgeText.FontSize = 10
+            $badgeText.FontWeight = [System.Windows.FontWeights]::Bold
+            $badgeText.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#059669")
+            $badgeText.Margin = [System.Windows.Thickness]::new(0, 0, 6, 0)
+            $badgeText.VerticalAlignment = [System.Windows.VerticalAlignment]::Center
+            $cbPanel.Children.Add($badgeText) | Out-Null
+        }
+
         $descText = [System.Windows.Controls.TextBlock]::new()
         $descText.Text = "($($app.Descripcion))"
         $descText.FontSize = 11
@@ -304,15 +354,56 @@ foreach ($group in $groupedApps) {
         $cb.Add_Unchecked({ & $UpdateCounter })
 
         $allCheckBoxes.Add($cb)
+        $cardCheckboxes.Add($cb)
         $stack.Children.Add($cb) | Out-Null
     }
 
     $card.Child = $stack
     $categoriesContainer.Children.Add($card) | Out-Null
+
+    $allCards.Add([PSCustomObject]@{
+        Card       = $card
+        Checkboxes = $cardCheckboxes
+        Categoria  = $group.Name
+    })
 }
 
+# Filtro de busqueda en tiempo real
+$txtSearch.Add_TextChanged({
+    $query = $txtSearch.Text.Trim().ToLower()
+
+    foreach ($cardObj in $allCards) {
+        $visibleCount = 0
+        foreach ($cb in $cardObj.Checkboxes) {
+            $app = $cb.Tag
+            $match = ($query -eq "") -or `
+                     ($app.Nombre.ToLower().Contains($query)) -or `
+                     ($app.Descripcion.ToLower().Contains($query)) -or `
+                     ($app.Keywords.ToLower().Contains($query)) -or `
+                     ($cardObj.Categoria.ToLower().Contains($query))
+
+            if ($match) {
+                $cb.Visibility = [System.Windows.Visibility]::Visible
+                $visibleCount++
+            } else {
+                $cb.Visibility = [System.Windows.Visibility]::Collapsed
+            }
+        }
+
+        if ($visibleCount -gt 0) {
+            $cardObj.Card.Visibility = [System.Windows.Visibility]::Visible
+        } else {
+            $cardObj.Card.Visibility = [System.Windows.Visibility]::Collapsed
+        }
+    }
+})
+
 $btnSelectAll.Add_Click({
-    foreach ($cb in $allCheckBoxes) { $cb.IsChecked = $true }
+    foreach ($cb in $allCheckBoxes) { 
+        if ($cb.Visibility -eq [System.Windows.Visibility]::Visible) {
+            $cb.IsChecked = $true 
+        }
+    }
     & $UpdateCounter
 })
 

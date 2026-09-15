@@ -3,6 +3,10 @@ Actualización automática.*
 Actualizar_Sistema.*
 auto_update.bat
 
+# Binarios generados localmente (se publican via GitHub Actions Releases)
+*.exe
+*.zip
+
 # Logs y temporales de Windows
 *.log
 Logs_Mantenimiento/
