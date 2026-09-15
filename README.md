@@ -36,14 +36,17 @@ Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descar
 * **Facilmente Extensible:** Catalogo estructurado y modular de aplicaciones.
 
 ### Catalogo de Aplicaciones Incluidas
-* **Navegadores:** Google Chrome, Mozilla Firefox, Brave, Opera GX, Microsoft Edge, Vivaldi, Tor Browser.
-* **Mensajeria y Comunicacion:** Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Teams, Slack.
-* **Multimedia y Diseno:** Figma, VLC, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack.
-* **Almacenamiento en la Nube:** Google Drive, OneDrive, Dropbox, SugarSync.
-* **Utilidades del Sistema:** 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus.
-* **Desarrollo y Programacion:** Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver.
-* **Gaming:** Steam, Epic Games, GOG Galaxy, EA App.
-* **Seguridad:** Bitwarden, KeePassXC, Malwarebytes.
+
+| Categoria | Aplicaciones Incluidas |
+| :--- | :--- |
+| **Navegadores** | Google Chrome, Mozilla Firefox, Brave Browser, Opera GX, Microsoft Edge, Vivaldi, Tor Browser |
+| **Mensajeria y Comunicacion** | Mozilla Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Microsoft Teams, Slack |
+| **Multimedia y Diseno** | Figma, VLC Media Player, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack |
+| **Almacenamiento en la Nube** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
+| **Utilidades del Sistema** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
+| **Desarrollo y Programacion** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
+| **Gaming y Tiendas** | Steam, Epic Games Launcher, GOG Galaxy, EA App |
+| **Seguridad y Contrasenas** | Bitwarden, KeePassXC, Malwarebytes |
 
 ### Requisitos y Uso Rapido
 1. **Requisitos:** Windows 10 (version 1809 o superior) o Windows 11 con **App Installer / Winget** habilitado (incluido por defecto en Windows).
@@ -74,14 +77,17 @@ Zero toolbars, zero bloatware, and **always fetching the latest official release
 * **Easily Extensible:** Structured and modular application catalog.
 
 ### Included Software Catalog
-* **Web Browsers:** Google Chrome, Mozilla Firefox, Brave, Opera GX, Microsoft Edge, Vivaldi, Tor Browser.
-* **Messaging & Collaboration:** Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Teams, Slack.
-* **Media & Design:** Figma, VLC, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack.
-* **Cloud Storage:** Google Drive, OneDrive, Dropbox, SugarSync.
-* **System Utilities:** 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus.
-* **Development & IDEs:** Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver.
-* **Gaming Launchers:** Steam, Epic Games, GOG Galaxy, EA App.
-* **Security & Passwords:** Bitwarden, KeePassXC, Malwarebytes.
+
+| Category | Included Applications |
+| :--- | :--- |
+| **Web Browsers** | Google Chrome, Mozilla Firefox, Brave Browser, Opera GX, Microsoft Edge, Vivaldi, Tor Browser |
+| **Messaging & Collaboration** | Mozilla Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Microsoft Teams, Slack |
+| **Media & Design** | Figma, VLC Media Player, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack |
+| **Cloud Storage** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
+| **System Utilities** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
+| **Development & IDEs** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
+| **Gaming Launchers** | Steam, Epic Games Launcher, GOG Galaxy, EA App |
+| **Security & Passwords** | Bitwarden, KeePassXC, Malwarebytes |
 
 ### Requirements & Quick Start
 1. **Requirements:** Windows 10 (1809+) or Windows 11 with **App Installer / Winget** (pre-installed by default).
