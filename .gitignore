@@ -1,0 +1,12 @@
+# Ignorar scripts de mantenimiento del sistema previos
+Actualización automática.*
+Actualizar_Sistema.*
+auto_update.bat
+
+# Logs y temporales de Windows
+*.log
+Logs_Mantenimiento/
+
+# Archivos de entorno y temporales
+.DS_Store
+Thumbs.db
