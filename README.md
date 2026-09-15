@@ -33,7 +33,7 @@ Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descar
 * **Instalacion Desatendida:** Automatiza la aceptacion de licencias y acuerdos mediante `winget`.
 * **Siempre Actualizado:** Sincroniza fuentes antes de cada ejecucion para garantizar la ultima version estable.
 * **Monitoreo en Tiempo Real:** Vista de progreso con barra animada y estados en vivo (*En espera*, *Instalando*, *Completado*).
-* **Facilmente Extensible:** Anade tus propias aplicaciones favoritas editando una simple linea en el catalogo.
+* **Facilmente Extensible:** Catalogo estructurado y modular de aplicaciones.
 
 ### Catalogo de Aplicaciones Incluidas
 * **Navegadores:** Google Chrome, Mozilla Firefox, Brave, Opera GX, Microsoft Edge, Vivaldi, Tor Browser.
@@ -56,13 +56,6 @@ Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descar
    * Marca las casillas de los programas deseados.
    * Haz clic en **"Instalar Seleccionadas"** y observa el progreso en vivo.
 
-### Como Anadir Mas Programas
-Abre [`Magic_Installer.ps1`](Magic_Installer.ps1) y anade una nueva linea al array `$Apps`:
-```powershell
-[PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Tu Programa"; Id = "Empresa.TuPrograma"; Descripcion = "Breve descripcion" }
-```
-*(Puedes buscar el ID oficial de cualquier programa en tu consola ejecutando `winget search NombrePrograma`).*
-
 ---
 
 ## English
@@ -78,7 +71,7 @@ Zero toolbars, zero bloatware, and **always fetching the latest official release
 * **Unattended Batch Installs:** Auto-accepts package agreements and licenses via `winget`.
 * **Always Up-to-Date:** Synchronizes repository sources before every run to guarantee the newest available version.
 * **Live Progress Tracking:** Integrated progress view with an animated progress bar and real-time status badges (*Queued*, *Installing*, *Completed*).
-* **Easily Extensible:** Add any custom app in seconds by inserting a single entry into the catalog array.
+* **Easily Extensible:** Structured and modular application catalog.
 
 ### Included Software Catalog
 * **Web Browsers:** Google Chrome, Mozilla Firefox, Brave, Opera GX, Microsoft Edge, Vivaldi, Tor Browser.
@@ -100,13 +93,6 @@ Zero toolbars, zero bloatware, and **always fetching the latest official release
    * Double-click [`Magic_Installer.bat`](Magic_Installer.bat).
    * Check the boxes for the applications you want.
    * Click **"Instalar Seleccionadas"** and enjoy the automated installation.
-
-### How to Add Custom Applications
-Edit [`Magic_Installer.ps1`](Magic_Installer.ps1) and insert a new object in the `$Apps` list:
-```powershell
-[PSCustomObject]@{ Categoria = "Browsers"; Nombre = "Your App"; Id = "Vendor.YourApp"; Descripcion = "Short description" }
-```
-*(Find any application's Winget ID by running `winget search AppName` in your terminal).*
 
 ---
 
