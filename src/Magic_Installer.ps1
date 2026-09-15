@@ -124,7 +124,7 @@ try {
 
 function Test-IsInstalled ($appName, $appId) {
     if (-not $InstalledProgramsRegistry) { return $false }
-    $cleanName = $appName.ToLower().Split(" ")[0] # Primera palabra clave
+    $cleanName = $appName.ToLower().Split(" ")[0]
     
     foreach ($inst in $InstalledProgramsRegistry) {
         if ($inst.Contains($appName.ToLower()) -or ($cleanName.Length -gt 3 -and $inst.Contains($cleanName))) {

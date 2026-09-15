@@ -20,7 +20,7 @@ jobs:
       - name: Build Executable
         shell: powershell
         run: |
-          .\build.ps1
+          .\build\build.ps1
 
       - name: Package Release ZIP
         shell: powershell
@@ -28,7 +28,7 @@ jobs:
           $version = "${{ github.ref_name }}"
           if (-not $version -or $version -eq "") { $version = "v1.0.0" }
           $zipName = "Magic_Installer_$version.zip"
-          Compress-Archive -Path "Magic_Installer.exe", "Magic_Installer.ps1", "Magic_Installer.bat", "README.md", "LICENSE" -DestinationPath $zipName
+          Compress-Archive -Path "Magic_Installer.exe", "Magic_Installer.bat", "src", "README.md", "LICENSE" -DestinationPath $zipName
           Write-Host "Package created: $zipName"
 
       - name: Create GitHub Release

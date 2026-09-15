@@ -31,10 +31,32 @@ Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descar
 * **Interfaz Grafica Nativa (WPF / XAML):** Ventana visual moderna con casillas de verificacion (`CheckBoxes`) organizadas por categorias.
 * **Buscador en Tiempo Real:** Filtra instantaneamente cualquier aplicacion o categoria escribiendo en la barra superior.
 * **Deteccion Inteligente de Programas Instalados:** Escanea el sistema y resalta con una etiqueta `[Instalado]` los programas ya presentes en tu equipo.
-* **Ejecucion Standalone y Silenciosa:** Se puede ejecutar mediante el lanzador `.bat` o compilar a un unico ejecutable nativo `.exe` sin ventanas de consola visibles (`-WindowStyle Hidden`).
+* **Ejecucion Standalone y Silenciosa:** Se puede ejecutar mediante el lanzador [`Magic_Installer.bat`](Magic_Installer.bat) o mediante el ejecutable compilado `Magic_Installer.exe` sin ventanas de consola visibles (`-WindowStyle Hidden`).
 * **Instalacion Desatendida:** Automatiza la aceptacion de licencias y acuerdos mediante `winget`.
 * **Siempre Actualizado:** Sincroniza fuentes antes de cada ejecucion para garantizar la ultima version estable.
 * **Monitoreo en Tiempo Real:** Vista de progreso con barra animada y estados en vivo (*En espera*, *Instalando*, *Completado*).
+
+### Estructura del Proyecto
+```text
+magic_installer/
+│
+├── Magic_Installer.bat       <-- Lanzador principal para el usuario (1 clic)
+│
+├── src/                      <-- Codigo fuente
+│   └── Magic_Installer.ps1
+│
+├── build/                    <-- Scripts de compilacion a ejecutable (.exe)
+│   ├── build.ps1
+│   └── build.bat
+│
+├── .github/                  <-- CI/CD Workflows para Releases
+│   └── workflows/
+│       └── release.yml
+│
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
 ### Catalogo de Aplicaciones Incluidas
 
@@ -61,11 +83,11 @@ Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descar
    * Haz clic en **"Instalar Seleccionadas"** y observa el progreso en vivo.
 
 ### Compilacion a Ejecutable (.exe)
-Puedes generar un ejecutable independiente de 1 solo archivo ejecutando:
+Para compilar un ejecutable independiente `Magic_Installer.exe` en la raiz del proyecto:
 ```bash
-.\build.bat
+.\build\build.bat
 ```
-Esto utilizara el compilador C# nativo de Windows (`csc.exe`) para empaquetar la aplicacion con manifiesto de administrador integrado.
+Esto utilizara el compilador C# nativo de Windows (`csc.exe`) con manifiesto de administrador integrado.
 
 ---
 
@@ -80,10 +102,32 @@ Zero toolbars, zero bloatware, and **always fetching the latest official release
 * **Modern Native UI (WPF / XAML):** Clean desktop interface featuring direct checkboxes grouped into clear categories.
 * **Real-Time Search & Filter:** Instantly filter any application or category as you type in the search bar.
 * **Smart Installed Detection:** Automatically scans Windows and highlights previously installed programs with an `[Instalado]` badge.
-* **Standalone & Hidden Execution:** Run directly through the `.bat` launcher or build into a single `.exe` executable without visible console windows (`-WindowStyle Hidden`).
+* **Standalone & Hidden Execution:** Run directly through [`Magic_Installer.bat`](Magic_Installer.bat) or compile into a standalone `Magic_Installer.exe` executable without visible console windows (`-WindowStyle Hidden`).
 * **Unattended Batch Installs:** Auto-accepts package agreements and licenses via `winget`.
 * **Always Up-to-Date:** Synchronizes repository sources before every run to guarantee the newest available version.
 * **Live Progress Tracking:** Integrated progress view with an animated progress bar and real-time status badges (*Queued*, *Installing*, *Completed*).
+
+### Repository Structure
+```text
+magic_installer/
+│
+├── Magic_Installer.bat       <-- Main launcher for end users (1 click)
+│
+├── src/                      <-- Source code
+│   └── Magic_Installer.ps1
+│
+├── build/                    <-- Build scripts to generate standalone .exe
+│   ├── build.ps1
+│   └── build.bat
+│
+├── .github/                  <-- GitHub Actions CI/CD workflows
+│   └── workflows/
+│       └── release.yml
+│
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
 ### Included Software Catalog
 
@@ -110,9 +154,9 @@ Zero toolbars, zero bloatware, and **always fetching the latest official release
    * Click **"Instalar Seleccionadas"** and enjoy the automated installation.
 
 ### Building Standalone Executable (.exe)
-You can compile a single standalone `.exe` file at any time by running:
+To compile a standalone `Magic_Installer.exe` file in the root directory:
 ```bash
-.\build.bat
+.\build\build.bat
 ```
 This uses Windows' native C# compiler (`csc.exe`) with an embedded UAC administrator manifest.
 

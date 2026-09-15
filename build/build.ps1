@@ -4,12 +4,13 @@
 
 $ErrorActionPreference = "Stop"
 
-$scriptDir = $PSScriptRoot
-if (-not $scriptDir) { $scriptDir = (Get-Location).Path }
+$buildDir = $PSScriptRoot
+if (-not $buildDir) { $buildDir = (Get-Location).Path }
+$rootDir = (Get-Item $buildDir).Parent.FullName
 
-$ps1Path = Join-Path $scriptDir "Magic_Installer.ps1"
-$exePath = Join-Path $scriptDir "Magic_Installer.exe"
-$manifestPath = Join-Path $scriptDir "app.manifest"
+$ps1Path = Join-Path $rootDir "src\Magic_Installer.ps1"
+$exePath = Join-Path $rootDir "Magic_Installer.exe"
+$manifestPath = Join-Path $buildDir "app.manifest"
 
 Write-Host "Iniciando compilacion de Magic Installer..." -ForegroundColor Cyan
 
@@ -117,11 +118,11 @@ namespace MagicInstaller
 }
 "@
 
-$tempCsPath = Join-Path $scriptDir "launcher_temp.cs"
+$tempCsPath = Join-Path $buildDir "launcher_temp.cs"
 Set-Content -Path $tempCsPath -Value $csSource -Encoding UTF8
 
 # 6. Compilar a .exe con csc.exe
-Write-Host "Compilando ejecutable standalone Magic_Installer.exe..." -ForegroundColor Yellow
+Write-Host "Compilando ejecutable standalone Magic_Installer.exe en la raiz..." -ForegroundColor Yellow
 $cscArgs = @(
     "/target:winexe",
     "/optimize+",
