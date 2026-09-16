@@ -58,7 +58,7 @@ $Apps = @(
     [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "Malwarebytes"; Id = "Malwarebytes.Malwarebytes"; Descripcion = "Proteccion contra malware y virus"; Keywords = "malwarebytes,antivirus" }
 )
 
-function Save-WpfElementAsPng ($rootElement, $outputPath, $width = 1060, $height = 760) {
+function Save-WpfElementAsPng ($rootElement, $outputPath, $width = 1060, $height = 800) {
     $rootElement.Width = $width
     $rootElement.Height = $height
 
@@ -90,11 +90,12 @@ function Save-WpfElementAsPng ($rootElement, $outputPath, $width = 1060, $height
 $xamlSelection = @"
 <UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="760">
+             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="800">
     <Grid Margin="18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Cabecera Global con Selector de Modo -->
@@ -192,6 +193,38 @@ $xamlSelection = @"
                 </Grid>
             </Border>
         </Grid>
+
+        <!-- Barra de Informacion de Sistema (Pie) -->
+        <Border Grid.Row="2" Background="#0F172A" CornerRadius="8" Padding="14,9" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="1.3*" />
+                    <ColumnDefinition Width="1.0*" />
+                    <ColumnDefinition Width="1.1*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="SO: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="Windows 11 Pro" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="CPU: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="Intel Core i7-13620H" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="RAM: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="17.0 GB / 31.7 GB" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="Disco C: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="129.5 GB libres de 942.9 GB" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
 "@
@@ -277,11 +310,12 @@ Write-Host "[OK] Captura 1 generada correctamente: $imgSelectionPath" -Foregroun
 $xamlUninstall = @"
 <UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="760">
+             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="800">
     <Grid Margin="18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Cabecera Global con Selector de Modo (Desinstalador Activo) -->
@@ -361,6 +395,38 @@ $xamlUninstall = @"
                 </Grid>
             </Border>
         </Grid>
+
+        <!-- Barra de Informacion de Sistema (Pie) -->
+        <Border Grid.Row="2" Background="#0F172A" CornerRadius="8" Padding="14,9" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="1.3*" />
+                    <ColumnDefinition Width="1.0*" />
+                    <ColumnDefinition Width="1.1*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="SO: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="Windows 11 Pro" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="CPU: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="Intel Core i7-13620H" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="RAM: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="17.0 GB / 31.7 GB" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="Disco C: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Text="129.5 GB libres de 942.9 GB" Foreground="#94A3B8" FontSize="11" />
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
 "@
@@ -408,12 +474,14 @@ foreach ($inst in $installedMock) {
     $subInfoPanel.Orientation = [System.Windows.Controls.Orientation]::Horizontal
     $subInfoPanel.Margin = [System.Windows.Thickness]::new(0, 2, 0, 0)
 
-    $verBadge = [System.Windows.Controls.TextBlock]::new()
-    $verBadge.Text = "v$($inst.Version)  "
-    $verBadge.FontSize = 11
-    $verBadge.FontWeight = [System.Windows.FontWeights]::Medium
-    $verBadge.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#059669")
-    $subInfoPanel.Children.Add($verBadge) | Out-Null
+    if ($inst.Version) {
+        $verBadge = [System.Windows.Controls.TextBlock]::new()
+        $verBadge.Text = "v$($inst.Version)  "
+        $verBadge.FontSize = 11
+        $verBadge.FontWeight = [System.Windows.FontWeights]::Medium
+        $verBadge.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#059669")
+        $subInfoPanel.Children.Add($verBadge) | Out-Null
+    }
 
     $idText = [System.Windows.Controls.TextBlock]::new()
     $idText.Text = "ID: $($inst.Id)"
@@ -438,7 +506,7 @@ Write-Host "[OK] Captura 2 generada correctamente: $imgUninstallPath" -Foregroun
 $xamlProgress = @"
 <UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="760">
+             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="800">
     <Grid Margin="18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

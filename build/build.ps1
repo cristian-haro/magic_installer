@@ -121,7 +121,16 @@ namespace MagicInstaller
 $tempCsPath = Join-Path $buildDir "launcher_temp.cs"
 Set-Content -Path $tempCsPath -Value $csSource -Encoding UTF8
 
-# 6. Compilar a .exe con csc.exe
+# 6. Comprobar o generar icono .ico
+$iconPath = Join-Path $rootDir "assets\icon.ico"
+if (-not (Test-Path $iconPath)) {
+    $genIconScript = Join-Path $buildDir "generate_icon.ps1"
+    if (Test-Path $genIconScript) {
+        & $genIconScript | Out-Null
+    }
+}
+
+# 7. Compilar a .exe con csc.exe
 Write-Host "Compilando ejecutable standalone Magic_Installer.exe en la raiz..." -ForegroundColor Yellow
 $cscArgs = @(
     "/target:winexe",
@@ -130,9 +139,14 @@ $cscArgs = @(
     "/win32manifest:`"$manifestPath`"",
     "/out:`"$exePath`"",
     "/reference:System.Windows.Forms.dll",
-    "/reference:System.dll",
-    "`"$tempCsPath`""
+    "/reference:System.dll"
 )
+
+if (Test-Path $iconPath) {
+    $cscArgs += "/win32icon:`"$iconPath`""
+}
+
+$cscArgs += "`"$tempCsPath`""
 
 $process = Start-Process -FilePath $cscPath -ArgumentList $cscArgs -NoNewWindow -PassThru -Wait
 

@@ -60,6 +60,8 @@ Muestra una barra de progreso animada y el estado individual de instalacion, act
 * **Doble Modo (Instalador & Desinstalador):** Cambia con un clic entre instalar paquetes nuevos y desinstalar aplicaciones existentes en lote.
 * **Desinstalador por Lotes (Bulk Uninstaller):** Escanea el software instalado en el sistema, filtra dependencias internas y desinstala programas de forma silenciosa con confirmacion de seguridad.
 * **Comprobacion Automatica de Actualizaciones:** Al iniciar, escanea de forma asincrona en segundo plano si hay programas instalados en el sistema desactualizados y muestra un banner verde superior para actualizar todo con un solo clic y monitoreo detallado.
+* **Barra de Informacion de Hardware en el Pie:** Monitoriza en tiempo real el Sistema Operativo, procesador (CPU), memoria RAM usada/total y espacio libre en la unidad `C:`.
+* **Icono Personalizado y Ejecutable Standalone:** Compilado a `Magic_Installer.exe` con icono multi-resolucion (`assets/icon.ico`) integrado nativamente en recursos Win32 y ventana WPF.
 * **Interfaz Grafica Nativa (WPF / XAML):** Ventana visual moderna con casillas de verificacion (`CheckBoxes`) organizadas por categorias.
 * **Buscador en Tiempo Real:** Filtra instantaneamente cualquier aplicacion o categoria escribiendo en la barra superior.
 * **Deteccion Inteligente de Programas Instalados:** Escanea el sistema y resalta con una etiqueta `[Instalado]` los programas ya presentes en tu equipo.
@@ -163,6 +165,8 @@ Follow real-time installation, upgrade, or uninstallation stages with an animate
 * **Dual Mode (Installer & Uninstaller):** Switch seamlessly between installing new tools and removing bloatware in bulk.
 * **Bulk Uninstaller:** Scans installed software, filters out system packages, and uninstalls selected apps silently with safety confirmation prompts.
 * **Automated System Update Detection:** Silently scans in the background on startup for outdated software installed across the system and presents an actionable green top banner to upgrade everything in one click with detailed live tracking.
+* **Live System & Hardware Footer Bar:** Displays Operating System, CPU model, RAM usage (used/total), and available disk space on `C:` in real time.
+* **Embedded Custom Win32 Icon:** Compiles into a standalone `Magic_Installer.exe` with a custom multi-resolution `.ico` (`assets/icon.ico`) embedded natively.
 * **Modern Native UI (WPF / XAML):** Clean desktop interface featuring direct checkboxes grouped into clear categories.
 * **Real-Time Search & Filter:** Instantly filter any application or category as you type in the search bar.
 * **Smart Installed Detection:** Automatically scans Windows and highlights previously installed programs with an `[Instalado]` badge.

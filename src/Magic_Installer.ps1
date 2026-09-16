@@ -139,7 +139,7 @@ $xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Magic Installer - Batch App Installer and Uninstaller" 
-        Height="820" Width="1060" 
+        Height="840" Width="1060" 
         WindowStartupLocation="CenterScreen" 
         Background="#F8FAFC" 
         FontFamily="Segoe UI">
@@ -148,6 +148,7 @@ $xaml = @"
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- BARRA SUPERIOR GLOBAL: TITULO Y SELECTOR DE MODO -->
@@ -354,6 +355,43 @@ $xaml = @"
             </Grid>
 
         </Grid>
+
+        <!-- BARRA DE INFORMACION DE HARDWARE Y SISTEMA (PIE DE VENTANA) -->
+        <Border Grid.Row="2" Background="#0F172A" CornerRadius="8" Padding="14,9" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="1.3*" />
+                    <ColumnDefinition Width="1.0*" />
+                    <ColumnDefinition Width="1.1*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Sistema Operativo -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="SO: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Name="TxtSysOS" Text="Cargando..." Foreground="#94A3B8" FontSize="11" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <!-- Procesador -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="CPU: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Name="TxtSysCPU" Text="Cargando..." Foreground="#94A3B8" FontSize="11" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <!-- Memoria RAM -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="RAM: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Name="TxtSysRAM" Text="Cargando..." Foreground="#94A3B8" FontSize="11" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <!-- Almacenamiento Disco C -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                    <TextBlock Text="Disco C: " FontWeight="Bold" Foreground="#38BDF8" FontSize="11" />
+                    <TextBlock Name="TxtSysDisk" Text="Cargando..." Foreground="#94A3B8" FontSize="11" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
     </Grid>
 </Window>
 "@
@@ -361,6 +399,21 @@ $xaml = @"
 # Cargar la ventana
 $reader = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xaml))
 $window = [System.Windows.Markup.XamlReader]::Load($reader)
+
+# Establecer Icono de la Ventana si existe assets/icon.ico
+$iconCandidates = @(
+    (Join-Path $PSScriptRoot "..\assets\icon.ico"),
+    (Join-Path (Get-Location).Path "assets\icon.ico"),
+    (Join-Path $env:TEMP "MagicInstaller\assets\icon.ico")
+)
+foreach ($cand in $iconCandidates) {
+    if (Test-Path $cand) {
+        try {
+            $window.Icon = [System.Windows.Media.Imaging.BitmapFrame]::Create([System.Uri]::new((Get-Item $cand).FullName))
+            break
+        } catch { }
+    }
+}
 
 # Obtener referencias a los controles de navegacion y pestañas
 $btnTabInstall          = $window.FindName("BtnTabInstall")
@@ -405,6 +458,12 @@ $mainProgressBar        = $window.FindName("MainProgressBar")
 $progressItemsContainer = $window.FindName("ProgressItemsContainer")
 $txtCurrentStatus       = $window.FindName("TxtCurrentStatus")
 $btnFinalizar           = $window.FindName("BtnFinalizar")
+
+# Controles de Informacion de Sistema
+$txtSysOS               = $window.FindName("TxtSysOS")
+$txtSysCPU              = $window.FindName("TxtSysCPU")
+$txtSysRAM              = $window.FindName("TxtSysRAM")
+$txtSysDisk             = $window.FindName("TxtSysDisk")
 
 # Colecciones globales en memoria
 $allCheckBoxesInstall   = [System.Collections.Generic.List[System.Windows.Controls.CheckBox]]::new()
@@ -613,7 +672,6 @@ function Load-InstalledAppsAsync {
                         $id = $tokens[0]
                         $version = if ($tokens.Count -ge 2) { $tokens[1] } else { '' }
                         
-                        # Filtrar paquetes internos de Windows y dependencias del sistema
                         if ($name -and $id -notmatch '^MSIX\\Microsoft\.VCLibs' -and $id -notmatch '^MSIX\\Microsoft\.UI\.Xaml' -and $id -notmatch '^Microsoft\.WindowsAppRuntime' -and $id -notmatch '^MSIX\\Microsoft\.Winget') {
                             $list += [PSCustomObject]@{
                                 Nombre  = $name
@@ -1182,9 +1240,10 @@ $btnDesinstalar.Add_Click({
 })
 
 # ==============================================================================
-# COMPROBACION ASINCRONA DE ACTUALIZACIONES AL INICIAR LA VENTANA
+# COMPROBACIONES ASINCRONAS AL INICIAR LA VENTANA (Actualizaciones y Hardware)
 # ==============================================================================
 $window.Add_ContentRendered({
+    # 1. Comprobacion de Actualizaciones
     $Script:UpdateJob = Start-Job -ScriptBlock {
         try {
             $raw = winget.exe upgrade --accept-source-agreements 2>$null
@@ -1222,13 +1281,43 @@ $window.Add_ContentRendered({
         }
     }
 
+    # 2. Comprobacion de Hardware y Sistema
+    $Script:SysInfoJob = Start-Job -ScriptBlock {
+        try {
+            $os = Get-CimInstance Win32_OperatingSystem -ErrorAction SilentlyContinue
+            $cpu = Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | Select-Object -First 1
+            $cs = Get-CimInstance Win32_ComputerSystem -ErrorAction SilentlyContinue
+            $drive = Get-PSDrive C -ErrorAction SilentlyContinue
+
+            $osName = if ($os) { $os.Caption -replace 'Microsoft ', '' } else { 'Windows' }
+            $cpuName = if ($cpu) { ($cpu.Name -replace '\(R\)|\(TM\)|\s+Processor', '').Trim() } else { 'CPU' }
+
+            $totalRam = if ($cs) { [Math]::Round($cs.TotalPhysicalMemory / 1GB, 1) } else { 0 }
+            $freeRam = if ($os) { [Math]::Round($os.FreePhysicalMemory / 1024 / 1024, 1) } else { 0 }
+            $usedRam = [Math]::Round($totalRam - $freeRam, 1)
+
+            $freeDisk = if ($drive) { [Math]::Round($drive.Free / 1GB, 1) } else { 0 }
+            $totalDisk = if ($drive) { [Math]::Round(($drive.Used + $drive.Free) / 1GB, 1) } else { 0 }
+
+            return [PSCustomObject]@{
+                OS   = $osName
+                CPU  = $cpuName
+                RAM  = "$usedRam GB / $totalRam GB"
+                Disk = "$freeDisk GB libres de $totalDisk GB"
+            }
+        } catch {
+            return $null
+        }
+    }
+
     $Script:Timer = [System.Windows.Threading.DispatcherTimer]::new()
     $Script:Timer.Interval = [TimeSpan]::FromMilliseconds(500)
     $Script:Timer.Add_Tick({
+        # Procesar Actualizaciones
         if ($Script:UpdateJob -and $Script:UpdateJob.State -ne 'Running') {
-            $Script:Timer.Stop()
             $results = Receive-Job $Script:UpdateJob -ErrorAction SilentlyContinue
             Remove-Job $Script:UpdateJob -Force -ErrorAction SilentlyContinue
+            $Script:UpdateJob = $null
 
             if ($results) {
                 $upgradesList = @($results)
@@ -1243,6 +1332,24 @@ $window.Add_ContentRendered({
                 }
             }
         }
+
+        # Procesar Informacion de Sistema
+        if ($Script:SysInfoJob -and $Script:SysInfoJob.State -ne 'Running') {
+            $sysData = Receive-Job $Script:SysInfoJob -ErrorAction SilentlyContinue
+            Remove-Job $Script:SysInfoJob -Force -ErrorAction SilentlyContinue
+            $Script:SysInfoJob = $null
+
+            if ($sysData) {
+                $txtSysOS.Text   = $sysData.OS
+                $txtSysCPU.Text  = $sysData.CPU
+                $txtSysRAM.Text  = $sysData.RAM
+                $txtSysDisk.Text = $sysData.Disk
+            }
+        }
+
+        if (-not $Script:UpdateJob -and -not $Script:SysInfoJob) {
+            $Script:Timer.Stop()
+        }
     })
     $Script:Timer.Start()
 })
@@ -1253,6 +1360,10 @@ $window.Add_Closed({
     if ($Script:UpdateJob) {
         Stop-Job $Script:UpdateJob -Force -ErrorAction SilentlyContinue
         Remove-Job $Script:UpdateJob -Force -ErrorAction SilentlyContinue
+    }
+    if ($Script:SysInfoJob) {
+        Stop-Job $Script:SysInfoJob -Force -ErrorAction SilentlyContinue
+        Remove-Job $Script:SysInfoJob -Force -ErrorAction SilentlyContinue
     }
     if ($Script:ListJob) {
         Stop-Job $Script:ListJob -Force -ErrorAction SilentlyContinue
