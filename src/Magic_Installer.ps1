@@ -772,26 +772,74 @@ $btnInstalar.Add_Click({
 # 6. COMPROBACION ASINCRONA DE ACTUALIZACIONES AL INICIAR LA VENTANA
 # ==============================================================================
 $window.Add_ContentRendered({
-    # Ejecutar comprobacion en hilo secundario para abrir la UI al instante
-    $worker = [System.ComponentModel.BackgroundWorker]::new()
-    $worker.DoWork += {
-        param($s, $e)
-        $e.Result = Get-SystemUpgrades
-    }
-    $worker.RunWorkerCompleted += {
-        param($s, $e)
-        $upgrades = $e.Result
-        if ($upgrades -and $upgrades.Count -gt 0) {
-            $Script:AvailableUpgrades = $upgrades
-            $count = $upgrades.Count
-            
-            $txtBannerTitle.Text = if ($count -eq 1) { "1 actualizacion del sistema disponible" } else { "$count actualizaciones del sistema disponibles" }
-            $txtBannerSubtitle.Text = "Se han detectado programas instalados con versiones mas recientes listas para actualizar."
-            $btnUpdateSystem.Content = if ($count -eq 1) { "Actualizar Programa" } else { "Actualizar Todos ($count)" }
-            $bannerUpdates.Visibility = [System.Windows.Visibility]::Visible
+    $Script:UpdateJob = Start-Job -ScriptBlock {
+        try {
+            $raw = winget.exe upgrade --accept-source-agreements 2>$null
+            $lines = $raw -split "`r?`n"
+            $sep = -1
+            for ($i = 0; $i -lt $lines.Count; $i++) {
+                if ($lines[$i] -match '^-{10,}') { $sep = $i; break }
+            }
+            if ($sep -eq -1) { return @() }
+            $hdr = $lines[$sep - 1]
+            $idCol = $hdr.IndexOf('Id')
+            if ($idCol -eq -1) { return @() }
+
+            $upgrades = @()
+            for ($i = $sep + 1; $i -lt $lines.Count; $i++) {
+                $l = $lines[$i]
+                if ([string]::IsNullOrWhiteSpace($l.Trim())) { continue }
+                if ($l -match 'actualizaciones disponibles' -or $l -match 'upgrades available' -or $l -match 'paquete\(s\)') { break }
+                if ($l.Length -gt $idCol) {
+                    $name = $l.Substring(0, [Math]::Min($idCol, $l.Length)).Trim()
+                    $tokens = -split ($l.Substring($idCol))
+                    if ($tokens.Count -ge 2) {
+                        $upgrades += [PSCustomObject]@{
+                            Nombre     = $name
+                            Id         = $tokens[0]
+                            Actual     = $tokens[1]
+                            Disponible = if ($tokens.Count -ge 3) { $tokens[2] } else { '' }
+                        }
+                    }
+                }
+            }
+            return $upgrades
+        } catch {
+            return @()
         }
     }
-    $worker.RunWorkerAsync()
+
+    $Script:Timer = [System.Windows.Threading.DispatcherTimer]::new()
+    $Script:Timer.Interval = [TimeSpan]::FromMilliseconds(500)
+    $Script:Timer.Add_Tick({
+        if ($Script:UpdateJob -and $Script:UpdateJob.State -ne 'Running') {
+            $Script:Timer.Stop()
+            $results = Receive-Job $Script:UpdateJob -ErrorAction SilentlyContinue
+            Remove-Job $Script:UpdateJob -Force -ErrorAction SilentlyContinue
+
+            if ($results) {
+                $upgradesList = @($results)
+                if ($upgradesList.Count -gt 0) {
+                    $Script:AvailableUpgrades = $upgradesList
+                    $count = $upgradesList.Count
+                    
+                    $txtBannerTitle.Text = if ($count -eq 1) { "1 actualizacion del sistema disponible" } else { "$count actualizaciones del sistema disponibles" }
+                    $txtBannerSubtitle.Text = "Se han detectado programas instalados con versiones mas recientes listas para actualizar."
+                    $btnUpdateSystem.Content = if ($count -eq 1) { "Actualizar Programa" } else { "Actualizar Todos ($count)" }
+                    $bannerUpdates.Visibility = [System.Windows.Visibility]::Visible
+                }
+            }
+        }
+    })
+    $Script:Timer.Start()
+})
+
+$window.Add_Closed({
+    if ($Script:Timer) { $Script:Timer.Stop() }
+    if ($Script:UpdateJob) {
+        Stop-Job $Script:UpdateJob -Force -ErrorAction SilentlyContinue
+        Remove-Job $Script:UpdateJob -Force -ErrorAction SilentlyContinue
+    }
 })
 
 # Mostrar ventana
