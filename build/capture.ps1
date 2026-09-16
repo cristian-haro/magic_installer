@@ -12,10 +12,6 @@ if (-not (Test-Path $assetsDir)) {
     New-Item -ItemType Directory -Path $assetsDir -Force | Out-Null
 }
 
-$ps1Path = Join-Path $rootDir "src\Magic_Installer.ps1"
-
-# 1. Cargar el codigo fuente de Magic_Installer.ps1 para extraer catalogo y XAML
-# Recreamos la UI en un entorno de renderizado
 $Apps = @(
     [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Google Chrome"; Id = "Google.Chrome"; Descripcion = "Navegador web de Google"; Keywords = "chrome,google,browser" }
     [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Mozilla Firefox"; Id = "Mozilla.Firefox"; Descripcion = "Navegador de codigo abierto"; Keywords = "firefox,mozilla,browser" }
@@ -25,6 +21,7 @@ $Apps = @(
     [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Vivaldi"; Id = "VivaldiTechnologies.Vivaldi"; Descripcion = "Navegador altamente personalizable"; Keywords = "vivaldi,browser" }
     
     [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Mozilla Thunderbird"; Id = "Mozilla.Thunderbird"; Descripcion = "Cliente de correo y calendario libre"; Keywords = "thunderbird,mail,email" }
+    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Asana"; Id = "Asana.Asana"; Descripcion = "Gestion de tareas y proyectos de equipo"; Keywords = "asana,tasks,projects" }
     [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Discord"; Id = "Discord.Discord"; Descripcion = "Chat de voz y texto para comunidades"; Keywords = "discord,chat,voz" }
     [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Telegram Desktop"; Id = "Telegram.TelegramDesktop"; Descripcion = "Mensajeria rapida y segura"; Keywords = "telegram,chat" }
     [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "WhatsApp"; Id = "WhatsApp.WhatsApp"; Descripcion = "Cliente oficial de WhatsApp"; Keywords = "whatsapp,chat" }
@@ -61,13 +58,23 @@ $Apps = @(
     [PSCustomObject]@{ Categoria = "Seguridad y Contrasenas"; Nombre = "Malwarebytes"; Id = "Malwarebytes.Malwarebytes"; Descripcion = "Proteccion contra malware y virus"; Keywords = "malwarebytes,antivirus" }
 )
 
-function Save-ControlImage ($element, $outputPath, $width = 1060, $height = 760) {
-    $element.Measure([System.Windows.Size]::new($width, $height))
-    $element.Arrange([System.Windows.Rect]::new(0, 0, $width, $height))
-    $element.UpdateLayout()
+function Save-WpfElementAsPng ($rootElement, $outputPath, $width = 1060, $height = 760) {
+    $rootElement.Width = $width
+    $rootElement.Height = $height
+
+    $rootElement.Measure([System.Windows.Size]::new($width, $height))
+    $rootElement.Arrange([System.Windows.Rect]::new(0, 0, $width, $height))
+    $rootElement.UpdateLayout()
+
+    $dv = [System.Windows.Media.DrawingVisual]::new()
+    $dc = $dv.RenderOpen()
+    $bgBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#F8FAFC")
+    $dc.DrawRectangle($bgBrush, $null, [System.Windows.Rect]::new(0, 0, $width, $height))
+    $dc.DrawRectangle([System.Windows.Media.VisualBrush]::new($rootElement), $null, [System.Windows.Rect]::new(0, 0, $width, $height))
+    $dc.Close()
 
     $rtb = [System.Windows.Media.Imaging.RenderTargetBitmap]::new($width, $height, 96, 96, [System.Windows.Media.PixelFormats]::Pbgra32)
-    $rtb.Render($element)
+    $rtb.Render($dv)
 
     $encoder = [System.Windows.Media.Imaging.PngBitmapEncoder]::new()
     $encoder.Frames.Add([System.Windows.Media.Imaging.BitmapFrame]::Create($rtb))
@@ -77,121 +84,75 @@ function Save-ControlImage ($element, $outputPath, $width = 1060, $height = 760)
     $stream.Close()
 }
 
-$xaml = @"
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Magic Installer - Batch App Installer" 
-        Height="760" Width="1060" 
-        Background="#F8FAFC" 
-        FontFamily="Segoe UI">
-    
+# -------------------------------------------------------------
+# 1. RENDER VISTA DE SELECCION
+# -------------------------------------------------------------
+$xamlSelection = @"
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="760">
     <Grid Margin="18">
-        
-        <!-- VISTA 1: SELECCION DE PROGRAMAS -->
-        <Grid Name="ViewSelection" Visibility="Visible">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <!-- Cabecera Seleccion con Buscador -->
-            <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="Magic Installer" FontSize="20" FontWeight="Bold" Foreground="White" />
-                        <TextBlock Text="Selecciona las aplicaciones que deseas instalar de forma desatendida." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,0" />
-                    </StackPanel>
-                    
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Background="#1E293B" CornerRadius="6" Padding="8,4" Margin="0,0,12,0" BorderBrush="#334155" BorderThickness="1">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="Buscar: " Foreground="#94A3B8" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="12" />
-                                <TextBox Name="TxtSearch" Width="170" Background="Transparent" Foreground="White" BorderThickness="0" FontSize="12" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </Border>
-
-                        <Button Content="Deseleccionar Todo" Padding="12,7" Margin="0,0,8,0" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" />
-                        <Button Content="Seleccionar Todo" Padding="12,7" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <!-- Contenedor de categorias con casillas -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="495" />
-            </ScrollViewer>
-
-            <!-- Barra inferior -->
-            <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Name="TxtCounter" Grid.Column="0" Text="4 aplicaciones seleccionadas" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#334155" FontSize="14" />
-                    
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Content="Salir" Padding="18,8" Margin="0,0,10,0" Background="#F1F5F9" Foreground="#475569" FontWeight="SemiBold" BorderThickness="0" />
-                        <Button Content="Instalar Seleccionadas" Padding="22,9" Background="#2563EB" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </Grid>
-
-        <!-- VISTA 2: PROCESO DE INSTALACION EN VIVO -->
-        <Grid Name="ViewProgress" Visibility="Collapsed">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <!-- Cabecera Progreso -->
-            <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
-                <StackPanel>
-                    <TextBlock Text="Instalando aplicaciones (3 de 4)..." FontSize="19" FontWeight="Bold" Foreground="White" />
-                    <TextBlock Text="Por favor, espera mientras se descargan e instalan los programas seleccionados." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,10" />
-                    
-                    <ProgressBar Height="14" Minimum="0" Maximum="4" Value="3" Background="#334155" Foreground="#10B981" BorderThickness="0" />
+        <!-- Cabecera Seleccion con Buscador -->
+        <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Magic Installer" FontSize="20" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Text="Selecciona las aplicaciones que deseas instalar de forma desatendida." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,0" />
                 </StackPanel>
-            </Border>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="#1E293B" CornerRadius="6" Padding="8,4" Margin="0,0,12,0" BorderBrush="#334155" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Buscar: " Foreground="#94A3B8" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="12" />
+                            <TextBox Width="170" Background="Transparent" Foreground="White" BorderThickness="0" FontSize="12" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
 
-            <!-- Lista de aplicaciones con estado -->
-            <Border Grid.Row="1" Background="White" CornerRadius="8" BorderBrush="#E2E8F0" BorderThickness="1" Padding="14">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Name="ProgressItemsContainer" />
-                </ScrollViewer>
-            </Border>
+                    <Button Content="Deseleccionar Todo" Padding="12,7" Margin="0,0,8,0" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" />
+                    <Button Content="Seleccionar Todo" Padding="12,7" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
-            <!-- Barra inferior de progreso -->
-            <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Text="Descargando e instalando Visual Studio Code..." VerticalAlignment="Center" Foreground="#64748B" FontSize="13" />
-                    <Button Content="Finalizar y Cerrar" Padding="22,9" Background="#10B981" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" Visibility="Visible" />
-                </Grid>
-            </Border>
-        </Grid>
+        <!-- Contenedor de categorias con casillas -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
+            <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="495" />
+        </ScrollViewer>
 
+        <!-- Barra inferior -->
+        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Text="4 aplicaciones seleccionadas" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#334155" FontSize="14" />
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="Salir" Padding="18,8" Margin="0,0,10,0" Background="#F1F5F9" Foreground="#475569" FontWeight="SemiBold" BorderThickness="0" />
+                    <Button Content="Instalar Seleccionadas" Padding="22,9" Background="#2563EB" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" />
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
-</Window>
+</UserControl>
 "@
 
-# --- CAPTURA 1: VISTA DE SELECCION ---
-$reader1 = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xaml))
-$window1 = [System.Windows.Markup.XamlReader]::Load($reader1)
-$catContainer1 = $window1.FindName("CategoriesContainer")
+$reader1 = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xamlSelection))
+$rootSelection = [System.Windows.Markup.XamlReader]::Load($reader1)
+$catContainer1 = $rootSelection.FindName("CategoriesContainer")
 
 $groupedApps = $Apps | Group-Object Categoria
 foreach ($group in $groupedApps) {
@@ -220,8 +181,7 @@ foreach ($group in $groupedApps) {
     foreach ($app in $group.Group) {
         $cb = [System.Windows.Controls.CheckBox]::new()
         $cb.Margin = [System.Windows.Thickness]::new(2, 3, 2, 3)
-        
-        # Simular algunos seleccionados
+
         if ($app.Nombre -in @("Google Chrome", "7-Zip", "Visual Studio Code", "VLC Media Player")) {
             $cb.IsChecked = $true
         }
@@ -262,19 +222,59 @@ foreach ($group in $groupedApps) {
 }
 
 $imgSelectionPath = Join-Path $assetsDir "magic_installer_selection.png"
-Save-ControlImage -element $window1 -outputPath $imgSelectionPath
-Write-Host "[OK] Guardada captura 1: $imgSelectionPath" -ForegroundColor Green
+Save-WpfElementAsPng -rootElement $rootSelection -outputPath $imgSelectionPath
+Write-Host "[OK] Captura 1 generada correctamente: $imgSelectionPath" -ForegroundColor Green
 
+# -------------------------------------------------------------
+# 2. RENDER VISTA DE PROGRESO
+# -------------------------------------------------------------
+$xamlProgress = @"
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="760">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-# --- CAPTURA 2: VISTA DE PROGRESO EN VIVO ---
-$reader2 = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xaml))
-$window2 = [System.Windows.Markup.XamlReader]::Load($reader2)
-$viewSelection2 = $window2.FindName("ViewSelection")
-$viewProgress2  = $window2.FindName("ViewProgress")
-$progressItems2 = $window2.FindName("ProgressItemsContainer")
+        <!-- Cabecera Progreso -->
+        <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="Instalando aplicaciones (3 de 4)..." FontSize="19" FontWeight="Bold" Foreground="White" />
+                <TextBlock Text="Por favor, espera mientras se descargan e instalan los programas seleccionados." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,10" />
+                
+                <ProgressBar Height="14" Minimum="0" Maximum="4" Value="3" Background="#334155" Foreground="#10B981" BorderThickness="0" />
+            </StackPanel>
+        </Border>
 
-$viewSelection2.Visibility = [System.Windows.Visibility]::Collapsed
-$viewProgress2.Visibility  = [System.Windows.Visibility]::Visible
+        <!-- Lista de aplicaciones con estado -->
+        <Border Grid.Row="1" Background="White" CornerRadius="8" BorderBrush="#E2E8F0" BorderThickness="1" Padding="14">
+            <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Name="ProgressItemsContainer" />
+            </ScrollViewer>
+        </Border>
+
+        <!-- Barra inferior de progreso -->
+        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Text="Descargando e instalando Visual Studio Code..." VerticalAlignment="Center" Foreground="#64748B" FontSize="13" />
+                <Button Content="Finalizar y Cerrar" Padding="22,9" Background="#10B981" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
+"@
+
+$reader2 = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xamlProgress))
+$rootProgress = [System.Windows.Markup.XamlReader]::Load($reader2)
+$progressItems2 = $rootProgress.FindName("ProgressItemsContainer")
 
 $progressMock = @(
     @{ Nombre = "Google Chrome"; Status = "Completado con exito"; Color = "#16A34A"; Bg = "#F0FDF4"; Border = "#BBF7D0" },
@@ -321,5 +321,5 @@ foreach ($item in $progressMock) {
 }
 
 $imgProgressPath = Join-Path $assetsDir "magic_installer_progress.png"
-Save-ControlImage -element $window2 -outputPath $imgProgressPath
-Write-Host "[OK] Guardada captura 2: $imgProgressPath" -ForegroundColor Green
+Save-WpfElementAsPng -rootElement $rootProgress -outputPath $imgProgressPath
+Write-Host "[OK] Captura 2 generada correctamente: $imgProgressPath" -ForegroundColor Green
