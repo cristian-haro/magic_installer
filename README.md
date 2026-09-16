@@ -27,27 +27,38 @@
 ## Espanol
 
 ### Descripcion
-**Magic Installer** es una herramienta ligera y de codigo abierto para Windows inspirada en *Ninite*. Permite seleccionar multiples programas populares mediante una interfaz grafica nativa moderna (WPF) con casillas de verificacion e instalarlos todos en lote de forma **100% silenciosa, automatica y desatendida** utilizando el gestor oficial de paquetes **Microsoft Winget**.
+**Magic Installer** es una herramienta ligera y de codigo abierto para Windows inspirada en *Ninite*. Permite gestionar aplicaciones mediante una interfaz grafica nativa moderna (WPF) en dos modos principales:
+1. **Instalador por Lotes:** Seleccionar multiples programas populares organizados por categorias e instalarlos todos en lote de forma **100% silenciosa, automatica y desatendida** con **Microsoft Winget**.
+2. **Desinstalador por Lotes:** Escanear el software presente en el equipo y eliminar multiples programas seleccionados de forma masiva y limpia con un solo clic.
 
 Sin barras de publicidad, sin instaladores basura (bloatware) y **siempre descargando la version mas reciente oficial** de cada programa directamente desde los servidores de los desarrolladores.
 
 ### Capturas de Pantalla
 
-#### 1. Seleccion de Aplicaciones y Buscador en Tiempo Real
-Permite filtrar rapidamente cualquier programa, marcar casillas y detectar aplicaciones ya instaladas en el sistema.
+#### 1. Modo Instalador y Buscador en Tiempo Real
+Permite filtrar rapidamente cualquier programa, marcar casillas, detectar aplicaciones ya instaladas y recibir notificaciones de actualizaciones disponibles.
 
 <p align="center">
   <img src="assets/screenshots/magic_installer_selection.png" alt="Vista de Seleccion" width="850" />
 </p>
 
-#### 2. Monitoreo del Progreso de Instalacion en Vivo
-Muestra una barra de progreso animada y el estado individual de instalacion de cada programa seleccionado.
+#### 2. Modo Desinstalador por Lotes
+Lista todos los programas instalados en el equipo y permite seleccionarlos y desinstalarlos masivamente de forma desatendida.
+
+<p align="center">
+  <img src="assets/screenshots/magic_installer_uninstaller.png" alt="Vista de Desinstalador" width="850" />
+</p>
+
+#### 3. Monitoreo del Progreso en Vivo
+Muestra una barra de progreso animada y el estado individual de instalacion, actualizacion o desinstalacion en tiempo real.
 
 <p align="center">
   <img src="assets/screenshots/magic_installer_progress.png" alt="Vista de Progreso" width="850" />
 </p>
 
 ### Caracteristicas Clave
+* **Doble Modo (Instalador & Desinstalador):** Cambia con un clic entre instalar paquetes nuevos y desinstalar aplicaciones existentes en lote.
+* **Desinstalador por Lotes (Bulk Uninstaller):** Escanea el software instalado en el sistema, filtra dependencias internas y desinstala programas de forma silenciosa con confirmacion de seguridad.
 * **Comprobacion Automatica de Actualizaciones:** Al iniciar, escanea de forma asincrona en segundo plano si hay programas instalados en el sistema desactualizados y muestra un banner verde superior para actualizar todo con un solo clic y monitoreo detallado.
 * **Interfaz Grafica Nativa (WPF / XAML):** Ventana visual moderna con casillas de verificacion (`CheckBoxes`) organizadas por categorias.
 * **Buscador en Tiempo Real:** Filtra instantaneamente cualquier aplicacion o categoria escribiendo en la barra superior.
@@ -55,7 +66,7 @@ Muestra una barra de progreso animada y el estado individual de instalacion de c
 * **Ejecucion Standalone y Silenciosa:** Se puede ejecutar mediante el lanzador [`Magic_Installer.bat`](Magic_Installer.bat) o mediante el ejecutable compilado `Magic_Installer.exe` sin ventanas de consola visibles (`-WindowStyle Hidden`).
 * **Instalacion Desatendida:** Automatiza la aceptacion de licencias y acuerdos mediante `winget`.
 * **Siempre Actualizado:** Sincroniza fuentes antes de cada ejecucion para garantizar la ultima version estable.
-* **Monitoreo en Tiempo Real:** Vista de progreso con barra animada y estados en vivo (*En espera*, *Instalando*, *Completado*).
+* **Monitoreo en Tiempo Real:** Vista de progreso con barra animada y estados en vivo (*En espera*, *Procesando*, *Completado*).
 
 ### Estructura del Proyecto
 ```text
@@ -119,27 +130,38 @@ Esto utilizara el compilador C# nativo de Windows (`csc.exe`) con manifiesto de 
 ## English
 
 ### Overview
-**Magic Installer** is a lightweight, open-source Windows tool inspired by *Ninite*. It allows users to select multiple popular software packages through a clean, modern native WPF graphical interface with checkboxes, installing them in bulk **silently, automatically, and unattended** using the official **Microsoft Winget** package manager.
+**Magic Installer** is a lightweight, open-source Windows tool inspired by *Ninite*. It allows users to manage applications through a clean, modern native WPF graphical interface with two primary modes:
+1. **Batch Installer Mode:** Select multiple popular applications organized by categories and install them silently and unattended using **Microsoft Winget**.
+2. **Bulk Uninstaller Mode:** Scan installed system software and remove unwanted applications in bulk with a single click.
 
 Zero toolbars, zero bloatware, and **always fetching the latest official release** directly from the vendors' servers.
 
 ### Screenshots
 
-#### 1. Application Selection & Real-Time Search
-Quickly filter programs, toggle category cards, and view pre-installed software tags.
+#### 1. Batch Installer Mode & Real-Time Search
+Quickly filter programs, toggle category cards, view pre-installed tags, and receive update notifications.
 
 <p align="center">
   <img src="assets/screenshots/magic_installer_selection.png" alt="Selection View" width="850" />
 </p>
 
-#### 2. Live Progress Tracker
-Follow real-time installation stages with an animated progress bar and detailed badges.
+#### 2. Bulk Uninstaller Mode
+Scans and lists installed programs, allowing fast multi-selection and silent removal.
+
+<p align="center">
+  <img src="assets/screenshots/magic_installer_uninstaller.png" alt="Uninstaller View" width="850" />
+</p>
+
+#### 3. Live Progress Tracker
+Follow real-time installation, upgrade, or uninstallation stages with an animated progress bar and detailed badges.
 
 <p align="center">
   <img src="assets/screenshots/magic_installer_progress.png" alt="Progress View" width="850" />
 </p>
 
 ### Key Features
+* **Dual Mode (Installer & Uninstaller):** Switch seamlessly between installing new tools and removing bloatware in bulk.
+* **Bulk Uninstaller:** Scans installed software, filters out system packages, and uninstalls selected apps silently with safety confirmation prompts.
 * **Automated System Update Detection:** Silently scans in the background on startup for outdated software installed across the system and presents an actionable green top banner to upgrade everything in one click with detailed live tracking.
 * **Modern Native UI (WPF / XAML):** Clean desktop interface featuring direct checkboxes grouped into clear categories.
 * **Real-Time Search & Filter:** Instantly filter any application or category as you type in the search bar.
@@ -147,7 +169,7 @@ Follow real-time installation stages with an animated progress bar and detailed 
 * **Standalone & Hidden Execution:** Run directly through [`Magic_Installer.bat`](Magic_Installer.bat) or compile into a standalone `Magic_Installer.exe` executable without visible console windows (`-WindowStyle Hidden`).
 * **Unattended Batch Installs:** Auto-accepts package agreements and licenses via `winget`.
 * **Always Up-to-Date:** Synchronizes repository sources before every run to guarantee the newest available version.
-* **Live Progress Tracking:** Integrated progress view with an animated progress bar and real-time status badges (*Queued*, *Installing*, *Completed*).
+* **Live Progress Tracking:** Integrated progress view with an animated progress bar and real-time status badges (*Queued*, *Processing*, *Completed*).
 
 ### Repository Structure
 ```text

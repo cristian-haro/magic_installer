@@ -85,7 +85,7 @@ function Save-WpfElementAsPng ($rootElement, $outputPath, $width = 1060, $height
 }
 
 # -------------------------------------------------------------
-# 1. RENDER VISTA DE SELECCION
+# 1. RENDER VISTA DE SELECCION (MODO INSTALADOR)
 # -------------------------------------------------------------
 $xamlSelection = @"
 <UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -94,13 +94,11 @@ $xamlSelection = @"
     <Grid Margin="18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Banner Verde de Actualizaciones Pendientes -->
-        <Border Grid.Row="0" Background="#059669" CornerRadius="8" Padding="16,12" Margin="0,0,0,12">
+        <!-- Cabecera Global con Selector de Modo -->
+        <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -108,65 +106,92 @@ $xamlSelection = @"
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                    <TextBlock Text="4 actualizaciones del sistema disponibles" FontSize="14" FontWeight="Bold" Foreground="White" />
-                    <TextBlock Text="Se han detectado programas instalados con versiones mas recientes listas para actualizar." FontSize="12" Foreground="#D1FAE5" Margin="0,2,0,0" />
-                </StackPanel>
-                
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Content="Omitir" Padding="12,6" Margin="0,0,8,0" Background="#047857" Foreground="White" BorderThickness="0" />
-                    <Button Content="Actualizar Todos (4)" Padding="16,7" Background="White" Foreground="#047857" FontWeight="Bold" FontSize="12" BorderThickness="0" />
-                </StackPanel>
-            </Grid>
-        </Border>
-
-        <!-- Cabecera Seleccion con Buscador -->
-        <Border Grid.Row="1" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                
-                <StackPanel Grid.Column="0">
                     <TextBlock Text="Magic Installer" FontSize="20" FontWeight="Bold" Foreground="White" />
-                    <TextBlock Text="Selecciona las aplicaciones que deseas instalar de forma desatendida." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,0" />
+                    <TextBlock Text="Instalacion y desinstalacion desatendida de aplicaciones por lotes." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,0" />
                 </StackPanel>
                 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Background="#1E293B" CornerRadius="6" Padding="8,4" Margin="0,0,12,0" BorderBrush="#334155" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Buscar: " Foreground="#94A3B8" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="12" />
-                            <TextBox Width="170" Background="Transparent" Foreground="White" BorderThickness="0" FontSize="12" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Border>
-
-                    <Button Content="Deseleccionar Todo" Padding="12,7" Margin="0,0,8,0" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" />
-                    <Button Content="Seleccionar Todo" Padding="12,7" Background="#1E293B" Foreground="White" BorderThickness="1" BorderBrush="#334155" />
-                </StackPanel>
+                <Border Grid.Column="1" Background="#1E293B" CornerRadius="6" Padding="4" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Instalador" Padding="16,6" Background="#2563EB" Foreground="White" FontWeight="Bold" FontSize="12" BorderThickness="0" />
+                        <Button Content="Desinstalador por Lotes" Padding="16,6" Margin="4,0,0,0" Background="Transparent" Foreground="#94A3B8" FontWeight="SemiBold" FontSize="12" BorderThickness="0" />
+                    </StackPanel>
+                </Border>
             </Grid>
         </Border>
 
-        <!-- Contenedor de categorias con casillas -->
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
-            <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="495" />
-        </ScrollViewer>
+        <!-- Contenido Modo Instalador -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <!-- Barra inferior -->
-        <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                
-                <TextBlock Text="4 aplicaciones seleccionadas" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#334155" FontSize="14" />
-                
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Button Content="Salir" Padding="18,8" Margin="0,0,10,0" Background="#F1F5F9" Foreground="#475569" FontWeight="SemiBold" BorderThickness="0" />
-                    <Button Content="Instalar Seleccionadas" Padding="22,9" Background="#2563EB" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" />
-                </StackPanel>
-            </Grid>
-        </Border>
+            <!-- Banner Verde de Actualizaciones Pendientes -->
+            <Border Grid.Row="0" Background="#059669" CornerRadius="8" Padding="16,12" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="4 actualizaciones del sistema disponibles" FontSize="14" FontWeight="Bold" Foreground="White" />
+                        <TextBlock Text="Se han detectado programas instalados con versiones mas recientes listas para actualizar." FontSize="12" Foreground="#D1FAE5" Margin="0,2,0,0" />
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Omitir" Padding="12,6" Margin="0,0,8,0" Background="#047857" Foreground="White" BorderThickness="0" />
+                        <Button Content="Actualizar Todos (4)" Padding="16,7" Background="White" Foreground="#047857" FontWeight="Bold" FontSize="12" BorderThickness="0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Barra de Busqueda -->
+            <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="14,10" Margin="0,0,0,12" BorderBrush="#E2E8F0" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Buscar aplicacion: " Foreground="#475569" FontWeight="Medium" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="13" />
+                        <Border Background="#F8FAFC" CornerRadius="6" Padding="8,4" BorderBrush="#CBD5E1" BorderThickness="1">
+                            <TextBox Width="220" Background="Transparent" Foreground="#1E293B" BorderThickness="0" FontSize="12" VerticalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Deseleccionar Todo" Padding="12,6" Margin="0,0,8,0" Background="#F1F5F9" Foreground="#475569" BorderThickness="1" BorderBrush="#E2E8F0" />
+                        <Button Content="Seleccionar Todo" Padding="12,6" Background="#F1F5F9" Foreground="#475569" BorderThickness="1" BorderBrush="#E2E8F0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Contenedor de categorias con casillas -->
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
+                <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="495" />
+            </ScrollViewer>
+
+            <!-- Barra inferior -->
+            <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Text="4 aplicaciones seleccionadas" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#334155" FontSize="14" />
+                    
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Content="Salir" Padding="18,8" Margin="0,0,10,0" Background="#F1F5F9" Foreground="#475569" FontWeight="SemiBold" BorderThickness="0" />
+                        <Button Content="Instalar Seleccionadas" Padding="22,9" Background="#2563EB" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
 "@
@@ -247,7 +272,168 @@ Save-WpfElementAsPng -rootElement $rootSelection -outputPath $imgSelectionPath
 Write-Host "[OK] Captura 1 generada correctamente: $imgSelectionPath" -ForegroundColor Green
 
 # -------------------------------------------------------------
-# 2. RENDER VISTA DE PROGRESO
+# 2. RENDER VISTA DE DESINSTALADOR POR LOTES
+# -------------------------------------------------------------
+$xamlUninstall = @"
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F8FAFC" FontFamily="Segoe UI" Width="1060" Height="760">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera Global con Selector de Modo (Desinstalador Activo) -->
+        <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="Magic Installer" FontSize="20" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Text="Selecciona las aplicaciones instaladas que deseas eliminar por lotes de tu equipo." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,0" />
+                </StackPanel>
+                
+                <Border Grid.Column="1" Background="#1E293B" CornerRadius="6" Padding="4" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Instalador" Padding="16,6" Background="Transparent" Foreground="#94A3B8" FontWeight="SemiBold" FontSize="12" BorderThickness="0" />
+                        <Button Content="Desinstalador por Lotes" Padding="16,6" Margin="4,0,0,0" Background="#DC2626" Foreground="White" FontWeight="Bold" FontSize="12" BorderThickness="0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Contenido Desinstalador -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Barra de Herramientas Desinstalador -->
+            <Border Grid.Row="0" Background="White" CornerRadius="8" Padding="14,10" Margin="0,0,0,12" BorderBrush="#E2E8F0" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Buscar programa instalado: " Foreground="#475569" FontWeight="Medium" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="13" />
+                        <Border Background="#F8FAFC" CornerRadius="6" Padding="8,4" BorderBrush="#CBD5E1" BorderThickness="1">
+                            <TextBox Width="240" Background="Transparent" Foreground="#1E293B" BorderThickness="0" FontSize="12" VerticalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Recargar Lista" Padding="12,6" Margin="0,0,8,0" Background="#F1F5F9" Foreground="#475569" BorderThickness="1" BorderBrush="#E2E8F0" />
+                        <Button Content="Deseleccionar Todo" Padding="12,6" Margin="0,0,8,0" Background="#F1F5F9" Foreground="#475569" BorderThickness="1" BorderBrush="#E2E8F0" />
+                        <Button Content="Seleccionar Todo" Padding="12,6" Background="#F1F5F9" Foreground="#475569" BorderThickness="1" BorderBrush="#E2E8F0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Lista de programas instalados -->
+            <Border Grid.Row="1" Background="White" CornerRadius="8" BorderBrush="#E2E8F0" BorderThickness="1" Padding="10">
+                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
+                    <WrapPanel Name="UninstallItemsContainer" Orientation="Horizontal" ItemWidth="490" />
+                </ScrollViewer>
+            </Border>
+
+            <!-- Barra inferior Desinstalador -->
+            <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Text="2 aplicaciones seleccionadas para desinstalar" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#334155" FontSize="14" />
+                    
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Content="Salir" Padding="18,8" Margin="0,0,10,0" Background="#F1F5F9" Foreground="#475569" FontWeight="SemiBold" BorderThickness="0" />
+                        <Button Content="Desinstalar Seleccionadas" Padding="22,9" Background="#DC2626" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
+"@
+
+$reader2 = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xamlUninstall))
+$rootUninstall = [System.Windows.Markup.XamlReader]::Load($reader2)
+$uninstContainer = $rootUninstall.FindName("UninstallItemsContainer")
+
+$installedMock = @(
+    @{ Nombre = "CCleaner"; Version = "6.28"; Id = "Piriform.CCleaner"; Checked = $true },
+    @{ Nombre = "Glary Utilities 6.43"; Version = "6.43.0.47"; Id = "Glarysoft.GlaryUtilities"; Checked = $true },
+    @{ Nombre = "Google Chrome"; Version = "153.0.8010.37"; Id = "Google.Chrome"; Checked = $false },
+    @{ Nombre = "Mozilla Firefox"; Version = "135.0"; Id = "Mozilla.Firefox"; Checked = $false },
+    @{ Nombre = "Epic Games Launcher"; Version = "17.0.1"; Id = "EpicGames.EpicGamesLauncher"; Checked = $false },
+    @{ Nombre = "Steam"; Version = "2.10.91"; Id = "Valve.Steam"; Checked = $false },
+    @{ Nombre = "Discord"; Version = "1.0.9150"; Id = "Discord.Discord"; Checked = $false },
+    @{ Nombre = "Telegram Desktop"; Version = "5.8.0"; Id = "Telegram.TelegramDesktop"; Checked = $false }
+)
+
+foreach ($inst in $installedMock) {
+    $rowBorder = [System.Windows.Controls.Border]::new()
+    $rowBorder.Background = [System.Windows.Media.Brushes]::White
+    $rowBorder.BorderBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#E2E8F0")
+    $rowBorder.BorderThickness = [System.Windows.Thickness]::new(1)
+    $rowBorder.CornerRadius = [System.Windows.CornerRadius]::new(6)
+    $rowBorder.Margin = [System.Windows.Thickness]::new(4)
+    $rowBorder.Padding = [System.Windows.Thickness]::new(10, 8, 10, 8)
+
+    $cb = [System.Windows.Controls.CheckBox]::new()
+    $cb.IsChecked = $inst.Checked
+    $cb.VerticalAlignment = [System.Windows.VerticalAlignment]::Center
+
+    $cbPanel = [System.Windows.Controls.StackPanel]::new()
+    $cbPanel.Orientation = [System.Windows.Controls.Orientation]::Vertical
+    $cbPanel.Margin = [System.Windows.Thickness]::new(4, 0, 0, 0)
+
+    $nameText = [System.Windows.Controls.TextBlock]::new()
+    $nameText.Text = $inst.Nombre
+    $nameText.FontWeight = [System.Windows.FontWeights]::SemiBold
+    $nameText.FontSize = 13
+    $nameText.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#1E293B")
+    $cbPanel.Children.Add($nameText) | Out-Null
+
+    $subInfoPanel = [System.Windows.Controls.StackPanel]::new()
+    $subInfoPanel.Orientation = [System.Windows.Controls.Orientation]::Horizontal
+    $subInfoPanel.Margin = [System.Windows.Thickness]::new(0, 2, 0, 0)
+
+    $verBadge = [System.Windows.Controls.TextBlock]::new()
+    $verBadge.Text = "v$($inst.Version)  "
+    $verBadge.FontSize = 11
+    $verBadge.FontWeight = [System.Windows.FontWeights]::Medium
+    $verBadge.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#059669")
+    $subInfoPanel.Children.Add($verBadge) | Out-Null
+
+    $idText = [System.Windows.Controls.TextBlock]::new()
+    $idText.Text = "ID: $($inst.Id)"
+    $idText.FontSize = 11
+    $idText.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#94A3B8")
+    $subInfoPanel.Children.Add($idText) | Out-Null
+
+    $cbPanel.Children.Add($subInfoPanel) | Out-Null
+    $cb.Content = $cbPanel
+
+    $rowBorder.Child = $cb
+    $uninstContainer.Children.Add($rowBorder) | Out-Null
+}
+
+$imgUninstallPath = Join-Path $assetsDir "magic_installer_uninstaller.png"
+Save-WpfElementAsPng -rootElement $rootUninstall -outputPath $imgUninstallPath
+Write-Host "[OK] Captura 2 generada correctamente: $imgUninstallPath" -ForegroundColor Green
+
+# -------------------------------------------------------------
+# 3. RENDER VISTA DE PROGRESO
 # -------------------------------------------------------------
 $xamlProgress = @"
 <UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -293,9 +479,9 @@ $xamlProgress = @"
 </UserControl>
 "@
 
-$reader2 = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xamlProgress))
-$rootProgress = [System.Windows.Markup.XamlReader]::Load($reader2)
-$progressItems2 = $rootProgress.FindName("ProgressItemsContainer")
+$reader3 = [System.Xml.XmlReader]::Create([System.IO.StringReader]::new($xamlProgress))
+$rootProgress = [System.Windows.Markup.XamlReader]::Load($reader3)
+$progressItems3 = $rootProgress.FindName("ProgressItemsContainer")
 
 $progressMock = @(
     @{ Nombre = "Google Chrome"; Status = "Completado con exito"; Color = "#16A34A"; Bg = "#F0FDF4"; Border = "#BBF7D0" },
@@ -338,9 +524,9 @@ foreach ($item in $progressMock) {
     $gridRow.Children.Add($appStatus) | Out-Null
 
     $row.Child = $gridRow
-    $progressItems2.Children.Add($row) | Out-Null
+    $progressItems3.Children.Add($row) | Out-Null
 }
 
 $imgProgressPath = Join-Path $assetsDir "magic_installer_progress.png"
 Save-WpfElementAsPng -rootElement $rootProgress -outputPath $imgProgressPath
-Write-Host "[OK] Captura 2 generada correctamente: $imgProgressPath" -ForegroundColor Green
+Write-Host "[OK] Captura 3 generada correctamente: $imgProgressPath" -ForegroundColor Green
