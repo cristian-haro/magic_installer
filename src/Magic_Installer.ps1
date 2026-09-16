@@ -134,28 +134,87 @@ function Test-IsInstalled ($appName, $appId) {
     return $false
 }
 
-# 4. Diseno de la Ventana WPF
+# 4. Funcion para obtener actualizaciones disponibles con Winget
+function Get-SystemUpgrades {
+    try {
+        $raw = winget.exe upgrade --accept-source-agreements 2>$null
+        $lines = $raw -split "`r?`n"
+        $sep = -1
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match '^-{10,}') { $sep = $i; break }
+        }
+        if ($sep -eq -1) { return @() }
+        $hdr = $lines[$sep - 1]
+        $idCol = $hdr.IndexOf('Id')
+        if ($idCol -eq -1) { return @() }
+
+        $upgrades = @()
+        for ($i = $sep + 1; $i -lt $lines.Count; $i++) {
+            $l = $lines[$i]
+            if ([string]::IsNullOrWhiteSpace($l.Trim())) { continue }
+            if ($l -match 'actualizaciones disponibles' -or $l -match 'upgrades available' -or $l -match 'paquete\(s\)') { break }
+            if ($l.Length -gt $idCol) {
+                $name = $l.Substring(0, [Math]::Min($idCol, $l.Length)).Trim()
+                $tokens = -split ($l.Substring($idCol))
+                if ($tokens.Count -ge 2) {
+                    $upgrades += [PSCustomObject]@{
+                        Nombre     = $name
+                        Id         = $tokens[0]
+                        Actual     = $tokens[1]
+                        Disponible = if ($tokens.Count -ge 3) { $tokens[2] } else { '' }
+                    }
+                }
+            }
+        }
+        return $upgrades
+    } catch {
+        return @()
+    }
+}
+
+# 5. Diseno de la Ventana WPF
 $xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Magic Installer - Batch App Installer" 
-        Height="800" Width="1060" 
+        Height="820" Width="1060" 
         WindowStartupLocation="CenterScreen" 
         Background="#F8FAFC" 
         FontFamily="Segoe UI">
     
     <Grid Margin="18">
         
-        <!-- VISTA 1: SELECCION DE PROGRAMAS -->
+        <!-- VISTA 1: SELECCION DE PROGRAMAS Y BANNER DE ACTUALIZACIONES -->
         <Grid Name="ViewSelection" Visibility="Visible">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
+            <!-- Banner Verde de Actualizaciones Pendientes (Inicialmente Oculto) -->
+            <Border Name="BannerUpdates" Grid.Row="0" Background="#059669" CornerRadius="8" Padding="16,12" Margin="0,0,0,12" Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Name="TxtBannerTitle" Text="Actualizaciones del sistema disponibles" FontSize="14" FontWeight="Bold" Foreground="White" />
+                        <TextBlock Name="TxtBannerSubtitle" Text="Se han detectado programas que pueden ser actualizados a su version mas reciente." FontSize="12" Foreground="#D1FAE5" Margin="0,2,0,0" />
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Name="BtnDismissBanner" Content="Omitir" Padding="12,6" Margin="0,0,8,0" Background="#047857" Foreground="White" BorderThickness="0" Cursor="Hand" />
+                        <Button Name="BtnUpdateSystem" Content="Actualizar Todo Ahora" Padding="16,7" Background="White" Foreground="#047857" FontWeight="Bold" FontSize="12" BorderThickness="0" Cursor="Hand" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
             <!-- Cabecera Seleccion con Buscador -->
-            <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
+            <Border Grid.Row="1" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -183,12 +242,12 @@ $xaml = @"
             </Border>
 
             <!-- Contenedor de categorias con casillas -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="495" />
             </ScrollViewer>
 
             <!-- Barra inferior -->
-            <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+            <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -205,7 +264,7 @@ $xaml = @"
             </Border>
         </Grid>
 
-        <!-- VISTA 2: PROCESO DE INSTALACION EN VIVO -->
+        <!-- VISTA 2: PROCESO EN VIVO (INSTALACION O ACTUALIZACION DETALLADA) -->
         <Grid Name="ViewProgress" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -216,14 +275,14 @@ $xaml = @"
             <!-- Cabecera Progreso -->
             <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
                 <StackPanel>
-                    <TextBlock Name="TxtProgressTitle" Text="Instalando aplicaciones..." FontSize="19" FontWeight="Bold" Foreground="White" />
-                    <TextBlock Name="TxtProgressSubtitle" Text="Por favor, espera mientras se descargan e instalan los programas seleccionados." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,10" />
+                    <TextBlock Name="TxtProgressTitle" Text="Procesando operaciones..." FontSize="19" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Name="TxtProgressSubtitle" Text="Por favor, espera mientras se descargan y configuran los programas." FontSize="13" Foreground="#94A3B8" Margin="0,3,0,10" />
                     
                     <ProgressBar Name="MainProgressBar" Height="14" Minimum="0" Maximum="100" Value="0" Background="#334155" Foreground="#10B981" BorderThickness="0" />
                 </StackPanel>
             </Border>
 
-            <!-- Lista de aplicaciones con estado -->
+            <!-- Lista de aplicaciones con estado detallado -->
             <Border Grid.Row="1" Background="White" CornerRadius="8" BorderBrush="#E2E8F0" BorderThickness="1" Padding="14">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Name="ProgressItemsContainer" />
@@ -238,7 +297,7 @@ $xaml = @"
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     
-                    <TextBlock Name="TxtCurrentStatus" Grid.Column="0" Text="Preparando instalador..." VerticalAlignment="Center" Foreground="#64748B" FontSize="13" />
+                    <TextBlock Name="TxtCurrentStatus" Grid.Column="0" Text="Preparando tareas..." VerticalAlignment="Center" Foreground="#64748B" FontSize="13" />
                     <Button Name="BtnFinalizar" Grid.Column="1" Content="Finalizar y Cerrar" Padding="22,9" Background="#10B981" Foreground="White" FontWeight="Bold" FontSize="13" BorderThickness="0" Cursor="Hand" Visibility="Collapsed" />
                 </Grid>
             </Border>
@@ -255,6 +314,12 @@ $window = [System.Windows.Markup.XamlReader]::Load($reader)
 # Obtener referencias a los controles
 $viewSelection          = $window.FindName("ViewSelection")
 $viewProgress           = $window.FindName("ViewProgress")
+$bannerUpdates          = $window.FindName("BannerUpdates")
+$txtBannerTitle         = $window.FindName("TxtBannerTitle")
+$txtBannerSubtitle      = $window.FindName("TxtBannerSubtitle")
+$btnDismissBanner       = $window.FindName("BtnDismissBanner")
+$btnUpdateSystem        = $window.FindName("BtnUpdateSystem")
+
 $categoriesContainer    = $window.FindName("CategoriesContainer")
 $txtCounter             = $window.FindName("TxtCounter")
 $txtSearch              = $window.FindName("TxtSearch")
@@ -272,6 +337,8 @@ $btnFinalizar           = $window.FindName("BtnFinalizar")
 
 $allCheckBoxes = [System.Collections.Generic.List[System.Windows.Controls.CheckBox]]::new()
 $allCards = [System.Collections.Generic.List[PSCustomObject]]::new()
+
+$Script:AvailableUpgrades = @()
 
 # Funcion para actualizar contador
 $UpdateCounter = {
@@ -412,6 +479,10 @@ $btnDeselectAll.Add_Click({
     & $UpdateCounter
 })
 
+$btnDismissBanner.Add_Click({
+    $bannerUpdates.Visibility = [System.Windows.Visibility]::Collapsed
+})
+
 $btnCancelar.Add_Click({
     $window.Close()
 })
@@ -432,7 +503,143 @@ function Do-Events {
 }
 
 # ==============================================================================
-# PROCESO DE INSTALACION
+# ACCION 1: ACTUALIZACION DETALLADA DE PROGRAMAS DEL SISTEMA (Desde Banner Verde)
+# ==============================================================================
+$btnUpdateSystem.Add_Click({
+    if (-not $Script:AvailableUpgrades -or $Script:AvailableUpgrades.Count -eq 0) {
+        return
+    }
+
+    $itemsToUpdate = $Script:AvailableUpgrades
+
+    # Cambiar de vista a progreso
+    $viewSelection.Visibility = [System.Windows.Visibility]::Collapsed
+    $viewProgress.Visibility  = [System.Windows.Visibility]::Visible
+    Do-Events
+
+    $statusMap = @{}
+    $progressItemsContainer.Children.Clear()
+
+    foreach ($app in $itemsToUpdate) {
+        $row = [System.Windows.Controls.Border]::new()
+        $row.Background = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#F8FAFC")
+        $row.BorderBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#E2E8F0")
+        $row.BorderThickness = [System.Windows.Thickness]::new(1)
+        $row.CornerRadius = [System.Windows.CornerRadius]::new(6)
+        $row.Padding = [System.Windows.Thickness]::new(12, 10, 12, 10)
+        $row.Margin = [System.Windows.Thickness]::new(0, 0, 0, 6)
+
+        $gridRow = [System.Windows.Controls.Grid]::new()
+        $col1 = [System.Windows.Controls.ColumnDefinition]::new()
+        $col1.Width = [System.Windows.GridLength]::new(1, [System.Windows.GridUnitType]::Star)
+        $col2 = [System.Windows.Controls.ColumnDefinition]::new()
+        $col2.Width = [System.Windows.GridLength]::Auto
+        $gridRow.ColumnDefinitions.Add($col1)
+        $gridRow.ColumnDefinitions.Add($col2)
+
+        $titlePanel = [System.Windows.Controls.StackPanel]::new()
+        $titlePanel.Orientation = [System.Windows.Controls.Orientation]::Horizontal
+
+        $appName = [System.Windows.Controls.TextBlock]::new()
+        $appName.Text = $app.Nombre
+        $appName.FontWeight = [System.Windows.FontWeights]::SemiBold
+        $appName.FontSize = 13
+        $appName.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#1E293B")
+        $titlePanel.Children.Add($appName) | Out-Null
+
+        $verText = [System.Windows.Controls.TextBlock]::new()
+        $verText.Text = "  ($($app.Actual) -> $($app.Disponible))"
+        $verText.FontSize = 11
+        $verText.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#64748B")
+        $verText.VerticalAlignment = [System.Windows.VerticalAlignment]::Center
+        $titlePanel.Children.Add($verText) | Out-Null
+
+        [System.Windows.Controls.Grid]::SetColumn($titlePanel, 0)
+        $gridRow.Children.Add($titlePanel) | Out-Null
+
+        $appStatus = [System.Windows.Controls.TextBlock]::new()
+        $appStatus.Text = "En espera..."
+        $appStatus.FontWeight = [System.Windows.FontWeights]::Medium
+        $appStatus.FontSize = 12
+        $appStatus.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#94A3B8")
+        [System.Windows.Controls.Grid]::SetColumn($appStatus, 1)
+        $gridRow.Children.Add($appStatus) | Out-Null
+
+        $row.Child = $gridRow
+        $progressItemsContainer.Children.Add($row) | Out-Null
+
+        $statusMap[$app.Id] = @{
+            Row    = $row
+            Status = $appStatus
+        }
+    }
+
+    $totalApps = $itemsToUpdate.Count
+    $mainProgressBar.Maximum = $totalApps
+    $mainProgressBar.Value = 0
+    Do-Events
+
+    $successCount = 0
+    $failedCount = 0
+    $index = 0
+
+    foreach ($app in $itemsToUpdate) {
+        $index++
+        $txtProgressTitle.Text = "Actualizando aplicaciones del sistema ($index de $totalApps)..."
+        $txtCurrentStatus.Text = "Descargando e instalando actualizacion de $($app.Nombre)..."
+        
+        $item = $statusMap[$app.Id]
+        $item.Status.Text = "Actualizando..."
+        $item.Status.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#2563EB")
+        $item.Row.Background = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#EFF6FF")
+        $item.Row.BorderBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#BFDBFE")
+        Do-Events
+
+        # Ejecucion silenciosa de winget upgrade individual
+        $proc = Start-Process -FilePath "winget.exe" `
+            -ArgumentList "upgrade --id `"$($app.Id)`" -e --silent --accept-source-agreements --accept-package-agreements --include-unknown" `
+            -NoNewWindow -PassThru -Wait
+
+        if ($proc.ExitCode -eq 0) {
+            $item.Status.Text = "Actualizado con exito"
+            $item.Status.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#16A34A")
+            $item.Row.Background = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#F0FDF4")
+            $item.Row.BorderBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#BBF7D0")
+            $successCount++
+        } else {
+            $retry = Start-Process -FilePath "winget.exe" `
+                -ArgumentList "upgrade --id `"$($app.Id)`" -e --accept-source-agreements --accept-package-agreements" `
+                -NoNewWindow -PassThru -Wait
+
+            if ($retry.ExitCode -eq 0) {
+                $item.Status.Text = "Actualizado con exito"
+                $item.Status.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#16A34A")
+                $item.Row.Background = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#F0FDF4")
+                $item.Row.BorderBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#BBF7D0")
+                $successCount++
+            } else {
+                $item.Status.Text = "No completado (Codigo: $($retry.ExitCode))"
+                $item.Status.Foreground = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#DC2626")
+                $item.Row.Background = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#FEF2F2")
+                $item.Row.BorderBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#FECACA")
+                $failedCount++
+            }
+        }
+
+        $mainProgressBar.Value = $index
+        Do-Events
+    }
+
+    # Proceso finalizado
+    $txtProgressTitle.Text = "Actualizacion del sistema finalizada"
+    $txtProgressSubtitle.Text = "Se completaron $successCount de $totalApps actualizaciones correctamente."
+    $txtCurrentStatus.Text = "Todas las tareas han concluido."
+    $btnFinalizar.Visibility = [System.Windows.Visibility]::Visible
+    Do-Events
+})
+
+# ==============================================================================
+# ACCION 2: INSTALACION DE APLICACIONES SELECCIONADAS
 # ==============================================================================
 $btnInstalar.Add_Click({
     $selected = @($allCheckBoxes | Where-Object { $_.IsChecked -eq $true } | ForEach-Object { $_.Tag })
@@ -447,7 +654,6 @@ $btnInstalar.Add_Click({
     $viewProgress.Visibility  = [System.Windows.Visibility]::Visible
     Do-Events
 
-    # Crear filas de estado para cada app seleccionada
     $statusMap = @{}
     $progressItemsContainer.Children.Clear()
 
@@ -531,7 +737,6 @@ $btnInstalar.Add_Click({
             $item.Row.BorderBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString("#BBF7D0")
             $successCount++
         } else {
-            # Intento de respaldo sin flag silent por si requiere UI
             $retry = Start-Process -FilePath "winget.exe" `
                 -ArgumentList "install --id `"$($app.Id)`" -e --accept-source-agreements --accept-package-agreements" `
                 -NoNewWindow -PassThru -Wait
@@ -561,6 +766,32 @@ $btnInstalar.Add_Click({
     $txtCurrentStatus.Text = "Todas las tareas han concluido."
     $btnFinalizar.Visibility = [System.Windows.Visibility]::Visible
     Do-Events
+})
+
+# ==============================================================================
+# 6. COMPROBACION ASINCRONA DE ACTUALIZACIONES AL INICIAR LA VENTANA
+# ==============================================================================
+$window.Add_ContentRendered({
+    # Ejecutar comprobacion en hilo secundario para abrir la UI al instante
+    $worker = [System.ComponentModel.BackgroundWorker]::new()
+    $worker.DoWork += {
+        param($s, $e)
+        $e.Result = Get-SystemUpgrades
+    }
+    $worker.RunWorkerCompleted += {
+        param($s, $e)
+        $upgrades = $e.Result
+        if ($upgrades -and $upgrades.Count -gt 0) {
+            $Script:AvailableUpgrades = $upgrades
+            $count = $upgrades.Count
+            
+            $txtBannerTitle.Text = if ($count -eq 1) { "1 actualizacion del sistema disponible" } else { "$count actualizaciones del sistema disponibles" }
+            $txtBannerSubtitle.Text = "Se han detectado programas instalados con versiones mas recientes listas para actualizar."
+            $btnUpdateSystem.Content = if ($count -eq 1) { "Actualizar Programa" } else { "Actualizar Todos ($count)" }
+            $bannerUpdates.Visibility = [System.Windows.Visibility]::Visible
+        }
+    }
+    $worker.RunWorkerAsync()
 })
 
 # Mostrar ventana

@@ -94,12 +94,33 @@ $xamlSelection = @"
     <Grid Margin="18">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Banner Verde de Actualizaciones Pendientes -->
+        <Border Grid.Row="0" Background="#059669" CornerRadius="8" Padding="16,12" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="4 actualizaciones del sistema disponibles" FontSize="14" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Text="Se han detectado programas instalados con versiones mas recientes listas para actualizar." FontSize="12" Foreground="#D1FAE5" Margin="0,2,0,0" />
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="Omitir" Padding="12,6" Margin="0,0,8,0" Background="#047857" Foreground="White" BorderThickness="0" />
+                    <Button Content="Actualizar Todos (4)" Padding="16,7" Background="White" Foreground="#047857" FontWeight="Bold" FontSize="12" BorderThickness="0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <!-- Cabecera Seleccion con Buscador -->
-        <Border Grid.Row="0" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
+        <Border Grid.Row="1" Background="#0F172A" CornerRadius="8" Padding="18,14" Margin="0,0,0,12">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -126,12 +147,12 @@ $xamlSelection = @"
         </Border>
 
         <!-- Contenedor de categorias con casillas -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
             <WrapPanel Name="CategoriesContainer" Orientation="Horizontal" ItemWidth="495" />
         </ScrollViewer>
 
         <!-- Barra inferior -->
-        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
+        <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="16,14" Margin="0,12,0,0" BorderBrush="#E2E8F0" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />

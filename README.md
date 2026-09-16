@@ -48,6 +48,7 @@ Muestra una barra de progreso animada y el estado individual de instalacion de c
 </p>
 
 ### Caracteristicas Clave
+* **Comprobacion Automatica de Actualizaciones:** Al iniciar, escanea de forma asincrona en segundo plano si hay programas instalados en el sistema desactualizados y muestra un banner verde superior para actualizar todo con un solo clic y monitoreo detallado.
 * **Interfaz Grafica Nativa (WPF / XAML):** Ventana visual moderna con casillas de verificacion (`CheckBoxes`) organizadas por categorias.
 * **Buscador en Tiempo Real:** Filtra instantaneamente cualquier aplicacion o categoria escribiendo en la barra superior.
 * **Deteccion Inteligente de Programas Instalados:** Escanea el sistema y resalta con una etiqueta `[Instalado]` los programas ya presentes en tu equipo.
@@ -139,6 +140,7 @@ Follow real-time installation stages with an animated progress bar and detailed 
 </p>
 
 ### Key Features
+* **Automated System Update Detection:** Silently scans in the background on startup for outdated software installed across the system and presents an actionable green top banner to upgrade everything in one click with detailed live tracking.
 * **Modern Native UI (WPF / XAML):** Clean desktop interface featuring direct checkboxes grouped into clear categories.
 * **Real-Time Search & Filter:** Instantly filter any application or category as you type in the search bar.
 * **Smart Installed Detection:** Automatically scans Windows and highlights previously installed programs with an `[Instalado]` badge.
