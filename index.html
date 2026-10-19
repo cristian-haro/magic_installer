@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Installer | Instalador y Desinstalador por Lotes para Windows</title>
+  <meta name="description" content="Magic Installer & Magic_Installer.exe: Gestiona e instala decenas de aplicaciones esenciales en Windows de forma silenciosa, desatendida y sin bloatware mediante Winget.">
+  <link rel="icon" type="image/x-icon" href="assets/icon.ico">
+  
+  <!-- Tipografía Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0f1d;
+      --bg-card: #11192d;
+      --bg-card-hover: #16223b;
+      --bg-card-alt: #0d1424;
+      --border-color: #1f2f4c;
+      --border-glow: rgba(56, 189, 248, 0.25);
+      --primary: #38bdf8;
+      --primary-glow: #0284c7;
+      --accent: #818cf8;
+      --accent-purple: #c084fc;
+      --success: #34d399;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(at 15% 15%, rgba(56, 189, 248, 0.08) 0px, transparent 45%),
+        radial-gradient(at 85% 25%, rgba(129, 140, 248, 0.08) 0px, transparent 45%),
+        radial-gradient(at 50% 80%, rgba(192, 132, 252, 0.05) 0px, transparent 55%);
+      background-attachment: fixed;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ================= HEADER & NAV ================= */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(10, 15, 29, 0.82);
+      border-bottom: 1px solid rgba(31, 47, 76, 0.7);
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    }
+
+    .logo-icon img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .logo-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* ================= BOTONES ================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #031326;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5);
+      background: linear-gradient(135deg, #38bdf8, #7dd3fc);
+    }
+
+    .btn-secondary {
+      background: rgba(22, 34, 59, 0.85);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(30, 47, 80, 0.95);
+      border-color: var(--primary);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 1.05rem;
+      border-radius: var(--radius-md);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* ================= HERO SECTION ================= */
+    .hero {
+      padding: 90px 0 70px;
+      text-align: center;
+      position: relative;
+    }
+
+    .pill-announcement {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--primary);
+      margin-bottom: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 22px;
+      max-width: 950px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 30%, #38bdf8 70%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p.lead {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(17, 25, 45, 0.7);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+
+    .badge-pill svg {
+      width: 14px;
+      height: 14px;
+      color: var(--primary);
+    }
+
+    /* Mockup Showcase */
+    .mockup-wrapper {
+      position: relative;
+      max-width: 1020px;
+      margin: 0 auto;
+      border-radius: var(--radius-lg);
+      padding: 8px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(129, 140, 248, 0.15) 50%, rgba(192, 132, 252, 0.3));
+      box-shadow: 
+        0 25px 60px -15px rgba(0, 0, 0, 0.8),
+        0 0 50px -10px rgba(56, 189, 248, 0.2);
+    }
+
+    .mockup-inner {
+      background: #0d1322;
+      border-radius: calc(var(--radius-lg) - 4px);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mockup-header {
+      background: #141c30;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .window-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .window-dot.close { background: #ef4444; }
+    .window-dot.min { background: #f59e0b; }
+    .window-dot.max { background: #10b981; }
+
+    .window-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .mockup-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    /* ================= SECCIÓN CARACTERÍSTICAS PRINCIPALES ================= */
+    .section {
+      padding: 90px 0;
+    }
+
+    .section-title-area {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 60px;
+    }
+
+    .section-tag {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+    }
+
+    .grid-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px 28px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.15);
+      background: var(--bg-card-hover);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      margin-bottom: 22px;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .feature-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ================= SPOTLIGHT: MAGIC_INSTALLER.EXE ================= */
+    .spotlight-box {
+      background: linear-gradient(135deg, rgba(17, 25, 45, 0.9), rgba(13, 20, 36, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      margin: 40px 0;
+    }
+
+    .spotlight-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .spotlight-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .spotlight-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(192, 132, 252, 0.15);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      color: var(--accent-purple);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .spotlight-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+
+    .spotlight-text {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      margin-bottom: 24px;
+    }
+
+    .specs-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .specs-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .specs-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+    }
+
+    .specs-item svg {
+      width: 18px;
+      height: 18px;
+      color: var(--success);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .terminal-card {
+      background: #080c16;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    .terminal-bar {
+      background: #111928;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-subtle);
+    }
+
+    .terminal-body {
+      padding: 20px;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+
+    .cmd-line {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cmd-prompt {
+      color: var(--primary);
+      user-select: none;
+    }
+
+    .cmd-success {
+      color: var(--success);
+    }
+
+    .cmd-comment {
+      color: var(--text-subtle);
+    }
+
+    /* ================= COMPARATIVA ================= */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .compare-table th {
+      background: #0e1628;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .compare-table td:nth-child(2) {
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(56, 189, 248, 0.04);
+    }
+
+    .check-icon {
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .cross-icon {
+      color: #ef4444;
+      font-weight: bold;
+    }
+
+    /* ================= GALERÍA DE CAPTURAS INTERACTIVA ================= */
+    .screenshots-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .tab-card-info {
+      padding: 24px 30px;
+      background: #0e1526;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* ================= CATÁLOGO DE APLICACIONES INTERACTIVO ================= */
+    .catalog-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .search-bar-wrapper {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+    }
+
+    .search-icon-pos {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+      width: 18px;
+      height: 18px;
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .cat-pill {
+      padding: 7px 15px;
+      border-radius: 999px;
+      background: rgba(17, 25, 45, 0.7);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .cat-pill:hover,
+    .cat-pill.active {
+      background: var(--primary);
+      color: #031326;
+      font-weight: 600;
+      border-color: var(--primary);
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 16px;
+      max-height: 600px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .catalog-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+    .catalog-grid::-webkit-scrollbar-track {
+      background: var(--bg-card-alt);
+    }
+    .catalog-grid::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+    }
+
+    .app-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .app-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+
+    .app-category {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .app-name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .app-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .app-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 10px;
+    }
+
+    .app-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 170px;
+    }
+
+    .btn-copy-id {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .btn-copy-id:hover {
+      color: var(--primary);
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    /* ================= CÓMO FUNCIONA / PASOS ================= */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px 24px;
+      position: relative;
+    }
+
+    .step-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: rgba(56, 189, 248, 0.35);
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    .step-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ================= FAQ ================= */
+    .faq-container {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-item.active {
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .faq-question {
+      padding: 20px 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 1.05rem;
+      user-select: none;
+    }
+
+    .faq-icon {
+      transition: transform 0.25s ease;
+      color: var(--primary);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding: 0 24px 20px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    /* ================= CTA FINAL ================= */
+    .cta-banner {
+      background: radial-gradient(circle at center, rgba(56, 189, 248, 0.15) 0%, rgba(13, 20, 36, 0.8) 70%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 70px 30px;
+      text-align: center;
+      margin: 40px 0 80px;
+      box-shadow: 0 10px 40px -10px rgba(56, 189, 248, 0.25);
+    }
+
+    .cta-banner h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-banner p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 620px;
+      margin: 0 auto 32px;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      border-top: 1px solid var(--border-color);
+      background: #070b14;
+      padding: 50px 0 35px;
+      color: var(--text-subtle);
+      font-size: 0.9rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 25px;
+    }
+
+    /* Toast notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+    }
+
+    /* Modal de Captura a Pantalla Completa */
+    .img-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    .img-modal.show {
+      display: flex;
+    }
+    .img-modal img {
+      max-width: 95%;
+      max-height: 90vh;
+      border-radius: var(--radius-md);
+      box-shadow: 0 0 50px rgba(0,0,0,0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        padding: 50px 0 40px;
+      }
+      .spotlight-box {
+        padding: 28px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <header>
+    <div class="container nav-container">
+      <a href="#" class="logo-area">
+        <div class="logo-icon">
+          <img src="assets/icon.ico" alt="Magic Installer Icon" onerror="this.style.display='none'">
+        </div>
+        <span>Magic Installer</span>
+        <span class="logo-badge">v2.0</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Características</a></li>
+        <li><a href="#standalone">Magic_Installer.exe</a></li>
+        <li><a href="#screenshots">Capturas</a></li>
+        <li><a href="#catalog">Catálogo (50+)</a></li>
+        <li><a href="#compare">Comparativa</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/cristian-haro/magic_installer" target="_blank" rel="noopener" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a href="Magic_Installer.exe" download="Magic_Installer.exe" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Descargar .EXE</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container">
+      <div class="pill-announcement">
+        <span class="pill-dot"></span>
+        <span>Alternativa de código abierto y moderna a Ninite para Windows</span>
+      </div>
+
+      <h1>
+        Configura tu Windows en minutos con <br>
+        <span class="gradient-text">Magic Installer</span>
+      </h1>
+
+      <p class="lead">
+        Instala o desinstala por lotes decenas de aplicaciones populares sin barras de publicidad,
+        sin instaladores basura y 100% desatendido mediante Microsoft Winget.
+      </p>
+
+      <div class="hero-cta">
+        <a href="Magic_Installer.exe" download="Magic_Installer.exe" class="btn btn-primary btn-lg">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Descargar Magic_Installer.exe</span>
+        </a>
+        <a href="#how-it-works" class="btn btn-secondary btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+          </svg>
+          <span>¿Cómo funciona?</span>
+        </a>
+      </div>
+
+      <div class="badges-row">
+        <span class="badge-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Windows 10 / 11
+        </span>
+        <span class="badge-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          Winget & PowerShell Core
+        </span>
+        <span class="badge-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          0% Bloatware / Adware
+        </span>
+        <span class="badge-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Licencia MIT Open Source
+        </span>
+      </div>
+
+      <!-- Mockup Hero -->
+      <div class="mockup-wrapper">
+        <div class="mockup-inner">
+          <div class="mockup-header">
+            <div class="window-dots">
+              <span class="window-dot close"></span>
+              <span class="window-dot min"></span>
+              <span class="window-dot max"></span>
+            </div>
+            <div class="window-title">Magic Installer - Instalador por Lotes v2.0</div>
+            <div style="width: 48px;"></div>
+          </div>
+          <img 
+            src="assets/screenshots/magic_installer_selection.png" 
+            alt="Vista de Selección de Aplicaciones en Magic Installer" 
+            class="mockup-img"
+            onclick="openImageModal(this.src)"
+            style="cursor: zoom-in;"
+            title="Haz clic para ampliar"
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SPOTLIGHT: MAGIC_INSTALLER.EXE ================= -->
+  <section class="section" id="standalone">
+    <div class="container">
+      <div class="spotlight-box">
+        <div class="spotlight-grid">
+          <div>
+            <div class="spotlight-badge">Ejecutable Nativo Independiente</div>
+            <h2 class="spotlight-title">Todo el poder en un solo archivo: <span style="color: var(--primary);">Magic_Installer.exe</span></h2>
+            <p class="spotlight-text">
+              Diseñado para técnicos de soporte, entusiastas y usuarios que necesitan rapidez y pulcritud.
+              No requiere instalar dependencias adicionales ni abrir terminales intimidantes.
+            </p>
+
+            <ul class="specs-list">
+              <li class="specs-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Cero Consolas Negras:</strong> Se ejecuta silenciosamente sin ventanas CMD residuales.</span>
+              </li>
+              <li class="specs-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Elevación UAC Nativa:</strong> Pide permisos de administrador de forma transparente.</span>
+              </li>
+              <li class="specs-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Icono Win32 Incrustado:</strong> Gráficos de alta resolución integrados en el binario.</span>
+              </li>
+              <li class="specs-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Solo ~250 KB:</strong> Binario ultra ligero compilado con el compilador C# nativo.</span>
+              </li>
+            </ul>
+
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+              <a href="Magic_Installer.exe" download="Magic_Installer.exe" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Descargar Ejecutable (.exe)
+              </a>
+              <button onclick="copyToClipboard('git clone https://github.com/cristian-haro/magic_installer.git', 'Comando Git copiado')" class="btn btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Clonar Repositorio
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div class="terminal-card">
+              <div class="terminal-bar">
+                <span>PowerShell / CMD</span>
+                <span>Windows 11</span>
+              </div>
+              <div class="terminal-body">
+                <div class="cmd-line">
+                  <span class="cmd-prompt">&gt;</span>
+                  <span>.\Magic_Installer.exe</span>
+                </div>
+                <div class="cmd-comment"># 1. Elevación UAC automática solicitada</div>
+                <div class="cmd-comment"># 2. Inicializando interfaz WPF / XAML moderna</div>
+                <div class="cmd-comment"># 3. Escaneando catálogo y software instalado...</div>
+                <div class="cmd-success">[OK] 50+ Aplicaciones listas</div>
+                <div class="cmd-success">[OK] Detección de software preinstalado activa</div>
+                <div class="cmd-success">[OK] Conexión con Microsoft Winget establecida</div>
+                <br>
+                <div style="color: var(--primary);">[STATUS] Listo para instalar o desinstalar con 1 clic.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CARACTERÍSTICAS PRINCIPALES ================= -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-tag">Funcionalidades</span>
+        <h2 class="section-title">Diseñado para ser rápido, limpio e intuitivo</h2>
+        <p class="section-desc">Olvídate de buscar instaladores en Google y hacer "Siguiente, Siguiente, Aceptar". Magic Installer automatiza todo el ciclo de vida de tu software.</p>
+      </div>
+
+      <div class="grid-features">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3 class="feature-title">Doble Modo: Instalar & Desinstalar</h3>
+          <p class="feature-text">
+            Cambia fácilmente entre el instalador por lotes y el potente <strong>Bulk Uninstaller</strong> para escanear y eliminar programas no deseados y bloatware del sistema.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3 class="feature-title">Buscador y Filtrado en Tiempo Real</h3>
+          <p class="feature-text">
+            Filtra de manera instantánea entre las categorías y programas escribiendo en la barra superior. Encuentra herramientas de desarrollo, ofimática o navegadores en milisegundos.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="feature-title">Detección Inteligente [Instalado]</h3>
+          <p class="feature-text">
+            Escanea tu registro de Windows al inicio e identifica qué aplicaciones ya posees en el PC, marcándolas con una insignia verde para evitar duplicidades innecesarias.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          </div>
+          <h3 class="feature-title">Actualizador de Sistema Integrado</h3>
+          <p class="feature-text">
+            Comprueba en segundo plano las actualizaciones pendientes de tus programas actuales y muestra un aviso para actualizar todo tu software a la última versión con un clic.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+          </div>
+          <h3 class="feature-title">Monitor de Hardware en Vivo</h3>
+          <p class="feature-text">
+            El pie de la ventana monitoriza en tiempo real los datos clave de tu equipo: modelo de CPU, porcentaje y cantidad de memoria RAM usada y espacio disponible en el disco C:.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3 class="feature-title">100% Gratuito y Libre de Basura</h3>
+          <p class="feature-text">
+            Sin suscripciones, sin anuncios, sin software patrocinado oculto. Las descargas se realizan directamente desde los repositorios oficiales de cada desarrollador.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GALERÍA DE CAPTURAS INTERACTIVA ================= -->
+  <section class="section" id="screenshots" style="background: rgba(13, 20, 36, 0.4);">
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-tag">Interfaz Visual</span>
+        <h2 class="section-title">Elegante, responsivo y nativo</h2>
+        <p class="section-desc">Diseñado con WPF y XAML para ofrecer una experiencia fluida que se siente como parte del propio Windows 11.</p>
+      </div>
+
+      <div class="screenshots-tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          1. Modo Instalador
+        </button>
+        <button class="tab-btn" onclick="switchTab(1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          2. Modo Desinstalador (Bulk)
+        </button>
+        <button class="tab-btn" onclick="switchTab(2)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          3. Monitoreo en Tiempo Real
+        </button>
+      </div>
+
+      <!-- Tab 1 -->
+      <div class="tab-content active" id="tab-0">
+        <div class="tab-card">
+          <img src="assets/screenshots/magic_installer_selection.png" alt="Modo Instalador de Magic Installer" class="mockup-img" onclick="openImageModal(this.src)" style="cursor: zoom-in;" title="Ampliar imagen">
+          <div class="tab-card-info">
+            <div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 4px;">Vista de Selección y Filtrado</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Organizado por tarjetas de categorías con casillas de verificación directas y barra de búsqueda interactiva.</p>
+            </div>
+            <span class="badge-pill" style="color: var(--primary);">Modo Instalador</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2 -->
+      <div class="tab-content" id="tab-1">
+        <div class="tab-card">
+          <img src="assets/screenshots/magic_installer_uninstaller.png" alt="Modo Desinstalador de Magic Installer" class="mockup-img" onclick="openImageModal(this.src)" style="cursor: zoom-in;" title="Ampliar imagen">
+          <div class="tab-card-info">
+            <div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 4px;">Desinstalador por Lotes (Bulk Uninstaller)</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Escanea el software instalado en el sistema, filtra dependencias internas y permite eliminar múltiples apps con confirmación segura.</p>
+            </div>
+            <span class="badge-pill" style="color: #ef4444;">Modo Desinstalador</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3 -->
+      <div class="tab-content" id="tab-2">
+        <div class="tab-card">
+          <img src="assets/screenshots/magic_installer_progress.png" alt="Monitoreo de Progreso en Vivo" class="mockup-img" onclick="openImageModal(this.src)" style="cursor: zoom-in;" title="Ampliar imagen">
+          <div class="tab-card-info">
+            <div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 4px;">Progreso Animado y Estados en Vivo</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Muestra la descarga e instalación paso a paso: 'En espera', 'Procesando' y 'Completado' con log en tiempo real.</p>
+            </div>
+            <span class="badge-pill" style="color: var(--success);">Monitoreo en Vivo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CÓMO FUNCIONA ================= -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-tag">Uso Sencillo</span>
+        <h2 class="section-title">En marcha en tres simples pasos</h2>
+        <p class="section-desc">Sin registros, sin asistentes interminables y sin configuraciones complejas.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3 class="step-title">Descarga y Ejecuta</h3>
+          <p class="step-desc">
+            Basta con hacer doble clic sobre <code>Magic_Installer.exe</code> (o ejecutar el archivo <code>Magic_Installer.bat</code>). El sistema solicitará permisos de administrador de forma transparente.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3 class="step-title">Selecciona tus Aplicaciones</h3>
+          <p class="step-desc">
+            Marca las casillas de los programas que deseas instalar o busca en la barra superior. Magic Installer detectará automáticamente aquellos que ya tengas instalados.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3 class="step-title">Instalación 100% Desatendida</h3>
+          <p class="step-desc">
+            Pulsa en <strong>"Instalar Seleccionadas"</strong>. Winget se encargará de descargar la última versión oficial de cada aplicación y completar la instalación sin requerir tu intervención.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATÁLOGO INTERACTIVO ================= -->
+  <section class="section" id="catalog" style="background: rgba(13, 20, 36, 0.4);">
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-tag">Colección Oficial</span>
+        <h2 class="section-title">Más de 50 aplicaciones esenciales incluidas</h2>
+        <p class="section-desc">Explora el catálogo incluido en Magic Installer o busca cualquier aplicación para ver su identificador Winget.</p>
+      </div>
+
+      <div class="catalog-controls">
+        <div class="search-bar-wrapper">
+          <svg class="search-icon-pos" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="catalogSearch" class="search-input" placeholder="Buscar por nombre, ID o categoría (ej. Chrome, Python, Discord...)" oninput="filterCatalog()">
+        </div>
+
+        <div class="category-pills" id="categoryPills">
+          <button class="cat-pill active" onclick="selectCategory('Todas')">Todas (<span id="count-all">0</span>)</button>
+          <button class="cat-pill" onclick="selectCategory('Navegadores')">Navegadores</button>
+          <button class="cat-pill" onclick="selectCategory('Mensajeria y Comunicacion')">Mensajería</button>
+          <button class="cat-pill" onclick="selectCategory('Multimedia y Diseno')">Multimedia & Diseño</button>
+          <button class="cat-pill" onclick="selectCategory('Desarrollo y Programacion')">Desarrollo & IA</button>
+          <button class="cat-pill" onclick="selectCategory('Utilidades del Sistema')">Utilidades</button>
+          <button class="cat-pill" onclick="selectCategory('Almacenamiento en la Nube')">Nube</button>
+          <button class="cat-pill" onclick="selectCategory('Ofimatica y Notas')">Ofimática</button>
+          <button class="cat-pill" onclick="selectCategory('Gaming y Tiendas')">Gaming</button>
+          <button class="cat-pill" onclick="selectCategory('Seguridad y Contrasenas')">Seguridad</button>
+        </div>
+      </div>
+
+      <!-- Grid de aplicaciones -->
+      <div class="catalog-grid" id="appsGrid">
+        <!-- Generado dinámicamente con JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TABLA COMPARATIVA ================= -->
+  <section class="section" id="compare">
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-tag">Comparación</span>
+        <h2 class="section-title">¿Cómo se compara Magic Installer?</h2>
+        <p class="section-desc">Descubre las ventajas de utilizar una herramienta abierta, moderna y potenciada por el repositorio oficial de Microsoft.</p>
+      </div>
+
+      <div class="table-container">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Característica</th>
+              <th>Magic Installer (.exe)</th>
+              <th>Ninite</th>
+              <th>Instalación Manual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cero Barras de Publicidad & Adware</strong></td>
+              <td><span class="check-icon">✓</span> 100% Limpio</td>
+              <td><span class="check-icon">✓</span> Limpio</td>
+              <td><span class="cross-icon">✗</span> Frecuente bloatware</td>
+            </tr>
+            <tr>
+              <td><strong>Modo Desinstalador por Lotes (Bulk)</strong></td>
+              <td><span class="check-icon">✓</span> Sí, incluido nativamente</td>
+              <td><span class="cross-icon">✗</span> No disponible</td>
+              <td><span class="cross-icon">✗</span> Uno por uno</td>
+            </tr>
+            <tr>
+              <td><strong>Detección de Programas ya Instalados</strong></td>
+              <td><span class="check-icon">✓</span> Sí, etiqueta [Instalado]</td>
+              <td><span class="cross-icon">✗</span> No visible en web</td>
+              <td><span class="cross-icon">✗</span> Manual</td>
+            </tr>
+            <tr>
+              <td><strong>Buscador y Filtrado en Tiempo Real</strong></td>
+              <td><span class="check-icon">✓</span> Integrado en UI</td>
+              <td><span class="cross-icon">✗</span> Control+F en web</td>
+              <td><span class="cross-icon">✗</span> Búsqueda en Google</td>
+            </tr>
+            <tr>
+              <td><strong>Monitor de Actualizaciones de Sistema</strong></td>
+              <td><span class="check-icon">✓</span> Escaneo en vivo y 1-clic</td>
+              <td><span class="cross-icon">✗</span> Requiere versión de pago</td>
+              <td><span class="cross-icon">✗</span> Manual</td>
+            </tr>
+            <tr>
+              <td><strong>Monitor de CPU, RAM y Disco</strong></td>
+              <td><span class="check-icon">✓</span> Barra de estado en vivo</td>
+              <td><span class="cross-icon">✗</span> No</td>
+              <td><span class="cross-icon">✗</span> Abrir Administrador de tareas</td>
+            </tr>
+            <tr>
+              <td><strong>Catálogo Moderno de IA & Dev (Cursor, Claude, Docker)</strong></td>
+              <td><span class="check-icon">✓</span> Sí, herramientas modernas</td>
+              <td><span class="cross-icon">✗</span> Catálogo limitado</td>
+              <td><span class="cross-icon">✗</span> Descargar una a una</td>
+            </tr>
+            <tr>
+              <td><strong>Código Abierto (Licencia MIT)</strong></td>
+              <td><span class="check-icon">✓</span> 100% Open Source</td>
+              <td><span class="cross-icon">✗</span> Cerrado / Propietario</td>
+              <td>N/A</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PREGUNTAS FRECUENTES (FAQ) ================= -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-title-area">
+        <span class="section-tag">Dudas y Respuestas</span>
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <p class="section-desc">Todo lo que necesitas saber antes de usar Magic Installer.</p>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item active">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Es seguro utilizar Magic_Installer.exe?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            Totalmente seguro. Magic Installer es un software de código abierto (licencia MIT). No aloja ejecutables modificados ni servidores intermedios: utiliza directamente el gestor de paquetes oficial <strong>Microsoft Winget</strong>, descargando los instaladores legítimos y verificados desde los servidores de los desarrolladores originales (Google, Mozilla, Microsoft, Valve, etc.).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Cuáles son los requisitos de mi sistema?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            Solo necesitas <strong>Windows 10 (versión 1809 o superior)</strong> o <strong>Windows 11</strong>. En versiones actuales de Windows, el gestor de paquetes <em>Winget (App Installer)</em> viene preinstalado de fábrica por Microsoft. Si no lo tienes, puedes instalarlo gratuitamente desde la Microsoft Store buscando "App Installer".
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Qué diferencia hay entre Magic_Installer.exe y Magic_Installer.bat?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            Ambos ejecutan el mismo instalador gráfico moderno. La diferencia es que <code>Magic_Installer.exe</code> es un binario Win32 standalone compilado en C# con icono incrustado y ejecución 100% limpia sin ventanas de consola visibles. El archivo <code>.bat</code> es un lanzador de script alternativo ideal para desarrolladores que deseen inspeccionar o modificar el código fuente de <code>src/Magic_Installer.ps1</code>.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Puedo desinstalar programas que no instalé con esta app?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            Sí. El modo <strong>Bulk Uninstaller</strong> escanea el registro completo de programas instalados en Windows. Puedes seleccionar cualquier aplicación instalada en tu equipo para desinstalarla masivamente y de forma silenciosa sin pasar por el panel de control clásico de Windows.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>¿Por qué solicita permisos de administrador?</span>
+            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="faq-answer">
+            En Windows, la instalación y desinstalación de software en carpetas de sistema (como <code>C:\Program Files</code>) y la modificación del registro requieren privilegios administrativos. Magic Installer solicita elevación UAC al iniciarse para garantizar que las instalaciones desatendidas no fallen por falta de permisos.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BANNER FINAL DE DESCARGA ================= -->
+  <section class="container">
+    <div class="cta-banner">
+      <h2>¿Listo para agilizar la puesta a punto de tu PC?</h2>
+      <p>Descarga el ejecutable standalone gratuito o contribuye en el repositorio de GitHub.</p>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="Magic_Installer.exe" download="Magic_Installer.exe" class="btn btn-primary btn-lg">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Descargar Magic_Installer.exe</span>
+        </a>
+        <a href="https://github.com/cristian-haro/magic_installer" target="_blank" rel="noopener" class="btn btn-secondary btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span>Ver Repositorio GitHub</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo-icon">
+            <img src="assets/icon.ico" alt="Magic Installer" onerror="this.style.display='none'">
+          </div>
+          <div>
+            <div style="font-weight: 700; color: #fff;">Magic Installer</div>
+            <div style="font-size: 0.8rem;">Automated Windows Software Manager</div>
+          </div>
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="#features">Características</a></li>
+          <li><a href="#standalone">Instalador .exe</a></li>
+          <li><a href="#screenshots">Capturas</a></li>
+          <li><a href="#catalog">Catálogo</a></li>
+          <li><a href="https://github.com/cristian-haro/magic_installer/blob/main/LICENSE" target="_blank" rel="noopener">Licencia MIT</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Desarrollado con ❤️ para la comunidad de Windows. Código 100% libre bajo licencia MIT.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast de copia -->
+  <div id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg">Copiado al portapapeles</span>
+  </div>
+
+  <!-- Modal de Capturas en Grande -->
+  <div id="imgModal" class="img-modal" onclick="closeImageModal()">
+    <img id="modalImg" src="" alt="Captura a tamaño completo">
+  </div>
+
+  <!-- JavaScript interactivo -->
+  <script>
+    // Catálogo de aplicaciones completo
+    const APPS = [
+      // Navegadores
+      { cat: "Navegadores", name: "Google Chrome", id: "Google.Chrome", desc: "Navegador web de Google rápido y seguro" },
+      { cat: "Navegadores", name: "Mozilla Firefox", id: "Mozilla.Firefox", desc: "Navegador de código abierto centrado en privacidad" },
+      { cat: "Navegadores", name: "Brave Browser", id: "Brave.Brave", desc: "Navegador enfocado en privacidad con bloqueo de anuncios" },
+      { cat: "Navegadores", name: "Opera GX", id: "Opera.OperaGX", desc: "Navegador para gaming con limitadores de RAM y CPU" },
+      { cat: "Navegadores", name: "Microsoft Edge", id: "Microsoft.Edge", desc: "Navegador nativo y optimizado para Windows" },
+      { cat: "Navegadores", name: "Vivaldi", id: "VivaldiTechnologies.Vivaldi", desc: "Navegador altamente personalizable y productivo" },
+      { cat: "Navegadores", name: "Tor Browser", id: "TorProject.TorBrowser", desc: "Navegador para navegación anónima en la red Tor" },
+
+      // Mensajería y Comunicación
+      { cat: "Mensajeria y Comunicacion", name: "Discord", id: "Discord.Discord", desc: "Chat de voz y texto para comunidades y juegos" },
+      { cat: "Mensajeria y Comunicacion", name: "Telegram Desktop", id: "Telegram.TelegramDesktop", desc: "Mensajería ultrarrápida, sincronizada y segura" },
+      { cat: "Mensajeria y Comunicacion", name: "WhatsApp", id: "WhatsApp.WhatsApp", desc: "Cliente nativo oficial de WhatsApp para Windows" },
+      { cat: "Mensajeria y Comunicacion", name: "Slack", id: "SlackTechnologies.Slack", desc: "Plataforma de comunicación para equipos de trabajo" },
+      { cat: "Mensajeria y Comunicacion", name: "Microsoft Teams", id: "Microsoft.Teams", desc: "Comunicación corporativa y videollamadas" },
+      { cat: "Mensajeria y Comunicacion", name: "Zoom", id: "Zoom.Zoom", desc: "Reuniones virtuales y videollamadas en HD" },
+      { cat: "Mensajeria y Comunicacion", name: "Mozilla Thunderbird", id: "Mozilla.Thunderbird", desc: "Cliente de correo y calendario libre y privado" },
+      { cat: "Mensajeria y Comunicacion", name: "Asana", id: "Asana.Asana", desc: "Gestión y seguimiento de proyectos y tareas" },
+
+      // Multimedia y Diseño
+      { cat: "Multimedia y Diseno", name: "VLC Media Player", id: "VideoLAN.VLC", desc: "Reproductor multimedia universal para audio y video" },
+      { cat: "Multimedia y Diseno", name: "Spotify", id: "Spotify.Spotify", desc: "Música, podcasts y audio en streaming" },
+      { cat: "Multimedia y Diseno", name: "OBS Studio", id: "OBSProject.OBSStudio", desc: "Grabación de pantalla y transmisión en vivo" },
+      { cat: "Multimedia y Diseno", name: "Figma", id: "Figma.Figma", desc: "Herramienta colaborativa líder de diseño UI/UX" },
+      { cat: "Multimedia y Diseno", name: "Blender", id: "BlenderFoundation.Blender", desc: "Suite potente de modelado, renderizado y animación 3D" },
+      { cat: "Multimedia y Diseno", name: "GIMP", id: "GIMP.GIMP", desc: "Editor de imágenes avanzado de código abierto" },
+      { cat: "Multimedia y Diseno", name: "Audacity", id: "Audacity.Audacity", desc: "Editor y grabador de audio multipista" },
+      { cat: "Multimedia y Diseno", name: "HandBrake", id: "HandBrake.HandBrake", desc: "Conversor y compresor de archivos de video" },
+      { cat: "Multimedia y Diseno", name: "Paint.NET", id: "dotPDN.PaintDotNet", desc: "Editor fotográfico ligero y potente para Windows" },
+      { cat: "Multimedia y Diseno", name: "K-Lite Codec Pack", id: "CodecGuide.K-LiteCodecPack.Mega", desc: "Paquete completo de códecs de video y audio" },
+
+      // Desarrollo y Programación
+      { cat: "Desarrollo y Programacion", name: "Visual Studio Code", id: "Microsoft.VisualStudioCode", desc: "Editor de código fuente más popular y versátil" },
+      { cat: "Desarrollo y Programacion", name: "Cursor", id: "Anysphere.Cursor", desc: "Editor de código inteligente impulsado por IA" },
+      { cat: "Desarrollo y Programacion", name: "Claude Desktop", id: "Anthropic.Claude", desc: "Cliente oficial de escritorio para Anthropic Claude" },
+      { cat: "Desarrollo y Programacion", name: "Antigravity", id: "Google.Antigravity", desc: "Entorno y plataforma de desarrollo potenciada por IA" },
+      { cat: "Desarrollo y Programacion", name: "Codex CLI", id: "OpenAI.Codex", desc: "Herramienta CLI de desarrollo inteligente de OpenAI" },
+      { cat: "Desarrollo y Programacion", name: "Git", id: "Git.Git", desc: "Sistema estándar de control de versiones distribuido" },
+      { cat: "Desarrollo y Programacion", name: "Python 3", id: "Python.Python.3.12", desc: "Intérprete y entorno del lenguaje de programación Python" },
+      { cat: "Desarrollo y Programacion", name: "Node.js (LTS)", id: "OpenJS.NodeJS.LTS", desc: "Entorno de ejecución JavaScript del lado del servidor" },
+      { cat: "Desarrollo y Programacion", name: "Docker Desktop", id: "Docker.DockerDesktop", desc: "Plataforma de contenedores para desarrollo local" },
+      { cat: "Desarrollo y Programacion", name: "Windows Terminal", id: "Microsoft.WindowsTerminal", desc: "Terminal moderna con pestañas y soporte para PowerShell y WSL" },
+      { cat: "Desarrollo y Programacion", name: "Postman", id: "Postman.Postman", desc: "Herramienta indispensable para diseño y prueba de APIs" },
+      { cat: "Desarrollo y Programacion", name: "DBeaver Community", id: "dbeaver.dbeaver", desc: "Gestor universal de bases de datos SQL y NoSQL" },
+      { cat: "Desarrollo y Programacion", name: "GitHub Desktop", id: "GitHub.GitHubDesktop", desc: "Cliente gráfico oficial para repositorios Git y GitHub" },
+      { cat: "Desarrollo y Programacion", name: "Notepad++", id: "Notepad++.Notepad++", desc: "Editor de texto rápido con resaltado de sintaxis" },
+      { cat: "Desarrollo y Programacion", name: "WinSCP / FTP", id: "WinSCP.WinSCP", desc: "Cliente de transferencia de archivos SFTP, FTP y SCP" },
+      { cat: "Desarrollo y Programacion", name: "Android Studio", id: "Google.AndroidStudio", desc: "IDE oficial para el desarrollo de aplicaciones Android" },
+      { cat: "Desarrollo y Programacion", name: "Eclipse IDE", id: "EclipseFoundation.Eclipse.Java", desc: "Entorno de desarrollo para Java y proyectos empresariales" },
+
+      // Utilidades del Sistema
+      { cat: "Utilidades del Sistema", name: "7-Zip", id: "7zip.7zip", desc: "Compresor y descompresor de archivos de alta tasa de compresión" },
+      { cat: "Utilidades del Sistema", name: "WinRAR", id: "RARLab.WinRAR", desc: "Gestor clásico de archivos comprimidos RAR y ZIP" },
+      { cat: "Utilidades del Sistema", name: "Microsoft PowerToys", id: "Microsoft.PowerToys", desc: "Colección de utilidades avanzadas para exprimir Windows" },
+      { cat: "Utilidades del Sistema", name: "Everything", id: "voidtools.Everything", desc: "Buscador instantáneo de archivos y carpetas locales" },
+      { cat: "Utilidades del Sistema", name: "TreeSize Free", id: "JAMSoftware.TreeSize.Free", desc: "Analizador visual del espacio consumido en disco" },
+      { cat: "Utilidades del Sistema", name: "CrystalDiskInfo", id: "CrystalDewWorld.CrystalDiskInfo", desc: "Monitor de salud SMART y temperatura para SSD y HDD" },
+      { cat: "Utilidades del Sistema", name: "CPU-Z", id: "CPUID.CPU-Z", desc: "Información detallada sobre CPU, memoria y placa base" },
+      { cat: "Utilidades del Sistema", name: "GPU-Z", id: "TechPowerUp.GPU-Z", desc: "Monitor de especificaciones y sensores de la tarjeta gráfica" },
+      { cat: "Utilidades del Sistema", name: "Rufus", id: "Rufus.Rufus", desc: "Creación rápida de memorias USB de arranque e instalación" },
+      { cat: "Utilidades del Sistema", name: "qBittorrent", id: "qBittorrent.qBittorrent", desc: "Cliente BitTorrent libre, ligero y sin anuncios" },
+      { cat: "Utilidades del Sistema", name: "Transmission", id: "Transmission.Transmission", desc: "Cliente Torrent minimalista y veloz" },
+      { cat: "Utilidades del Sistema", name: "AnyDesk", id: "AnyDeskSoftwareGmbH.AnyDesk", desc: "Control y soporte remoto fluido y seguro" },
+      { cat: "Utilidades del Sistema", name: "TeamViewer", id: "TeamViewer.TeamViewer", desc: "Solución integral para acceso y soporte a distancia" },
+      { cat: "Utilidades del Sistema", name: "AutoHotkey", id: "AutoHotkey.AutoHotkey", desc: "Automatización de tareas y creación de atajos de teclado" },
+      { cat: "Utilidades del Sistema", name: "Glary Utilities", id: "Glarysoft.GlaryUtilities", desc: "Suite de optimización y mantenimiento de sistema" },
+      { cat: "Utilidades del Sistema", name: "CCleaner", id: "Piriform.CCleaner", desc: "Limpiador de archivos temporales y espacio en disco" },
+
+      // Almacenamiento en la Nube
+      { cat: "Almacenamiento en la Nube", name: "Google Drive", id: "Google.GoogleDrive", desc: "Sincronización de carpetas de Google Drive en el explorador" },
+      { cat: "Almacenamiento en la Nube", name: "Microsoft OneDrive", id: "Microsoft.OneDrive", desc: "Almacenamiento en la nube integrado con el ecosistema Windows" },
+      { cat: "Almacenamiento en la Nube", name: "Dropbox", id: "Dropbox.Dropbox", desc: "Almacenamiento seguro y compartición sencilla de archivos" },
+      { cat: "Almacenamiento en la Nube", name: "SugarSync", id: "IPVanish.SugarSync", desc: "Copia de seguridad y sincronización en la nube" },
+
+      // Ofimática y Notas
+      { cat: "Ofimatica y Notas", name: "Adobe Acrobat Reader", id: "Adobe.Acrobat.Reader.64-bit", desc: "Lector estándar de documentos PDF e impresión" },
+      { cat: "Ofimatica y Notas", name: "LibreOffice", id: "TheDocumentFoundation.LibreOffice", desc: "Suite ofimática completa, potente y de código abierto" },
+      { cat: "Ofimatica y Notas", name: "Obsidian", id: "Obsidian.Obsidian", desc: "Base de conocimiento personal basada en archivos Markdown locales" },
+      { cat: "Ofimatica y Notas", name: "Notion", id: "Notion.Notion", desc: "Espacio de trabajo todo en uno para notas, tareas y wikis" },
+
+      // Gaming y Tiendas
+      { cat: "Gaming y Tiendas", name: "Steam", id: "Valve.Steam", desc: "La mayor plataforma y tienda de videojuegos para PC" },
+      { cat: "Gaming y Tiendas", name: "Epic Games Launcher", id: "EpicGames.EpicGamesLauncher", desc: "Tienda y lanzador de videojuegos de Epic Games" },
+      { cat: "Gaming y Tiendas", name: "GOG Galaxy", id: "GOG.Galaxy", desc: "Lanzador de juegos sin DRM y unificador de librerías" },
+      { cat: "Gaming y Tiendas", name: "EA App", id: "ElectronicArts.EADesktop", desc: "Plataforma oficial de juegos y suscripciones de Electronic Arts" },
+
+      // Seguridad y Contraseñas
+      { cat: "Seguridad y Contrasenas", name: "Bitwarden", id: "Bitwarden.Bitwarden", desc: "Gestor de contraseñas de código abierto cifrado de punto a punto" },
+      { cat: "Seguridad y Contrasenas", name: "KeePassXC", id: "KeePassXCTeam.KeePassXC", desc: "Gestor de contraseñas ultraseguro con base de datos local" },
+      { cat: "Seguridad y Contrasenas", name: "Malwarebytes", id: "Malwarebytes.Malwarebytes", desc: "Detección y eliminación de malware, ransomware y amenazas" }
+    ];
+
+    let currentCategory = "Todas";
+
+    // Inicializar catálogo
+    function initCatalog() {
+      document.getElementById('count-all').innerText = APPS.length;
+      renderApps(APPS);
+    }
+
+    // Renderizar tarjetas
+    function renderApps(appsToRender) {
+      const grid = document.getElementById('appsGrid');
+      grid.innerHTML = '';
+
+      if (appsToRender.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+            <p>No se encontraron aplicaciones que coincidan con la búsqueda.</p>
+          </div>
+        `;
+        return;
+      }
+
+      appsToRender.forEach(app => {
+        const card = document.createElement('div');
+        card.className = 'app-card';
+        card.innerHTML = `
+          <div>
+            <div class="app-category">${app.cat}</div>
+            <div class="app-name">${app.name}</div>
+            <div class="app-desc">${app.desc}</div>
+          </div>
+          <div class="app-footer">
+            <span class="app-id" title="${app.id}">ID: ${app.id}</span>
+            <button class="btn-copy-id" onclick="copyWingetCmd('${app.id}', '${app.name}')" title="Copiar comando Winget">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Filtrar catálogo por texto y categoría
+    function filterCatalog() {
+      const query = document.getElementById('catalogSearch').value.toLowerCase().trim();
+      const filtered = APPS.filter(app => {
+        const matchesCategory = (currentCategory === "Todas" || app.cat === currentCategory);
+        const matchesQuery = !query || 
+          app.name.toLowerCase().includes(query) || 
+          app.id.toLowerCase().includes(query) || 
+          app.desc.toLowerCase().includes(query) ||
+          app.cat.toLowerCase().includes(query);
+        return matchesCategory && matchesQuery;
+      });
+      renderApps(filtered);
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      const buttons = document.querySelectorAll('#categoryPills .cat-pill');
+      buttons.forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.includes(cat) || (cat === 'Todas' && btn.innerText.includes('Todas')));
+      });
+      filterCatalog();
+    }
+
+    // Cambiar pestañas de capturas
+    function switchTab(index) {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabBtns.forEach((btn, i) => btn.classList.toggle('active', i === index));
+      tabContents.forEach((c, i) => c.classList.toggle('active', i === index));
+    }
+
+    // Acordeón FAQ
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      item.classList.toggle('active');
+    }
+
+    // Modal de imagen
+    function openImageModal(src) {
+      const modal = document.getElementById('imgModal');
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = src;
+      modal.classList.add('show');
+    }
+
+    function closeImageModal() {
+      document.getElementById('imgModal').classList.remove('show');
+    }
+
+    // Copiar al portapapeles
+    function copyWingetCmd(id, name) {
+      const cmd = `winget install --id "${id}" -e --accept-package-agreements --accept-source-agreements`;
+      copyToClipboard(cmd, `Comando Winget para ${name} copiado`);
+    }
+
+    function copyToClipboard(text, message) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(message || "Copiado al portapapeles");
+      }).catch(() => {
+        showToast("Error al copiar");
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.style.display = 'flex';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3200);
+    }
+
+    // Iniciar al cargar el DOM
+    document.addEventListener('DOMContentLoaded', initCatalog);
+  </script>
+</body>
+</html>
