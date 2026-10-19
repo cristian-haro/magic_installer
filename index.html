@@ -4,13 +4,142 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Magic Installer | Instalador y Desinstalador por Lotes para Windows</title>
-  <meta name="description" content="Gestiona, instala y desinstala decenas de aplicaciones esenciales en Windows 10 y 11 de forma silenciosa, desatendida y sin bloatware mediante Microsoft Winget.">
-  <link rel="icon" type="image/x-icon" href="assets/icon.ico">
+  
+  <!-- Technical SEO & Metadata (frontend-seo-metadata-og) -->
+  <meta name="description" content="Instala y desinstala decenas de aplicaciones esenciales en Windows de forma silenciosa, desatendida y sin bloatware mediante Microsoft Winget.">
+  <meta name="keywords" content="magic installer, ninite windows, winget batch installer, instalador por lotes windows, desinstalador silencioso winget, software esencial windows">
+  <meta name="author" content="Cristian Haro">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://cristian-haro.github.io/magic_installer/">
 
-  <!-- Tipografia: Inter & JetBrains Mono -->
+  <!-- Open Graph / Facebook (frontend-seo-metadata-og) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cristian-haro.github.io/magic_installer/">
+  <meta property="og:site_name" content="Magic Installer">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Magic Installer | Instalador y Desinstalador por Lotes para Windows">
+  <meta property="og:description" content="Instala y desinstala decenas de aplicaciones esenciales en Windows de forma silenciosa, desatendida y sin bloatware mediante Microsoft Winget.">
+  <meta property="og:image" content="https://cristian-haro.github.io/magic_installer/assets/screenshots/magic_installer_selection.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Interfaz gráfica nativa de Magic Installer para Windows">
+  <meta property="og:image:type" content="image/png">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://cristian-haro.github.io/magic_installer/">
+  <meta name="twitter:title" content="Magic Installer | Instalador y Desinstalador por Lotes para Windows">
+  <meta name="twitter:description" content="Instala y desinstala decenas de aplicaciones esenciales en Windows de forma silenciosa, desatendida y sin bloatware mediante Microsoft Winget.">
+  <meta name="twitter:image" content="https://cristian-haro.github.io/magic_installer/assets/screenshots/magic_installer_selection.png">
+
+  <!-- Platform Readiness & PWA Icons (frontend-platform-readiness-seo) -->
+  <link rel="icon" type="image/x-icon" href="assets/icon.ico">
+  <link rel="apple-touch-icon" href="assets/icon.ico">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0a0f1d">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Tipografía Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Structured Data JSON-LD (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://cristian-haro.github.io/magic_installer/#software",
+        "name": "Magic Installer",
+        "operatingSystem": "Windows 10, Windows 11",
+        "applicationCategory": "UtilitiesApplication",
+        "softwareVersion": "1.0.0",
+        "downloadUrl": "https://github.com/cristian-haro/magic_installer/releases/latest/download/Magic_Installer.exe",
+        "url": "https://cristian-haro.github.io/magic_installer/",
+        "license": "https://opensource.org/licenses/MIT",
+        "description": "Instalador y desinstalador por lotes automatizado y desatendido para Windows basado en Microsoft Winget.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Cristian Haro",
+          "url": "https://github.com/cristian-haro"
+        },
+        "screenshot": "https://cristian-haro.github.io/magic_installer/assets/screenshots/magic_installer_selection.png"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://cristian-haro.github.io/magic_installer/#website",
+        "url": "https://cristian-haro.github.io/magic_installer/",
+        "name": "Magic Installer",
+        "description": "Sitio oficial de Magic Installer para Windows",
+        "inLanguage": "es-ES"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://cristian-haro.github.io/magic_installer/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Por qué usar Magic Installer en lugar de descargar programas uno a uno?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Al configurar un equipo nuevo o formateado, descargar decenas de instaladores manualmente consume horas, requiere cerrar ventanas emergentes y arriesga la instalación accidental de barras de publicidad o software espía. Magic Installer automatiza todo el proceso en lote mediante Microsoft Winget, ahorrándote tiempo y garantizando instalaciones 100% limpias."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿De dónde provienen las descargas y cómo sé que son seguras?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Magic Installer no aloja archivos ejecutables de las aplicaciones ni actúa como intermediario de descarga. Las peticiones son resueltas por el servicio nativo de Microsoft Winget, que conecta directamente con las URLs oficiales verificadas de los propios fabricantes y valida sus hashes criptográficos (SHA-256)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué diferencia hay entre Magic_Installer.exe y Magic_Installer.bat?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ambos ejecutan exactamente el mismo núcleo de automatización. El archivo Magic_Installer.exe es un binario standalone compilado con C# nativo de Windows que incluye el manifiesto de Administrador y el icono Win32 integrado, ideal para doble clic directo sin dependencias. El archivo Magic_Installer.bat es un lanzador simple que invoca directamente el script src/Magic_Installer.ps1."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Por qué solicita permisos de Administrador al abrirse?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tanto la instalación silenciosa en carpetas del sistema (Program Files) como la desinstalación masiva y lectura de hardware requieren privilegios elevados para operar de forma desatendida sin que Windows interrumpa con una ventana de confirmación UAC por cada programa instalado."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuáles son los requisitos mínimos para ejecutarlo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Windows 10 (versión 1809 o superior) o Windows 11 con el cliente de Winget instalado (integrado por defecto en Windows bajo el nombre 'Instalador de aplicaciones' de Microsoft Store). No se requiere instalar Python, Node.js ni ningún framework externo."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Puedo añadir mis propias aplicaciones personalizadas?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí. En el paquete de código fuente, basta con abrir src/Magic_Installer.ps1 con cualquier editor de texto y agregar nuevas entradas al array $Apps con el nombre, categoría e ID oficial de Winget. Posteriormente puedes ejecutar build\\build.bat para generar tu propio binario compilado."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <style>
     :root {

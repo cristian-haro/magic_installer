@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Directivas para crawlers de IA respetando robots.txt
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Enlace al sitemap canonico
+Sitemap: https://cristian-haro.github.io/magic_installer/sitemap.xml
