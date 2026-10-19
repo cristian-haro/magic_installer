@@ -1,16 +1,14 @@
-# Ignorar scripts de mantenimiento del sistema previos
-Actualización automática.*
-Actualizar_Sistema.*
-auto_update.bat
-
-# Binarios generados localmente (se publican via GitHub Actions Releases)
+# Binarios y paquetes generados localmente (publicados via GitHub Actions Releases)
 *.exe
 *.zip
+bin/
+dist/
 
-# Logs y temporales de Windows
+# Logs y temporales de ejecucion
 *.log
 Logs_Mantenimiento/
 
-# Archivos de entorno y temporales
+# Archivos de entorno y temporales del sistema operativo
 .DS_Store
 Thumbs.db
+desktop.ini
