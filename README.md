@@ -76,8 +76,9 @@ magic_installer/
 │
 ├── Magic_Installer.bat       <-- Lanzador principal para el usuario (1 clic)
 │
-├── assets/                   <-- Recursos graficos y capturas de pantalla
-│   └── screenshots/
+├── assets/                   <-- Recursos graficos e icono
+│   ├── icon.ico
+│   └── screenshots/          <-- Capturas de pantalla de la interfaz
 │
 ├── src/                      <-- Codigo fuente
 │   └── Magic_Installer.ps1
@@ -85,13 +86,16 @@ magic_installer/
 ├── build/                    <-- Scripts de compilacion a ejecutable (.exe)
 │   ├── build.ps1
 │   ├── build.bat
-│   └── capture.ps1
+│   ├── capture.ps1
+│   └── generate_icon.ps1
 │
 ├── .github/                  <-- CI/CD Workflows para Releases
 │   └── workflows/
 │       └── release.yml
 │
 ├── .gitignore
+├── GEMINI.md                 <-- Estandares de ingenieria y directrices para agentes
+├── index.html                <-- Landing page web y catalogo interactivo
 ├── LICENSE
 └── README.md
 ```
@@ -181,8 +185,9 @@ magic_installer/
 │
 ├── Magic_Installer.bat       <-- Main launcher for end users (1 click)
 │
-├── assets/                   <-- Screenshots and visual assets
-│   └── screenshots/
+├── assets/                   <-- Visual assets and icon
+│   ├── icon.ico
+│   └── screenshots/          <-- Application UI preview screenshots
 │
 ├── src/                      <-- Source code
 │   └── Magic_Installer.ps1
@@ -190,13 +195,16 @@ magic_installer/
 ├── build/                    <-- Build scripts to generate standalone .exe
 │   ├── build.ps1
 │   ├── build.bat
-│   └── capture.ps1
+│   ├── capture.ps1
+│   └── generate_icon.ps1
 │
 ├── .github/                  <-- GitHub Actions CI/CD workflows
 │   └── workflows/
 │       └── release.yml
 │
 ├── .gitignore
+├── GEMINI.md                 <-- Engineering standards and agent operating instructions
+├── index.html                <-- Web landing page & interactive catalog
 ├── LICENSE
 └── README.md
 ```
