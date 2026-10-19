@@ -95,7 +95,6 @@ magic_installer/
 │
 ├── .gitignore
 ├── GEMINI.md                 <-- Estandares de ingenieria y directrices para agentes
-├── index.html                <-- Landing page web y catalogo interactivo
 ├── LICENSE
 └── README.md
 ```
@@ -204,7 +203,6 @@ magic_installer/
 │
 ├── .gitignore
 ├── GEMINI.md                 <-- Engineering standards and agent operating instructions
-├── index.html                <-- Web landing page & interactive catalog
 ├── LICENSE
 └── README.md
 ```
