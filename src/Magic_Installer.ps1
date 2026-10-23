@@ -26,15 +26,15 @@ $Apps = @(
     [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Vivaldi"; Id = "VivaldiTechnologies.Vivaldi"; Descripcion = "Navegador altamente personalizable"; Keywords = "vivaldi,browser" }
     [PSCustomObject]@{ Categoria = "Navegadores"; Nombre = "Tor Browser"; Id = "TorProject.TorBrowser"; Descripcion = "Navegador para anonimato en red Tor"; Keywords = "tor,onion,privacy,browser" }
 
-    # --- COMUNICACION Y MENSAJERIA ---
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Mozilla Thunderbird"; Id = "Mozilla.Thunderbird"; Descripcion = "Cliente de correo y calendario libre"; Keywords = "thunderbird,mail,email,correo" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Asana"; Id = "Asana.Asana"; Descripcion = "Gestion de tareas y proyectos de equipo"; Keywords = "asana,tasks,projects,equipo" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Discord"; Id = "Discord.Discord"; Descripcion = "Chat de voz y texto para comunidades"; Keywords = "discord,chat,voz,comunidad" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Telegram Desktop"; Id = "Telegram.TelegramDesktop"; Descripcion = "Mensajeria rapida y segura"; Keywords = "telegram,chat,mensajeria" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "WhatsApp"; Id = "WhatsApp.WhatsApp"; Descripcion = "Cliente oficial de WhatsApp"; Keywords = "whatsapp,chat,mensajes" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Zoom"; Id = "Zoom.Zoom"; Descripcion = "Reuniones y videollamadas"; Keywords = "zoom,videollamada,reuniones" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Microsoft Teams"; Id = "Microsoft.Teams"; Descripcion = "Comunicacion corporativa"; Keywords = "teams,microsoft,videollamada" }
-    [PSCustomObject]@{ Categoria = "Mensajeria y Comunicacion"; Nombre = "Slack"; Id = "SlackTechnologies.Slack"; Descripcion = "Mensajeria para equipos de trabajo"; Keywords = "slack,chat,trabajo" }
+    # --- COMUNICACION ---
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "Mozilla Thunderbird"; Id = "Mozilla.Thunderbird"; Descripcion = "Cliente de correo y calendario libre"; Keywords = "thunderbird,mail,email,correo" }
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "Asana"; Id = "Asana.Asana"; Descripcion = "Gestion de tareas y proyectos de equipo"; Keywords = "asana,tasks,projects,equipo" }
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "Discord"; Id = "Discord.Discord"; Descripcion = "Chat de voz y texto para comunidades"; Keywords = "discord,chat,voz,comunidad" }
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "Telegram Desktop"; Id = "Telegram.TelegramDesktop"; Descripcion = "Mensajeria rapida y segura"; Keywords = "telegram,chat,mensajeria" }
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "WhatsApp"; Id = "WhatsApp.WhatsApp"; Descripcion = "Cliente oficial de WhatsApp"; Keywords = "whatsapp,chat,mensajes" }
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "Zoom"; Id = "Zoom.Zoom"; Descripcion = "Reuniones y videollamadas"; Keywords = "zoom,videollamada,reuniones" }
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "Microsoft Teams"; Id = "Microsoft.Teams"; Descripcion = "Comunicacion corporativa"; Keywords = "teams,microsoft,videollamada" }
+    [PSCustomObject]@{ Categoria = "Comunicacion"; Nombre = "Slack"; Id = "SlackTechnologies.Slack"; Descripcion = "Mensajeria para equipos de trabajo"; Keywords = "slack,chat,trabajo" }
 
     # --- MULTIMEDIA Y DISENO ---
     [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Figma"; Id = "Figma.Figma"; Descripcion = "Herramienta colaborativa de diseno de interfaces"; Keywords = "figma,design,ui,ux,diseno" }
@@ -48,29 +48,29 @@ $Apps = @(
     [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "Blender"; Id = "BlenderFoundation.Blender"; Descripcion = "Modelado y animacion 3D"; Keywords = "blender,3d,animacion,render" }
     [PSCustomObject]@{ Categoria = "Multimedia y Diseno"; Nombre = "K-Lite Codec Pack Mega"; Id = "CodecGuide.K-LiteCodecPack.Mega"; Descripcion = "Coleccion de codecs multimedia"; Keywords = "klite,codec,video,audio" }
 
-    # --- ALMACENAMIENTO EN LA NUBE ---
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Google Drive"; Id = "Google.GoogleDrive"; Descripcion = "Sincronizacion de Google Drive para escritorio"; Keywords = "google drive,cloud,nube,storage" }
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Microsoft OneDrive"; Id = "Microsoft.OneDrive"; Descripcion = "Nube integrada de Microsoft"; Keywords = "onedrive,microsoft,nube,cloud" }
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "Dropbox"; Id = "Dropbox.Dropbox"; Descripcion = "Almacenamiento y sincronizacion en la nube"; Keywords = "dropbox,cloud,nube,archivos" }
-    [PSCustomObject]@{ Categoria = "Almacenamiento en la Nube"; Nombre = "SugarSync"; Id = "IPVanish.SugarSync"; Descripcion = "Copia de seguridad y sincronizacion en la nube"; Keywords = "sugarsync,backup,cloud,nube" }
+    # --- CLOUD ---
+    [PSCustomObject]@{ Categoria = "Cloud"; Nombre = "Google Drive"; Id = "Google.GoogleDrive"; Descripcion = "Sincronizacion de Google Drive para escritorio"; Keywords = "google drive,cloud,nube,storage" }
+    [PSCustomObject]@{ Categoria = "Cloud"; Nombre = "Microsoft OneDrive"; Id = "Microsoft.OneDrive"; Descripcion = "Nube integrada de Microsoft"; Keywords = "onedrive,microsoft,nube,cloud" }
+    [PSCustomObject]@{ Categoria = "Cloud"; Nombre = "Dropbox"; Id = "Dropbox.Dropbox"; Descripcion = "Almacenamiento y sincronizacion en la nube"; Keywords = "dropbox,cloud,nube,archivos" }
+    [PSCustomObject]@{ Categoria = "Cloud"; Nombre = "SugarSync"; Id = "IPVanish.SugarSync"; Descripcion = "Copia de seguridad y sincronizacion en la nube"; Keywords = "sugarsync,backup,cloud,nube" }
 
-    # --- UTILIDADES DEL SISTEMA ---
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "7-Zip"; Id = "7zip.7zip"; Descripcion = "Compresor y extractor de archivos"; Keywords = "7zip,zip,rar,compresor" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "WinRAR"; Id = "RARLab.WinRAR"; Descripcion = "Gestion de archivos RAR y ZIP"; Keywords = "winrar,rar,zip,compresor" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Transmission"; Id = "Transmission.Transmission"; Descripcion = "Cliente Torrent rapido y ligero"; Keywords = "transmission,torrent,p2p,descargas" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "qBittorrent"; Id = "qBittorrent.qBittorrent"; Descripcion = "Cliente Torrent libre y sin publicidad"; Keywords = "qbittorrent,torrent,p2p,descargas" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "TeamViewer"; Id = "TeamViewer.TeamViewer"; Descripcion = "Control remoto y asistencia a distancia"; Keywords = "teamviewer,remoto,soporte" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "AnyDesk"; Id = "AnyDeskSoftwareGmbH.AnyDesk"; Descripcion = "Soporte y control remoto ultra fluido"; Keywords = "anydesk,remoto,soporte" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Glary Utilities"; Id = "Glarysoft.GlaryUtilities"; Descripcion = "Suite de limpieza y mantenimiento de sistema"; Keywords = "glary,limpieza,mantenimiento,optimizacion" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CCleaner"; Id = "Piriform.CCleaner"; Descripcion = "Optimizador y limpiador de espacio"; Keywords = "ccleaner,limpieza,temporales" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "AutoHotkey"; Id = "AutoHotkey.AutoHotkey"; Descripcion = "Automatizacion y atajos de teclado personalizados"; Keywords = "autohotkey,ahk,macros,teclado" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Microsoft PowerToys"; Id = "Microsoft.PowerToys"; Descripcion = "Herramientas avanzadas para Windows"; Keywords = "powertoys,microsoft,utilidades" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Everything"; Id = "voidtools.Everything"; Descripcion = "Buscador ultrarrapido de archivos"; Keywords = "everything,search,buscar,archivos" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "TreeSize Free"; Id = "JAMSoftware.TreeSize.Free"; Descripcion = "Analizador de espacio en disco"; Keywords = "treesize,disco,espacio,almacenamiento" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CrystalDiskInfo"; Id = "CrystalDewWorld.CrystalDiskInfo"; Descripcion = "Salud SMART de discos SSD/HDD"; Keywords = "crystaldiskinfo,smart,disco,ssd,hdd" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "CPU-Z"; Id = "CPUID.CPU-Z"; Descripcion = "Datos de procesador y placa"; Keywords = "cpuz,cpu,hardware,procesador" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "GPU-Z"; Id = "TechPowerUp.GPU-Z"; Descripcion = "Datos tecnicos de tarjeta grafica"; Keywords = "gpuz,gpu,grafica,nvidia,amd" }
-    [PSCustomObject]@{ Categoria = "Utilidades del Sistema"; Nombre = "Rufus"; Id = "Rufus.Rufus"; Descripcion = "Creacion de USBs de arranque"; Keywords = "rufus,usb,boot,iso" }
+    # --- SISTEMA ---
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "7-Zip"; Id = "7zip.7zip"; Descripcion = "Compresor y extractor de archivos"; Keywords = "7zip,zip,rar,compresor" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "WinRAR"; Id = "RARLab.WinRAR"; Descripcion = "Gestion de archivos RAR y ZIP"; Keywords = "winrar,rar,zip,compresor" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "Transmission"; Id = "Transmission.Transmission"; Descripcion = "Cliente Torrent rapido y ligero"; Keywords = "transmission,torrent,p2p,descargas" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "qBittorrent"; Id = "qBittorrent.qBittorrent"; Descripcion = "Cliente Torrent libre y sin publicidad"; Keywords = "qbittorrent,torrent,p2p,descargas" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "TeamViewer"; Id = "TeamViewer.TeamViewer"; Descripcion = "Control remoto y asistencia a distancia"; Keywords = "teamviewer,remoto,soporte" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "AnyDesk"; Id = "AnyDeskSoftwareGmbH.AnyDesk"; Descripcion = "Soporte y control remoto ultra fluido"; Keywords = "anydesk,remoto,soporte" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "Glary Utilities"; Id = "Glarysoft.GlaryUtilities"; Descripcion = "Suite de limpieza y mantenimiento de sistema"; Keywords = "glary,limpieza,mantenimiento,optimizacion" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "CCleaner"; Id = "Piriform.CCleaner"; Descripcion = "Optimizador y limpiador de espacio"; Keywords = "ccleaner,limpieza,temporales" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "AutoHotkey"; Id = "AutoHotkey.AutoHotkey"; Descripcion = "Automatizacion y atajos de teclado personalizados"; Keywords = "autohotkey,ahk,macros,teclado" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "Microsoft PowerToys"; Id = "Microsoft.PowerToys"; Descripcion = "Herramientas avanzadas para Windows"; Keywords = "powertoys,microsoft,utilidades" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "Everything"; Id = "voidtools.Everything"; Descripcion = "Buscador ultrarrapido de archivos"; Keywords = "everything,search,buscar,archivos" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "TreeSize Free"; Id = "JAMSoftware.TreeSize.Free"; Descripcion = "Analizador de espacio en disco"; Keywords = "treesize,disco,espacio,almacenamiento" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "CrystalDiskInfo"; Id = "CrystalDewWorld.CrystalDiskInfo"; Descripcion = "Salud SMART de discos SSD/HDD"; Keywords = "crystaldiskinfo,smart,disco,ssd,hdd" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "CPU-Z"; Id = "CPUID.CPU-Z"; Descripcion = "Datos de procesador y placa"; Keywords = "cpuz,cpu,hardware,procesador" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "GPU-Z"; Id = "TechPowerUp.GPU-Z"; Descripcion = "Datos tecnicos de tarjeta grafica"; Keywords = "gpuz,gpu,grafica,nvidia,amd" }
+    [PSCustomObject]@{ Categoria = "Sistema"; Nombre = "Rufus"; Id = "Rufus.Rufus"; Descripcion = "Creacion de USBs de arranque"; Keywords = "rufus,usb,boot,iso" }
 
     # --- OFIMATICA Y NOTAS ---
     [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Adobe Acrobat Reader"; Id = "Adobe.Acrobat.Reader.64-bit"; Descripcion = "Visor de documentos PDF"; Keywords = "adobe,acrobat,reader,pdf" }

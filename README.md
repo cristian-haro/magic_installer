@@ -103,10 +103,10 @@ magic_installer/
 | Categoria | Aplicaciones Incluidas |
 | :--- | :--- |
 | **Navegadores** | Google Chrome, Mozilla Firefox, Brave Browser, Opera GX, Microsoft Edge, Vivaldi, Tor Browser |
-| **Mensajeria y Comunicacion** | Mozilla Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Microsoft Teams, Slack |
+| **Comunicacion** | Mozilla Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Microsoft Teams, Slack |
 | **Multimedia y Diseno** | Figma, VLC Media Player, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack |
-| **Almacenamiento en la Nube** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
-| **Utilidades del Sistema** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
+| **Cloud** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
+| **Sistema** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
 | **Desarrollo y Programacion** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
 | **Gaming y Tiendas** | Steam, Epic Games Launcher, GOG Galaxy, EA App |
 | **Seguridad y Contrasenas** | Bitwarden, KeePassXC, Malwarebytes |
@@ -210,10 +210,10 @@ magic_installer/
 | Category | Included Applications |
 | :--- | :--- |
 | **Web Browsers** | Google Chrome, Mozilla Firefox, Brave Browser, Opera GX, Microsoft Edge, Vivaldi, Tor Browser |
-| **Messaging & Collaboration** | Mozilla Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Microsoft Teams, Slack |
+| **Communication** | Mozilla Thunderbird, Asana, Discord, Telegram Desktop, WhatsApp, Zoom, Microsoft Teams, Slack |
 | **Media & Design** | Figma, VLC Media Player, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack |
-| **Cloud Storage** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
-| **System Utilities** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
+| **Cloud** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
+| **System** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
 | **Development & IDEs** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
 | **Gaming Launchers** | Steam, Epic Games Launcher, GOG Galaxy, EA App |
 | **Security & Passwords** | Bitwarden, KeePassXC, Malwarebytes |
