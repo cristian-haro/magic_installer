@@ -12,3 +12,6 @@ Logs_Mantenimiento/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Instrucciones de agentes de IA y configuracion local privada
+GEMINI.md

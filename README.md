@@ -94,7 +94,6 @@ magic_installer/
 │       └── release.yml
 │
 ├── .gitignore
-├── GEMINI.md                 <-- Estandares de ingenieria y directrices para agentes
 ├── LICENSE
 └── README.md
 ```
@@ -202,7 +201,6 @@ magic_installer/
 │       └── release.yml
 │
 ├── .gitignore
-├── GEMINI.md                 <-- Engineering standards and agent operating instructions
 ├── LICENSE
 └── README.md
 ```
