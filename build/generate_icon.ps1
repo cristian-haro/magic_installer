@@ -1,100 +1,115 @@
 # ==============================================================================
-# Magic Installer - Win32 Icon Generator (.ico)
+# Magic Installer - Win32 Multi-Resolution Icon Generator (.ico)
+# Extracts and centers the emblem from assets/logo.png for all Windows icon sizes
 # ==============================================================================
 
 Add-Type -AssemblyName System.Drawing
 
 $rootDir = (Get-Item $PSScriptRoot).Parent.FullName
 $assetsDir = Join-Path $rootDir "assets"
-if (-not (Test-Path $assetsDir)) {
-    New-Item -ItemType Directory -Path $assetsDir -Force | Out-Null
-}
+$logoPath = Join-Path $assetsDir "logo.png"
 $outputPath = Join-Path $assetsDir "icon.ico"
 
-$sz = 256
-$bmp = New-Object System.Drawing.Bitmap($sz, $sz, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
-$g = [System.Drawing.Graphics]::FromImage($bmp)
+if (-not (Test-Path $logoPath)) {
+    Write-Error "No se encontro el archivo de logo en $logoPath"
+    Exit 1
+}
+
+$srcBmp = [System.Drawing.Bitmap]::FromFile($logoPath)
+
+# 1. Localizar los limites del isotipo/emblema central (zona superior, Y < 950)
+$minX = $srcBmp.Width; $maxX = 0; $minY = 950; $maxY = 0
+for ($y = 300; $y -lt 950; $y += 2) {
+    for ($x = 0; $x -lt $srcBmp.Width; $x += 2) {
+        if ($srcBmp.GetPixel($x, $y).A -gt 25) {
+            if ($x -lt $minX) { $minX = $x }
+            if ($x -gt $maxX) { $maxX = $x }
+            if ($y -lt $minY) { $minY = $y }
+            if ($y -gt $maxY) { $maxY = $y }
+        }
+    }
+}
+
+$embW = $maxX - $minX
+$embH = $maxY - $minY
+
+# 2. Generar lienzo cuadrado maestro con padding del 8%
+$maxDim = [Math]::Max($embW, $embH)
+$pad = [int]($maxDim * 0.08)
+$masterSize = $maxDim + (2 * $pad)
+
+$masterBmp = New-Object System.Drawing.Bitmap($masterSize, $masterSize, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+$g = [System.Drawing.Graphics]::FromImage($masterBmp)
 $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
 $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
 $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
 $g.Clear([System.Drawing.Color]::Transparent)
 
-$margin = [Math]::Max(1.0, $sz * 0.02)
-$rect = New-Object System.Drawing.RectangleF($margin, $margin, ($sz - (2.0 * $margin)), ($sz - (2.0 * $margin)))
-$cornerRad = [Math]::Max(3.0, ($sz * 0.22))
-$d = $cornerRad * 2.0
-
-$path = New-Object System.Drawing.Drawing2D.GraphicsPath
-$path.AddArc($rect.X, $rect.Y, $d, $d, 180.0, 90.0)
-$path.AddArc(($rect.Right - $d), $rect.Y, $d, $d, 270.0, 90.0)
-$path.AddArc(($rect.Right - $d), ($rect.Bottom - $d), $d, $d, 0.0, 90.0)
-$path.AddArc($rect.X, ($rect.Bottom - $d), $d, $d, 90.0, 90.0)
-$path.CloseFigure()
-
-$pt1 = New-Object System.Drawing.PointF($rect.X, $rect.Y)
-$pt2 = New-Object System.Drawing.PointF($rect.Right, $rect.Bottom)
-$c1 = [System.Drawing.Color]::FromArgb(255, 15, 23, 42)
-$c2 = [System.Drawing.Color]::FromArgb(255, 37, 99, 235)
-$brush = New-Object System.Drawing.Drawing2D.LinearGradientBrush($pt1, $pt2, $c1, $c2)
-$g.FillPath($brush, $path)
-
-$penColor = [System.Drawing.Color]::FromArgb(200, 56, 189, 248)
-$penWidth = [Math]::Max(1.0, ($sz * 0.035))
-$pen = New-Object System.Drawing.Pen($penColor, $penWidth)
-$g.DrawPath($pen, $path)
-
-$cx = [float]($sz / 2.0)
-$cy = [float]($sz / 2.0)
-$rOut = [float]($sz * 0.32)
-$rIn = [float]($sz * 0.09)
-
-$starPath = New-Object System.Drawing.Drawing2D.GraphicsPath
-[System.Drawing.PointF[]]$points = @(
-    (New-Object System.Drawing.PointF($cx, ($cy - $rOut))),
-    (New-Object System.Drawing.PointF(($cx + $rIn), ($cy - $rIn))),
-    (New-Object System.Drawing.PointF(($cx + $rOut), $cy)),
-    (New-Object System.Drawing.PointF(($cx + $rIn), ($cy + $rIn))),
-    (New-Object System.Drawing.PointF($cx, ($cy + $rOut))),
-    (New-Object System.Drawing.PointF(($cx - $rIn), ($cy + $rIn))),
-    (New-Object System.Drawing.PointF(($cx - $rOut), $cy)),
-    (New-Object System.Drawing.PointF(($cx - $rIn), ($cy - $rIn)))
-)
-$starPath.AddPolygon($points)
-
-$spt1 = New-Object System.Drawing.PointF($cx, ($cy - $rOut))
-$spt2 = New-Object System.Drawing.PointF($cx, ($cy + $rOut))
-$sc1 = [System.Drawing.Color]::FromArgb(255, 255, 255, 255)
-$sc2 = [System.Drawing.Color]::FromArgb(255, 125, 211, 252)
-$starBrush = New-Object System.Drawing.Drawing2D.LinearGradientBrush($spt1, $spt2, $sc1, $sc2)
-$g.FillPath($starBrush, $starPath)
-
-$sx = [float]($cx + ($sz * 0.22))
-$sy = [float]($cy - ($sz * 0.22))
-$srOut = [float]($sz * 0.12)
-$srIn = [float]($sz * 0.035)
-
-$spPath = New-Object System.Drawing.Drawing2D.GraphicsPath
-[System.Drawing.PointF[]]$spPoints = @(
-    (New-Object System.Drawing.PointF($sx, ($sy - $srOut))),
-    (New-Object System.Drawing.PointF(($sx + $srIn), ($sy - $srIn))),
-    (New-Object System.Drawing.PointF(($sx + $srOut), $sy)),
-    (New-Object System.Drawing.PointF(($sx + $srIn), ($sy + $srIn))),
-    (New-Object System.Drawing.PointF($sx, ($sy + $srOut))),
-    (New-Object System.Drawing.PointF(($sx - $srIn), ($sy + $srIn))),
-    (New-Object System.Drawing.PointF(($sx - $srOut), $sy)),
-    (New-Object System.Drawing.PointF(($sx - $srIn), ($sy - $srIn)))
-)
-$spPath.AddPolygon($spPoints)
-$whiteBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(245, 255, 255, 255))
-$g.FillPath($whiteBrush, $spPath)
+$destX = $pad + [int](($maxDim - $embW) / 2)
+$destY = $pad + [int](($maxDim - $embH) / 2)
+$g.DrawImage($srcBmp, (New-Object System.Drawing.Rectangle($destX, $destY, $embW, $embH)), $minX, $minY, $embW, $embH, [System.Drawing.GraphicsUnit]::Pixel)
 $g.Dispose()
+$srcBmp.Dispose()
 
-$hIcon = $bmp.GetHicon()
-$icon = [System.Drawing.Icon]::FromHandle($hIcon)
+# Guardar version cuadrada PNG para incrustacion en memoria en WPF
+$emblemPngPath = Join-Path $assetsDir "icon.png"
+$masterBmp.Save($emblemPngPath, [System.Drawing.Imaging.ImageFormat]::Png)
+
+# 3. Generar frames para resoluciones estandar de Windows
+$sizes = @(16, 24, 32, 48, 64, 128, 256)
+$pngStreams = @()
+
+foreach ($sz in $sizes) {
+    $resized = New-Object System.Drawing.Bitmap($sz, $sz, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+    $rg = [System.Drawing.Graphics]::FromImage($resized)
+    $rg.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+    $rg.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+    $rg.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+    $rg.Clear([System.Drawing.Color]::Transparent)
+    $rg.DrawImage($masterBmp, 0, 0, $sz, $sz)
+    $rg.Dispose()
+
+    $ms = New-Object System.IO.MemoryStream
+    $resized.Save($ms, [System.Drawing.Imaging.ImageFormat]::Png)
+    $resized.Dispose()
+    $pngStreams += ,$ms.ToArray()
+    $ms.Dispose()
+}
+$masterBmp.Dispose()
+
+# 4. Escribir archivo binario .ICO de formato nativo Windows
 $fs = [System.IO.File]::Create($outputPath)
-$icon.Save($fs)
-$fs.Close()
-$icon.Dispose()
-$bmp.Dispose()
+$bw = New-Object System.IO.BinaryWriter($fs)
 
-Write-Host "[OK] Icono generado con exito en: $outputPath" -ForegroundColor Green
+$bw.Write([uint16]0) # Reserved
+$bw.Write([uint16]1) # Type 1 (Icon)
+$bw.Write([uint16]$sizes.Count) # Image count
+
+$dataOffset = 6 + (16 * $sizes.Count)
+
+for ($i = 0; $i -lt $sizes.Count; $i++) {
+    $sz = $sizes[$i]
+    $wByte = if ($sz -ge 256) { [byte]0 } else { [byte]$sz }
+    $hByte = if ($sz -ge 256) { [byte]0 } else { [byte]$sz }
+    $bytes = $pngStreams[$i]
+
+    $bw.Write($wByte)
+    $bw.Write($hByte)
+    $bw.Write([byte]0)
+    $bw.Write([byte]0)
+    $bw.Write([uint16]1)
+    $bw.Write([uint16]32)
+    $bw.Write([uint32]$bytes.Length)
+    $bw.Write([uint32]$dataOffset)
+
+    $dataOffset += $bytes.Length
+}
+
+for ($i = 0; $i -lt $sizes.Count; $i++) {
+    $bw.Write($pngStreams[$i])
+}
+
+$bw.Close()
+$fs.Close()
+
+Write-Host "[OK] Icono multi-resolucion generado con exito: $outputPath" -ForegroundColor Green
