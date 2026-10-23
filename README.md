@@ -107,7 +107,7 @@ magic_installer/
 | **Multimedia y Diseno** | Figma, VLC Media Player, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack |
 | **Cloud** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
 | **Sistema** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
-| **Desarrollo y Programacion** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
+| **Dev** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
 | **Gaming y Tiendas** | Steam, Epic Games Launcher, GOG Galaxy, EA App |
 | **Seguridad y Contrasenas** | Bitwarden, KeePassXC, Malwarebytes |
 
@@ -214,7 +214,7 @@ magic_installer/
 | **Media & Design** | Figma, VLC Media Player, Spotify, OBS Studio, Audacity, HandBrake, GIMP, Paint.NET, Blender, K-Lite Codec Pack |
 | **Cloud** | Google Drive, Microsoft OneDrive, Dropbox, SugarSync |
 | **System** | 7-Zip, WinRAR, Transmission, qBittorrent, TeamViewer, AnyDesk, Glary Utilities, CCleaner, AutoHotkey, Microsoft PowerToys, Everything, TreeSize Free, CrystalDiskInfo, CPU-Z, GPU-Z, Rufus |
-| **Development & IDEs** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
+| **Dev** | Visual Studio Code, Cursor, Claude Desktop, Antigravity, Codex CLI, Git, Python 3, Android Studio, Eclipse IDE, Docker Desktop, WinSCP / FTP, GitHub Desktop, Notepad++, Node.js LTS, Postman, Windows Terminal, DBeaver |
 | **Gaming Launchers** | Steam, Epic Games Launcher, GOG Galaxy, EA App |
 | **Security & Passwords** | Bitwarden, KeePassXC, Malwarebytes |
 

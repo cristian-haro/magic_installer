@@ -78,24 +78,24 @@ $Apps = @(
     [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Obsidian"; Id = "Obsidian.Obsidian"; Descripcion = "Base de conocimiento y notas en Markdown"; Keywords = "obsidian,notes,markdown,notas" }
     [PSCustomObject]@{ Categoria = "Ofimatica y Notas"; Nombre = "Notion"; Id = "Notion.Notion"; Descripcion = "Organizador de proyectos y notas"; Keywords = "notion,notas,proyectos,docs" }
 
-    # --- DESARROLLO Y PROGRAMACION ---
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode"; Descripcion = "Editor de codigo profesional"; Keywords = "vscode,visual studio code,editor,codigo" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Cursor"; Id = "Anysphere.Cursor"; Descripcion = "Editor de codigo impulsado por IA"; Keywords = "cursor,ai,codigo,editor" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Claude"; Id = "Anthropic.Claude"; Descripcion = "Cliente oficial de escritorio para Claude"; Keywords = "claude,anthropic,ai,ia" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Antigravity"; Id = "Google.Antigravity"; Descripcion = "Plataforma y entorno de desarrollo IA"; Keywords = "antigravity,google,ai,ia" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Codex CLI"; Id = "OpenAI.Codex"; Descripcion = "Herramienta de desarrollo de OpenAI"; Keywords = "codex,openai,chatgpt,cli" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Git"; Id = "Git.Git"; Descripcion = "Control de versiones Git"; Keywords = "git,vcs,github,version" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Python 3"; Id = "Python.Python.3.12"; Descripcion = "Lenguaje de programacion Python"; Keywords = "python,py,desarrollo,lenguaje" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Android Studio"; Id = "Google.AndroidStudio"; Descripcion = "IDE oficial para desarrollo Android"; Keywords = "android,studio,google,ide,apps" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Eclipse IDE"; Id = "EclipseFoundation.Eclipse.Java"; Descripcion = "IDE para desarrollo Java y proyectos empresariales"; Keywords = "eclipse,java,ide,enterprise" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Docker Desktop"; Id = "Docker.DockerDesktop"; Descripcion = "Plataforma de contenedores Docker"; Keywords = "docker,containers,contenedores" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "WinSCP / FTP"; Id = "WinSCP.WinSCP"; Descripcion = "Cliente FTP, SFTP y SCP para transferir archivos"; Keywords = "winscp,ftp,sftp,scp,archivos" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "GitHub Desktop"; Id = "GitHub.GitHubDesktop"; Descripcion = "Cliente visual de GitHub"; Keywords = "github,git,desktop,repos" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Notepad++"; Id = "Notepad++.Notepad++"; Descripcion = "Editor de texto avanzado con sintaxis"; Keywords = "notepad,editor,texto,codigo" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Node.js (LTS)"; Id = "OpenJS.NodeJS.LTS"; Descripcion = "Entorno de ejecucion JavaScript"; Keywords = "node,nodejs,javascript,npm" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Postman"; Id = "Postman.Postman"; Descripcion = "Prueba y diseno de APIs"; Keywords = "postman,api,rest,http" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "Windows Terminal"; Id = "Microsoft.WindowsTerminal"; Descripcion = "Terminal moderna para Windows"; Keywords = "terminal,windows terminal,console,powershell" }
-    [PSCustomObject]@{ Categoria = "Desarrollo y Programacion"; Nombre = "DBeaver Community"; Id = "dbeaver.dbeaver"; Descripcion = "Gestor universal de bases de datos"; Keywords = "dbeaver,sql,database,db" }
+    # --- DEV ---
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Visual Studio Code"; Id = "Microsoft.VisualStudioCode"; Descripcion = "Editor de codigo profesional"; Keywords = "vscode,visual studio code,editor,codigo" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Cursor"; Id = "Anysphere.Cursor"; Descripcion = "Editor de codigo impulsado por IA"; Keywords = "cursor,ai,codigo,editor" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Claude"; Id = "Anthropic.Claude"; Descripcion = "Cliente oficial de escritorio para Claude"; Keywords = "claude,anthropic,ai,ia" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Antigravity"; Id = "Google.Antigravity"; Descripcion = "Plataforma y entorno de desarrollo IA"; Keywords = "antigravity,google,ai,ia" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Codex CLI"; Id = "OpenAI.Codex"; Descripcion = "Herramienta de desarrollo de OpenAI"; Keywords = "codex,openai,chatgpt,cli" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Git"; Id = "Git.Git"; Descripcion = "Control de versiones Git"; Keywords = "git,vcs,github,version" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Python 3"; Id = "Python.Python.3.12"; Descripcion = "Lenguaje de programacion Python"; Keywords = "python,py,desarrollo,lenguaje" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Android Studio"; Id = "Google.AndroidStudio"; Descripcion = "IDE oficial para desarrollo Android"; Keywords = "android,studio,google,ide,apps" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Eclipse IDE"; Id = "EclipseFoundation.Eclipse.Java"; Descripcion = "IDE para desarrollo Java y proyectos empresariales"; Keywords = "eclipse,java,ide,enterprise" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Docker Desktop"; Id = "Docker.DockerDesktop"; Descripcion = "Plataforma de contenedores Docker"; Keywords = "docker,containers,contenedores" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "WinSCP / FTP"; Id = "WinSCP.WinSCP"; Descripcion = "Cliente FTP, SFTP y SCP para transferir archivos"; Keywords = "winscp,ftp,sftp,scp,archivos" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "GitHub Desktop"; Id = "GitHub.GitHubDesktop"; Descripcion = "Cliente visual de GitHub"; Keywords = "github,git,desktop,repos" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Notepad++"; Id = "Notepad++.Notepad++"; Descripcion = "Editor de texto avanzado con sintaxis"; Keywords = "notepad,editor,texto,codigo" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Node.js (LTS)"; Id = "OpenJS.NodeJS.LTS"; Descripcion = "Entorno de ejecucion JavaScript"; Keywords = "node,nodejs,javascript,npm" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Postman"; Id = "Postman.Postman"; Descripcion = "Prueba y diseno de APIs"; Keywords = "postman,api,rest,http" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "Windows Terminal"; Id = "Microsoft.WindowsTerminal"; Descripcion = "Terminal moderna para Windows"; Keywords = "terminal,windows terminal,console,powershell" }
+    [PSCustomObject]@{ Categoria = "Dev"; Nombre = "DBeaver Community"; Id = "dbeaver.dbeaver"; Descripcion = "Gestor universal de bases de datos"; Keywords = "dbeaver,sql,database,db" }
 
     # --- GAMING ---
     [PSCustomObject]@{ Categoria = "Gaming y Tiendas"; Nombre = "Steam"; Id = "Valve.Steam"; Descripcion = "Tienda de videojuegos Steam"; Keywords = "steam,valve,games,juegos" }
